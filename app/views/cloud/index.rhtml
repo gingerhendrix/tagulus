@@ -1,0 +1,19 @@
+
+<div id="random">
+<h2>Random</h2>
+<%= @random.name %>
+<%=makeCloud(@random)%>
+</div>
+
+<div id="recent">
+    <h2>Recent</h2>
+    <ol>
+    <%@recent.each do |c|%>
+        <li><%= link_to c.name, :action => 'show', :id => c %></li>
+    <%end%>
+    </ol>
+</div>
+<br/>
+<div id="create">
+    <h2><%= link_to "Create", :action => 'new' %></h2>
+</div>
