@@ -1,0 +1,40 @@
+#tagCloud{
+    border: 1px solid #ccccff;
+    width: 400px;
+    min-height: 200px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    font-size: 24pt;
+    text-align: center;
+}
+
+span.tag{
+    padding-left: .2em;
+    padding-right: .2em;
+    padding-top: .2em;
+    padding-bottom: .2em;
+}
+
+span.tag1{
+    font-size: 150%;
+}
+
+span.tag2{
+    font-size: 120%;
+}
+
+span.tag3{
+    font-size: 100%;
+}
+
+span.tag4{
+    font-size: 80%;
+}
+
+span.tag5{
+    font-size: 60%;
+}
+
+span.tag6{
+    font-size: 40%;
+}
