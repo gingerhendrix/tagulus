@@ -17,6 +17,19 @@ class CloudController < ApplicationController
   def show
     @cloud = Cloud.find(params[:id])
     @tag_frequencies = @cloud.tag_frequencys.find :all, :order => "frequency DESC"
+    
+    if @cloud[:type] == "TextCloud"
+      if @cloud.content.length > 400  
+        @content = @cloud.content[0..400] + "..."
+      else
+        @content = @cloud.content    
+      end
+      render :template => "cloud/show_text_cloud"
+    elsif @cloud[:type] == "DeliciousCloud"
+      render :template => "cloud/show_delicious_cloud"
+    end
+    
+    
   end
   
   def json
@@ -29,16 +42,34 @@ class CloudController < ApplicationController
     json_cloud = {:name => cloud.name, :tag_frequencies => json_frequencies}
     render :text => "var cloud = " + JSON.generate(json_cloud)
   end
-
+  
   def new
-    @cloud = Cloud.new
+  
+  end
+  
+  def new_delicious_cloud
+    
   end
 
-  def create
-    @cloud = Cloud.new(params[:cloud])
+  def new_text_cloud
+    @cloud = TextCloud.new
+  end
+
+  def create_text_cloud
+    @cloud = TextCloud.new(params[:cloud])
     if @cloud.save
       flash[:notice] = 'Cloud was successfully created.'
-      redirect_to :action => 'list'
+      redirect_to :action => 'show', :id => @cloud
+    else
+      render :action => 'new'
+    end
+  end
+  
+  def create_delicious_cloud
+    @cloud = DeliciousCloud.new(params[:cloud])
+    if @cloud.save
+      flash[:notice] = 'Cloud was successfully created.'
+      redirect_to :action => 'show', :id => @cloud
     else
       render :action => 'new'
     end

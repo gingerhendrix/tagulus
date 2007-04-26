@@ -7,6 +7,8 @@
   <title>Cloud: <%= controller.action_name %></title>
   <%= stylesheet_link_tag 'reset-fonts-grids' %>
   
+  <%= stylesheet_link_tag 'scaffold' %>
+  
   <%=stylesheet_link_tag "layout"%>
   
   <%=stylesheet_link_tag "tagcloud"%>
@@ -16,21 +18,20 @@
     
 </head>
 <body>
-<div id="clouds">
- <div id="doc2" class="yui-t7">
-   <div id="hd"><h1><a href="/"><img src="/images/masthead.png" width="422" height="180" alt="Tagulus"/></a></h1></div>
+ <div id="doc" class="yui-t7">
+   <div id="hd"><h1>Tagulus</h1></div>
    <div id="bd">
+	<div class="yui-g">
 	
      <p style="color: green"><%= flash[:notice] %></p>
 
     <%= yield  %>
     
-   </div>
+    </div>
 
-	<div id="ft">Copyright (c) 2007 <a href="http://gandrew.com">Gareth Andrew</a></div>
+	</div>
+   <div id="ft">Copyright (c) 2007 <a href="http://gandrew.com">Gareth Andrew</a></div>
 </div>
-</div>
-
 
 </body>
 </html>

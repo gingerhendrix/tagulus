@@ -1,8 +1,12 @@
-<h1>New cloud</h1>
+<div id="yui-main" class="new">
 
-<% form_tag :action => 'create' do %>
-  <%= render :partial => 'form' %>
-  <%= submit_tag "Create" %>
-<% end %>
+<div class="block">
 
-<%= link_to 'Back', :action => 'list' %>
+<h1>Create a Cloud</h1>
+<h2>1. Pick a Cloud Type</h2>
+<div id="cloudTypes">
+    <input type="radio" id="textCloud" name="type" value="TextCloud" onchange="document.location.href = '<%=url_for :action => 'new_text_cloud'%>'"/>   <label for="textCloud">Text Cloud</label>
+    <input type="radio" id="deliciousCloud" name="type" value="DeliciousCloud" onchange="document.location.href = '<%=url_for :action => 'new_delicious_cloud'%>'"/>    <label for="deliciousCloud">Delicious Tag Cloud</label>
+</div>
+</div>
+</div>

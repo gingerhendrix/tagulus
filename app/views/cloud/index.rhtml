@@ -1,19 +1,39 @@
 
-<div id="random">
-<h2>Random</h2>
-<%= @random.name %>
-<%=makeCloud(@random)%>
-</div>
+<div id="yui-main">
+    <div class="yui-g">
+        <div id="random" class="yui-u first block">
+            <h2>Random</h2>
+            <h3><%= link_to @random.name, :action => 'show', :id => @random %></h3>
+            <%=makeCloud(@random)%>
+        </div>
+        
+        <div class="yui-g block">
+            
+            <div id="popular" class="yui-u">
+                <h2>Popular</h2>
+                <ol>
+                    <%@recent.each do |c|%>
+                        <li><%= link_to c.name, :action => 'show', :id => c %></li>
+                    <%end%>
+                </ol>
+            </div>
+        
+            <div id="recent" class="yui-u">
+                <h2>Recent</h2>
+                <ol>
+                    <%@recent.each do |c|%>
+                        <li><%= link_to c.name, :action => 'show', :id => c %></li>
+                    <%end%>
+                </ol>
+            </div>
+            
+        </div>
+    </div>
 
-<div id="recent">
-    <h2>Recent</h2>
-    <ol>
-    <%@recent.each do |c|%>
-        <li><%= link_to c.name, :action => 'show', :id => c %></li>
-    <%end%>
-    </ol>
-</div>
-<br/>
-<div id="create">
-    <h2><%= link_to "Create", :action => 'new' %></h2>
+  <div id="create" class="yui-u block">
+    <h2>Create</h2>
+    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
+    <br/>
+    <%= link_to "Create", {:action => 'new' }, {:id => 'createLink'}%>
+  </div>
 </div>
