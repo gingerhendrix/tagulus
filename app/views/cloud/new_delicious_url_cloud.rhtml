@@ -1,0 +1,16 @@
+
+<div id="yui-main">
+
+<div class="block newTextCloud">
+
+<h1>Create a Delicious Cloud</h1>
+
+<% form_tag :action => 'create_delicious_url_cloud' do %>
+  <%= render :partial => 'delicious_url_cloud_form' %>
+  <%= submit_tag "Create" %>
+<% end %>
+<br/>
+<%= link_to '&laquo;&thinsp;Back', :action => 'new' %>
+
+</div>
+</div>

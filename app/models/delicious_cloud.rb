@@ -1,5 +1,6 @@
 require 'rubilicious'
 
+#TODO: Rename to DeliciousUserCloud or DeliciousPersonalCloud for less ambiguity
 class DeliciousCloud < Cloud
   belongs_to :data, :class_name => "DeliciousCloudData", :foreign_key => "data_id"
   after_save :update_frequencies

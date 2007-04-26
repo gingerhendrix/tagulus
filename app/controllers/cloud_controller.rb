@@ -27,7 +27,10 @@ class CloudController < ApplicationController
       render :template => "cloud/show_text_cloud"
     elsif @cloud[:type] == "DeliciousCloud"
       render :template => "cloud/show_delicious_cloud"
+    elsif @cloud[:type] == "DeliciousUrlCloud"
+      render :template => "cloud/show_delicious_url_cloud"
     end
+    
     
     
   end
@@ -67,6 +70,16 @@ class CloudController < ApplicationController
   
   def create_delicious_cloud
     @cloud = DeliciousCloud.new(params[:cloud])
+    if @cloud.save
+      flash[:notice] = 'Cloud was successfully created.'
+      redirect_to :action => 'show', :id => @cloud
+    else
+      render :action => 'new'
+    end
+  end
+  
+  def create_delicious_url_cloud
+    @cloud = DeliciousUrlCloud.new(params[:cloud])
     if @cloud.save
       flash[:notice] = 'Cloud was successfully created.'
       redirect_to :action => 'show', :id => @cloud

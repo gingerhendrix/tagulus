@@ -6,7 +6,8 @@
 <h2>1. Pick a Cloud Type</h2>
 <div id="cloudTypes">
     <input type="radio" id="textCloud" name="type" value="TextCloud" onchange="document.location.href = '<%=url_for :action => 'new_text_cloud'%>'"/>   <label for="textCloud">Text Cloud</label>
-    <input type="radio" id="deliciousCloud" name="type" value="DeliciousCloud" onchange="document.location.href = '<%=url_for :action => 'new_delicious_cloud'%>'"/>    <label for="deliciousCloud">Delicious Tag Cloud</label>
+    <input type="radio" id="deliciousCloud" name="type" value="DeliciousCloud" onchange="document.location.href = '<%=url_for :action => 'new_delicious_cloud'%>'"/>    <label for="deliciousCloud">Delicious Bookmarks Cloud</label>
+    <input type="radio" id="deliciousUrlCloud" name="type" value="DeliciousUrlCloud" onchange="document.location.href = '<%=url_for :action => 'new_delicious_url_cloud'%>'"/>    <label for="deliciousCloud">Delicious Link Cloud</label>
 </div>
 </div>
 </div>
