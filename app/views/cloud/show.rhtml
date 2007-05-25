@@ -5,11 +5,8 @@
 
 <h1><%= @cloud.name %></h1>
 
-<h2>Content</h2>
-<p><%= @content %></p>
-
 <h2>Cloud</h2>
-<%=makeCloud(@cloud)%>
+  <%= render :partial => 'cloud/cloud' %>
 <br/>
 <%= link_to 'Edit', :action => 'edit', :id => @cloud %> |
 <%= link_to 'Back', :action => 'index' %>

@@ -32,5 +32,5 @@ class TextCloud < Cloud
   def content=(c)
     self.data.content=c
   end
-
+  
 end

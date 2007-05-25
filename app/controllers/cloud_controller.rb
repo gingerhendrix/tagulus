@@ -24,15 +24,7 @@ class CloudController < ApplicationController
       else
         @content = @cloud.content    
       end
-      render :template => "cloud/show_text_cloud"
-    elsif @cloud[:type] == "DeliciousCloud"
-      render :template => "cloud/show_delicious_cloud"
-    elsif @cloud[:type] == "DeliciousUrlCloud"
-      render :template => "cloud/show_delicious_url_cloud"
     end
-    
-    
-    
   end
   
   def json

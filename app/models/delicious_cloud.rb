@@ -35,7 +35,7 @@ class DeliciousCloud < Cloud
   end 
   
   def name
-    self.data.username + "'s bookmarks"
+    "#{self.username}'s bookmarks'"
   end
     
 end
