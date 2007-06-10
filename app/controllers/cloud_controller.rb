@@ -45,6 +45,10 @@ class CloudController < ApplicationController
   def new_delicious_cloud
     
   end
+  
+  def new_lastfm_artist_cloud
+    
+  end
 
   def new_text_cloud
     @cloud = TextCloud.new
@@ -78,6 +82,17 @@ class CloudController < ApplicationController
     else
       render :action => 'new'
     end
+  end
+  
+  def create_lastfm_artist_cloud
+    @cloud = LastfmArtistCloud.new(params[:cloud])
+    if @cloud.save
+      flash[:notice] = 'Cloud was successfully created.'
+      redirect_to :action => 'show', :id => @cloud
+    else
+      render :action => 'new'
+    end
+    
   end
 
   def edit
