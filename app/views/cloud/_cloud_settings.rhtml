@@ -1,0 +1,168 @@
+<dl>
+<dt>Cloud Settings</dt>
+<dd>
+    <dl id="cloud-settings" class="collapsable">
+        <dt>Limit</dt>
+        <dd><span id="limit_min" style="position: relative; font-size: 8px; left: 6px;">0</span><span id="limit_max" style="position: relative; left: 198px; font-size: 8px">200</span>
+            <div id="limit_sliderbg" style="background-image : url(/images/slider/horizBg.png); width : 218px; height: 26px; position: relative; top: 0px; cursor: pointer; ">
+                <div id="limit_sliderthumb" style="position: relative; top: 7px; width: 18px; height: 20px;"><img id="limit_sliderthumbimg" src="/images/slider/horizSlider.png" width="18" height="20"/></div>
+            </div>
+            <div id="limit_slidervalue" style="position: relative; top: -26px; left: 218px; padding-left: 20px;">0</div>
+            <script>
+            var f = function(){
+                var slider;
+                var limit_min;
+                var limit_max;
+                var limit_width = 200;
+                function sliderInit(){
+                   limit_min = 0;
+                   limit_max = tc.tags.length; 
+                   
+                   document.getElementById("limit_min").innerHTML = limit_min;
+                   document.getElementById("limit_max").innerHTML = limit_max;
+                   slider = YAHOO.widget.Slider.getHorizSlider("limit_sliderbg", "limit_sliderthumb", 0, limit_width);
+                   slider.animate = true;
+                   slider.subscribe("change", displayNewValue);
+                   slider.subscribe("change", updateTagCloud);
+                }
+                var oldVal;
+                var newVal;
+                function displayNewValue(offsetFromStart) {
+                   // determine the actual value from the offset
+                   newVal = Math.round(((offsetFromStart/limit_width)*(limit_max-limit_min))+limit_min);
+                   document.getElementById("limit_slidervalue").innerHTML = newVal;
+                }
+                function updateTagCloud(){
+                   if(oldVal!=newVal){
+                        oldVal=newVal;
+                        tc.options.limit = newVal;
+                        tc.replaceElement(document.getElementById('tagCloud'))
+                    }
+                }
+                window.addEventListener("load", sliderInit, false);
+            };
+            f();
+            </script>   
+        </dd>
+    
+        
+        <dt>Sort Function</dt>
+        <dd>
+        <ul class="radiolist">
+        <li><input type="radio" name="sort_function" value="Random" checked="true" onchange="tc.options.sort='random'; tc.replaceElement(document.getElementById('tagCloud'))">Random</input>
+        </li>
+        <li><input type="radio" name="sort_function" value="Weighted" onchange="tc.options.sort='weighted'; tc.replaceElement(document.getElementById('tagCloud'))">Weighted</input>
+        </li>
+        <li><input type="radio" name="sort_function" value="Alpha" onchange="tc.options.sort='alpha'; tc.replaceElement(document.getElementById('tagCloud'))">Alpha</input>
+        </li>
+        </ul>
+        </dd>
+        <dt>Display Order</dt>
+        <dd>
+            <ul class="radiolist">
+            <li><input type="radio" name="sort_order" value="Normal" onchange="tc.options.sort_order = 'normal'; tc.replaceElement(document.getElementById('tagCloud'))">Normal</input>
+            </li>
+            <li><input type="radio" name="sort_order" value="Centered" onchange="tc.options.sort_order = 'center'; tc.replaceElement(document.getElementById('tagCloud'))">Centered</input>
+            </li>
+            <li><input type="radio" name="sort_order" value="Reversed" onchange="tc.options.sort_order = 'reverse'; tc.replaceElement(document.getElementById('tagCloud'))">Reversed</input>
+            </li>
+            </ul>
+        </dd>
+        
+        <dt>Weight</dt>
+        <dd>
+        <ul class="radiolist">
+        <li><input type="radio" name="tag_weight" value="Linear" onchange="tc.options.weight='linear'; tc.replaceElement(document.getElementById('tagCloud'))">Linear</input>
+        </li>
+        <li><input type="radio" name="tag_weight" value="Logarithmic" onchange="tc.options.weight='log'; tc.replaceElement(document.getElementById('tagCloud'))">Logarithmic</input>
+        </li>
+        </ul>
+        </dd>
+        
+        <dt>Classes</dt>
+        <dd>
+        <span id="classes_min" style="position: relative; font-size: 8px; left: 6px;">1</span><span id="classes_max" style="position: relative; left: 198px; font-size: 8px">10</span>
+            <div id="classes_sliderbg" style="background-image : url(/images/slider/horizBg.png); width : 218px; height: 26px; position: relative; top: 0px; cursor: pointer; ">
+                <div id="classes_sliderthumb" style="position: relative; top: 7px; width: 18px; height: 20px;"><img id="classes_sliderthumbimg" src="/images/slider/horizSlider.png" width="18" height="20"/></div>
+            </div>
+            <div id="classes_slidervalue" style="position: relative; top: -26px; left: 218px; padding-left: 20px;">0</div>
+            <script>
+            var f = function(){
+                var slider;
+                var min = 1;
+                var max = 10;
+                var width = 200;
+                function sliderInit(){
+                   slider = YAHOO.widget.Slider.getHorizSlider("classes_sliderbg", "classes_sliderthumb", 0, width);
+                   slider.animate = true;
+                   slider.subscribe("change", displayNewValue);
+                   slider.subscribe("slideEnd", updateTagCloud);
+                }
+                var oldVal;
+                var newVal;
+                function displayNewValue(offsetFromStart) {
+                   // determine the actual value from the offset
+                   newVal = Math.round(((offsetFromStart/width)*(max-min))+min);
+                   document.getElementById("classes_slidervalue").innerHTML = newVal;
+                }
+                function updateTagCloud(){
+                   if(oldVal!=newVal){
+                        oldVal=newVal;
+                        tc.options.classes = newVal;
+                        tc.replaceElement(document.getElementById('tagCloud'))
+                    }
+                }
+                window.addEventListener("load", sliderInit, false);
+            };
+            f();
+            </script>   
+        </dd>
+    </dl>
+</dd>
+
+
+<dt>Display Settings</dt>
+<dd>
+    <dl>
+        <dt>Width</dt>
+        <dd>
+            <span id="width_min" style="position: relative; font-size: 8px; left: 6px;">0</span><span id="width_max" style="position: relative; left: 198px; font-size: 8px">1200</span>
+            <div id="width_sliderbg" style="background-image : url(/images/slider/horizBg.png); width : 218px; height: 26px; position: relative; top: 0px; cursor: pointer; ">
+                <div id="width_sliderthumb" style="position: relative; top: 7px; width: 18px; height: 20px;"><img id="width_sliderthumbimg" src="/images/slider/horizSlider.png" width="18" height="20"/></div>
+            </div>
+            <div id="width_slidervalue" style="position: relative; top: -26px; left: 218px; padding-left: 20px;">0</div>
+            <script>
+            var f = function(){
+                var slider;
+                var min = 0;
+                var max = 1200;
+                var width = 200;
+                function sliderInit(){
+                   slider = YAHOO.widget.Slider.getHorizSlider("width_sliderbg", "width_sliderthumb", 0, width);
+                   slider.animate = true;
+                   slider.subscribe("change", displayNewValue);
+                   slider.subscribe("slideEnd", updateTagCloud);
+                }
+                var oldVal;
+                var newVal;
+                function displayNewValue(offsetFromStart) {
+                   // determine the actual value from the offset
+                   newVal = Math.round(((offsetFromStart/width)*(max-min))+min);
+                   document.getElementById("width_slidervalue").innerHTML = newVal;
+                }
+                function updateTagCloud(){
+                   if(oldVal!=newVal){
+                        oldVal=newVal;
+                        tc.setWidth(newVal);
+                    }
+                }
+                window.addEventListener("load", sliderInit, false);
+            };
+            f();
+            </script>
+                        
+        </dd>
+    </dl>
+</dd>
+</dl>
+

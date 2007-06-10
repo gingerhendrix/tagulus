@@ -5,11 +5,21 @@
 
 <h1><%= @cloud.name %></h1>
 
+<div id="cloud">
 <h2>Cloud</h2>
   <%= render :partial => 'cloud/cloud' %>
-<br/>
+</div>
+
+<div id="settings">
+<h2>Settings</h2>
+  <%= render :partial => 'cloud/cloud_settings' %>
+</div>
+
+<div id="links">
 <%= link_to 'Edit', :action => 'edit', :id => @cloud %> |
 <%= link_to 'Back', :action => 'index' %>
+</div>
+
 
 </div>
 </div>

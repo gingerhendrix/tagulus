@@ -1,0 +1,17 @@
+@import url(_settings.css);
+
+
+#yui-main div.block{
+    /*min-height: 800px;*/
+}
+
+#cloud{
+    width: 400px;
+    float: left;
+}
+
+
+#links{
+    clear: both;
+    padding-top: 4em;
+}

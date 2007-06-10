@@ -1,0 +1,49 @@
+
+#settings{
+    width: 400px;
+    float: right;
+    margin-left: 50px;
+    padding-bottom: 50px;
+    background-color: #fff;
+    border: 1px solid #002280;
+    border-top: 0px solid #002280;
+    
+}
+
+#settings h2{
+    padding-left: 0.5em;
+    padding-bottom: 0.2em;
+    background-color: #002280;
+    color: #fff;
+}
+
+#settings dl{
+    padding-left: 1em;
+}
+
+#settings dl dt{
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 1.0em;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+    
+}
+
+#settings dl dd{
+    margin-left: 0;
+    padding-left: 0;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 0.9em;
+    color: black;       
+}
+#settings input{
+    padding-right: 6px;
+}
+
+#settings dl dd dt{
+    font-size: 1.2em;   
+}
+
+#settings dl dd dd{
+   margin-left: 2em;
+}

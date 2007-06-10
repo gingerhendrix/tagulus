@@ -4,11 +4,10 @@ module CloudHelper
     script = "<script src=\"#{jsonUrl}\"></script>"
     tagcloud = <<-END
       <div id='tagCloud'>
-      <script>
-        var tc = new TagCloud();
-       document.write(tc.makeCloud(cloud.tag_frequencies));
-      </script>
       </div>
+      <script>
+       var tc = new TagCloud(cloud.tag_frequencies, document.getElementById('tagCloud'));
+      </script>
     END
     return script + tagcloud
   end
