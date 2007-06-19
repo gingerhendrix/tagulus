@@ -1,13 +1,7 @@
 
 #settings{
-    width: 400px;
-    float: right;
-    margin-left: 50px;
-    padding-bottom: 50px;
+    padding-bottom: 100px;
     background-color: #fff;
-    border: 1px solid #002280;
-    border-top: 0px solid #002280;
-    
 }
 
 #settings h2{
@@ -46,4 +40,9 @@
 
 #settings dl dd dd{
    margin-left: 2em;
+}
+
+#settings span.previewClass{
+    padding-left: 2px;
+    padding-right: 2px;
 }

@@ -1,4 +1,53 @@
 <dl>
+    <script>
+        function Slider(prefix){
+            this.min = 0;
+            this.max = 100;
+            this.width = 200;
+            this.onchange = function(){};
+            var newVal;
+            var oldVal;
+            var slider;
+            
+            this.emitHTML = function(){
+                var width = this.width;
+                document.write('<div class="slider" style="width: '+ (width + 60) + 'px">');
+                document.write('<span id="'+prefix + '_min" style="position: relative; font-size: 8px; left: 6px;">0</span><span id="'+prefix + '_max" style="position: relative; left: ' +width + 'px; font-size: 8px">200</span>');
+                document.write('<div id="'+prefix+'_sliderbg" style="background-image : url(/images/slider/small/horizBg.png); width : ' + (width + 15) + 'px; height: 25px; position: relative; top: 0px; cursor: pointer; ">');
+                document.write('<div id="'+prefix + '_sliderthumb" style="position: relative; top: 0px; width: 15px; height: 15px;"><img id="'+prefix+'_sliderthumbimg" src="/images/slider/small/horizSlider.png" width="15" height="15"/></div>');
+                document.write('</div>');
+                document.write('<div id="'+prefix+'_slidervalue" style="position: relative; top: -26px; left: ' + (width + 15) + 'px; padding-left: 20px;">0</div>');
+                document.write('</div>')
+            }
+            
+            this.init = function(){
+               document.getElementById(prefix + "_min").innerHTML = this.min;
+               document.getElementById(prefix + "_max").innerHTML = this.max;
+               slider = YAHOO.widget.Slider.getHorizSlider(prefix+"_sliderbg", prefix + "_sliderthumb", 0, this.width);
+               slider.animate = true;
+               slider.subscribe("change", bind(displayNewValue, this));
+               slider.subscribe("slideEnd", bind(updateTagCloud, this));
+            }
+            
+            this.setValue = function(val){
+                slider.setValue(((val-this.min)/(this.max-this.min))*this.width);
+            }
+            
+            function displayNewValue(offset){
+               // determine the actual value from the offset
+               newVal = Math.round(((offset/this.width)*(this.max-this.min))+this.min);
+               document.getElementById(prefix + "_slidervalue").innerHTML = newVal;
+            }
+            
+            function updateTagCloud(){
+               if(oldVal!=newVal){
+                    oldVal=newVal;
+                    this.onchange(newVal);
+                }
+            }
+        }
+        
+    </script>
 <dt>Cloud Settings</dt>
 <dd>
     <dl id="cloud-settings" class="collapsable">
@@ -81,41 +130,21 @@
         
         <dt>Classes</dt>
         <dd>
-        <span id="classes_min" style="position: relative; font-size: 8px; left: 6px;">1</span><span id="classes_max" style="position: relative; left: 198px; font-size: 8px">10</span>
-            <div id="classes_sliderbg" style="background-image : url(/images/slider/horizBg.png); width : 218px; height: 26px; position: relative; top: 0px; cursor: pointer; ">
-                <div id="classes_sliderthumb" style="position: relative; top: 7px; width: 18px; height: 20px;"><img id="classes_sliderthumbimg" src="/images/slider/horizSlider.png" width="18" height="20"/></div>
-            </div>
-            <div id="classes_slidervalue" style="position: relative; top: -26px; left: 218px; padding-left: 20px;">0</div>
             <script>
             var f = function(){
-                var slider;
-                var min = 1;
-                var max = 10;
-                var width = 200;
-                function sliderInit(){
-                   slider = YAHOO.widget.Slider.getHorizSlider("classes_sliderbg", "classes_sliderthumb", 0, width);
-                   slider.animate = true;
-                   slider.subscribe("change", displayNewValue);
-                   slider.subscribe("slideEnd", updateTagCloud);
+                var slider = new Slider("classes");
+                slider.min = 1;
+                slider.max = 10;
+                slider.width = 200;
+                slider.emitHTML();
+                slider.onchange = function(val){
+                      tc.options.classes = val;
+                      tc.update();
                 }
-                var oldVal;
-                var newVal;
-                function displayNewValue(offsetFromStart) {
-                   // determine the actual value from the offset
-                   newVal = Math.round(((offsetFromStart/width)*(max-min))+min);
-                   document.getElementById("classes_slidervalue").innerHTML = newVal;
-                }
-                function updateTagCloud(){
-                   if(oldVal!=newVal){
-                        oldVal=newVal;
-                        tc.options.classes = newVal;
-                        tc.replaceElement(document.getElementById('tagCloud'))
-                    }
-                }
-                window.addEventListener("load", sliderInit, false);
+                window.addEventListener("load", function(){ slider.init(); slider.setValue(tc.options.classes)}, true);
             };
             f();
-            </script>   
+            </script>
         </dd>
     </dl>
 </dd>
@@ -126,42 +155,131 @@
     <dl>
         <dt>Width</dt>
         <dd>
-            <span id="width_min" style="position: relative; font-size: 8px; left: 6px;">0</span><span id="width_max" style="position: relative; left: 198px; font-size: 8px">1200</span>
-            <div id="width_sliderbg" style="background-image : url(/images/slider/horizBg.png); width : 218px; height: 26px; position: relative; top: 0px; cursor: pointer; ">
-                <div id="width_sliderthumb" style="position: relative; top: 7px; width: 18px; height: 20px;"><img id="width_sliderthumbimg" src="/images/slider/horizSlider.png" width="18" height="20"/></div>
-            </div>
-            <div id="width_slidervalue" style="position: relative; top: -26px; left: 218px; padding-left: 20px;">0</div>
             <script>
             var f = function(){
-                var slider;
-                var min = 0;
-                var max = 1200;
-                var width = 200;
-                function sliderInit(){
-                   slider = YAHOO.widget.Slider.getHorizSlider("width_sliderbg", "width_sliderthumb", 0, width);
-                   slider.animate = true;
-                   slider.subscribe("change", displayNewValue);
-                   slider.subscribe("slideEnd", updateTagCloud);
+                var slider = new Slider("width");
+                slider.min = 0;
+                slider.max = 1200;
+                slider.emitHTML();
+                slider.onchange = function(val){
+                      tc.display.setWidth(val);
                 }
-                var oldVal;
-                var newVal;
-                function displayNewValue(offsetFromStart) {
-                   // determine the actual value from the offset
-                   newVal = Math.round(((offsetFromStart/width)*(max-min))+min);
-                   document.getElementById("width_slidervalue").innerHTML = newVal;
-                }
-                function updateTagCloud(){
-                   if(oldVal!=newVal){
-                        oldVal=newVal;
-                        tc.setWidth(newVal);
-                    }
-                }
-                window.addEventListener("load", sliderInit, false);
+                window.addEventListener("load", function(){ slider.init(); slider.setValue(tc.display.options.width)}, true);
             };
             f();
             </script>
                         
         </dd>
+        <dt>Font Size</dt>
+        <dd>
+            <div id="fontPreview">
+                
+            </div>
+            <script>
+                connect(tc.display, 'recalculate', function(){
+                     var previewStr = "";
+                     var classes =tc.options.classes;
+                     for(var i=0; i<classes; i++){
+                        var d =  (classes-i)/classes;
+                        previewStr += "<span  class='previewClass'  style='font-size: "+tc.display.fontDistribution(d) + "px'>A</span>";    
+                     }
+                     document.getElementById("fontPreview").innerHTML = previewStr;                    
+                });
+            </script>
+            <div id="fontMin" style="float: left">
+            <h3>Min</h3>
+            <script>
+                function f(){
+                    var slider = new Slider("font_min");
+                    slider.min = 2;
+                    slider.max = 64;
+                    slider.width = 100;
+                    slider.emitHTML();
+                    slider.onchange = function(val){
+                         tc.display.options.font_min = val;
+                         tc.display.redisplay();
+                    }
+                    window.addEventListener("load", function(){ slider.init(); slider.setValue(tc.display.options.font_min)}, true);
+                }
+                f();
+            </script>
+            </div>
+
+            <div id="fontMax" style="float: left">
+            <h3>Max</h3>
+            <script>
+                function f(){
+                    var slider = new Slider("font_max");
+                    slider.min = 2;
+                    slider.max = 64;
+                    slider.width = 100;
+                    slider.emitHTML();
+                    slider.onchange = function(val){
+                         tc.display.options.font_max = val;
+                         tc.display.redisplay();
+                    }
+                    window.addEventListener("load", function(){ slider.init(); slider.setValue(tc.display.options.font_max)}, true);
+                }
+                f();
+            </script>            
+            </div>
+
+        </dd>
+        <dt style="clear: left">Opacity</dt>
+        <dd>
+            <div id="opacityPreview">
+                
+            </div>
+            <script>
+                connect(tc.display, 'recalculate', function(){
+                     var previewStr = "";
+                     var classes =tc.options.classes;
+                     for(var i=0; i<classes; i++){
+                        var d =  (classes-i)/classes;
+                        previewStr += "<span class='previewClass' style='font-size: " + tc.display.options.font_max + "px; opacity: "+tc.display.opacityDistribution(d)/100 + "'>A</span>";    
+                     }
+                     document.getElementById("opacityPreview").innerHTML = previewStr;                    
+                });
+            </script>
+            <div id="opacityMin" style="float: left">
+            <h3>Min</h3>
+            <script>
+                function f(){
+                    var slider = new Slider("opacity_min");
+                    slider.min = 0;
+                    slider.max = 100;
+                    slider.width = 100;
+                    slider.emitHTML();
+                    slider.onchange = function(val){
+                         tc.display.options.opacity_min = val;
+                         tc.display.redisplay();
+                    }
+                    window.addEventListener("load", function(){ slider.init(); slider.setValue(tc.display.options.opacity_min)}, true);
+                }
+                f();
+            </script>
+            </div>
+            <div id="opacityMax" style="float: left">
+            
+            <h3>Max</h3>
+            <script>
+                function f(){
+                    var slider = new Slider("opacity_max");
+                    slider.min = 0;
+                    slider.max = 100;
+                    slider.width = 100;
+                    slider.emitHTML();
+                    slider.onchange = function(val){
+                         tc.display.options.opacity_max = val;
+                         tc.display.redisplay();
+                    }
+                    window.addEventListener("load", function(){ slider.init(); slider.setValue(tc.display.options.opacity_max)}, true);
+                }
+                f();
+            </script>    
+            </div>
+        </dd>
+
     </dl>
 </dd>
 </dl>

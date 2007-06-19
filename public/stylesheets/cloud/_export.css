@@ -1,0 +1,16 @@
+#export{
+    min-height: 300px;
+    background-color: #fff;
+    padding-left: 10px;
+    padding-right: 5px;
+    padding-top: 20px;
+    margin-top: 10px;
+}
+
+pre#tc_export{
+   margin-top: 1em;
+   padding-left: 0;
+   overflow: auto;
+   overflow: -moz-scrollbars-horizontal;
+   font-size: 9pt; 
+}

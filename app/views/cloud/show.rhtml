@@ -9,10 +9,24 @@
 <h2>Cloud</h2>
   <%= render :partial => 'cloud/cloud' %>
 </div>
+<script type="text/javascript">
+var myTabs = new YAHOO.widget.TabView("controls");
+</script> 
+ 
+<div id="controls" class="yui-navset">
+    <ul class="yui-nav">
+        <li class="selected"><a href="#settings"><em>Settings</em></a></li>
+        <li><a href="#export"><em>Export</em></a></li>
+    </ul>
+    <div class="yui-content">
+        <div id="settings" class="panel visible">
+            <%= render :partial => 'cloud/cloud_settings' %>
+         </div>
 
-<div id="settings">
-<h2>Settings</h2>
-  <%= render :partial => 'cloud/cloud_settings' %>
+        <div id="export" class="panel">
+            <%= render :partial => 'cloud/cloud_export' %>
+        </div>
+    </div>
 </div>
 
 <div id="links">

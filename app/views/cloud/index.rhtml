@@ -4,7 +4,17 @@
         <div id="random" class="yui-u first block">
             <h2>Random</h2>
             <h3><%= link_to @random.name, :action => 'show', :id => @random %></h3>
-            <%=makeCloud(@random)%>
+            <%= link_to_cloud_json @random %>               
+      <div id='randomCloud'>
+      </div>
+      <script>
+       var tc = new TagCloud(cloud.tag_frequencies, document.getElementById('randomCloud'), {limit: 40, sort : "alpha"}, {width: 440, 
+                                                                                                           font_distribution: "linear",
+                                                                                                           font_max: 24,
+                                                                                                           font_min: 6,
+                                                                                                           font_unit: "px"});
+       
+      </script>
         </div>
         
         <div class="yui-g block">
