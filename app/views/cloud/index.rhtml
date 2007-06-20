@@ -2,48 +2,37 @@
 <div id="yui-main">
     <div class="yui-g">
         <div id="random" class="yui-u first block">
-            <h2>Random</h2>
+            <h2>Random<h2>
             <h3><%= link_to @random.name, :action => 'show', :id => @random %></h3>
             <%= link_to_cloud_json @random %>               
       <div id='randomCloud'>
       </div>
       <script>
-       var tc = new TagCloud(cloud.tag_frequencies, document.getElementById('randomCloud'), {limit: 40, sort : "alpha"}, {width: 440, 
+       window.addEventListener("load", function(){ 
+                       var tc = new TagCloud(cloud.tag_frequencies, document.getElementById('randomCloud'), {limit: 100, sort : "alpha"}, {width: 440, 
                                                                                                            font_distribution: "linear",
                                                                                                            font_max: 24,
                                                                                                            font_min: 6,
-                                                                                                           font_unit: "px"});
-       
+                                                                                                           font_unit: "px",
+                                                                                                           colors : [[57,55,65],[57,55,65]] });
+                       }, true);       
       </script>
         </div>
         
         <div class="yui-g block">
-            
-            <div id="popular" class="yui-u">
-                <h2>Popular</h2>
-                <ol>
-                    <%@recent.each do |c|%>
-                        <li><%= link_to c.name, :action => 'show', :id => c %></li>
-                    <%end%>
-                </ol>
-            </div>
-        
-            <div id="recent" class="yui-u">
-                <h2>Recent</h2>
-                <ol>
-                    <%@recent.each do |c|%>
-                        <li><%= link_to c.name, :action => 'show', :id => c %></li>
-                    <%end%>
-                </ol>
-            </div>
-            
+            <h2>About</h2>
+            <p>Tagulus is a playground for cloud watchers and cloud makers.</p>
+            <h3>Latest</h3>
+            <ul>
+                <li>Release 1 in the works<li>
+            </ul>
         </div>
     </div>
 
   <div id="create" class="yui-u block">
-    <h2>Create</h2>
-    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
-    <br/>
-    <%= link_to "Create", {:action => 'new' }, {:id => 'createLink'}%>
+  <h2>Create</h2>
+  Select the source for your cloud
+   <%= render :partial => 'cloud_type_form' %>
+  <br style="clear: both"/>
   </div>
 </div>

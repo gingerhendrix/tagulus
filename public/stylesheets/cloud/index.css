@@ -1,0 +1,11 @@
+@import url(_cloud_type_form.css);
+
+#random{
+     width: auto;
+     height: 350px;
+}
+
+#cloudTypes{
+    padding-bottom: 40px;
+    padding-left: 2em;    
+}

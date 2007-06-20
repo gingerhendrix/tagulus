@@ -1,0 +1,28 @@
+div.new label{
+    float: none;
+    display: inline;
+    vertical-align: baseline;
+}
+
+div.new input{
+    float: none;
+    display: inline;
+    margin-right: 0.5em;
+    margin-left: 2em;
+}
+
+div.new #cloudTypes{
+    padding-bottom: 40px;    
+}
+
+
+div.newTextCloud label{
+   vertical-align: top;
+   display: block;
+   width: 6em;
+   float: left;
+}
+
+div.newTextCloud input{
+    
+}

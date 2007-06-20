@@ -1,0 +1,13 @@
+
+
+#cloudTypes div.cloudTypeGroup{
+    float: left;
+    margin-right: 2em;
+}
+
+#cloudTypes div.cloudTypeGroup h2{
+    font-size: 1.2em;
+}
+#cloudTypes span.option{
+    display: block;
+}
