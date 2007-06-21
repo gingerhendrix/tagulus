@@ -1,0 +1,20 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Parse the JSON string <em>source</em> into a Ruby data structure and return it.
+- !ruby/struct:SM::Flow::P 
+  body: "<em>opts</em> can have the following keys:"
+- !ruby/object:SM::Flow::LIST 
+  contents: 
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: "<b>max_nesting</b>: The maximum depth of nesting allowed in the parsed data structures. Disable depth checking with :max_nesting =&gt; false."
+  type: :BULLET
+full_name: JSON#parse
+is_singleton: false
+name: parse
+params: (source, opts = {})
+visibility: public

@@ -1,0 +1,56 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: 
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: This string is put at the end of a line that holds a JSON array.
+  name: array_nl
+  rw: RW
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: This string is used to indent levels in the JSON text.
+  name: indent
+  rw: RW
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: This string is put at the end of a line that holds a JSON object (or Hash).
+  name: object_nl
+  rw: RW
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: This string is used to insert a space between the tokens in a JSON string.
+  name: space
+  rw: RW
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: This string is used to insert a space before the ':' in JSON objects.
+  name: space_before
+  rw: RW
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: from_state
+- !ruby/object:RI::MethodSummary 
+  name: new
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: This class is used to create State instances, that are use to hold data while generating a JSON text from a a Ruby data structure.
+constants: []
+
+full_name: JSON::Pure::Generator::State
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: check_circular?
+- !ruby/object:RI::MethodSummary 
+  name: forget
+- !ruby/object:RI::MethodSummary 
+  name: remember
+- !ruby/object:RI::MethodSummary 
+  name: seen?
+name: State
+superclass: Object

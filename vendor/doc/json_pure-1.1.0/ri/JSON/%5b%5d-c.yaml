@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: If object is string like parse the string and return the parsed result as a Ruby data structure. Otherwise generate a JSON text from the Ruby data structure object and return it.
+full_name: JSON::[]
+is_singleton: true
+name: "[]"
+params: (object)
+visibility: public

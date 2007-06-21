@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Remember <em>object</em>, to find out if it was already encountered (if a cyclic data structure is if a cyclic data structure is rendered).
+full_name: JSON::Pure::Generator::State#remember
+is_singleton: false
+name: remember
+params: (object)
+visibility: public

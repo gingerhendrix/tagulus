@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>new (MainWindow)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>      <span class="ruby-comment cmt"># File lib/json/editor.rb, line 1012</span>
+1012:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">encoding</span>)
+1013:         <span class="ruby-ivar">@changed</span>  = <span class="ruby-keyword kw">false</span>
+1014:         <span class="ruby-ivar">@encoding</span> = <span class="ruby-identifier">encoding</span>
+1015:         <span class="ruby-keyword kw">super</span>(<span class="ruby-constant">TOPLEVEL</span>)
+1016:         <span class="ruby-identifier">display_title</span>
+1017:         <span class="ruby-identifier">set_default_size</span>(<span class="ruby-value">800</span>, <span class="ruby-value">600</span>)
+1018:         <span class="ruby-identifier">signal_connect</span>(<span class="ruby-identifier">:delete_event</span>) { <span class="ruby-identifier">quit</span> }
+1019: 
+1020:         <span class="ruby-identifier">vbox</span> = <span class="ruby-constant">VBox</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">false</span>, <span class="ruby-value">0</span>)
+1021:         <span class="ruby-identifier">add</span>(<span class="ruby-identifier">vbox</span>)
+1022:         <span class="ruby-comment cmt">#vbox.border_width = 0</span>
+1023: 
+1024:         <span class="ruby-ivar">@treeview</span> = <span class="ruby-constant">JSONTreeView</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>)
+1025:         <span class="ruby-ivar">@treeview</span>.<span class="ruby-identifier">signal_connect</span>(<span class="ruby-value str">'cursor-changed'</span><span class="ruby-value str">'cursor-changed'</span>) <span class="ruby-keyword kw">do</span>
+1026:           <span class="ruby-identifier">display_status</span>(<span class="ruby-value str">''</span>)
+1027:         <span class="ruby-keyword kw">end</span>
+1028: 
+1029:         <span class="ruby-identifier">menu_bar</span> = <span class="ruby-identifier">create_menu_bar</span>
+1030:         <span class="ruby-identifier">vbox</span>.<span class="ruby-identifier">pack_start</span>(<span class="ruby-identifier">menu_bar</span>, <span class="ruby-keyword kw">false</span>, <span class="ruby-keyword kw">false</span>, <span class="ruby-value">0</span>)
+1031: 
+1032:         <span class="ruby-identifier">sw</span> = <span class="ruby-constant">ScrolledWindow</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">nil</span>, <span class="ruby-keyword kw">nil</span>)
+1033:         <span class="ruby-identifier">sw</span>.<span class="ruby-identifier">shadow_type</span> = <span class="ruby-constant">SHADOW_ETCHED_IN</span>
+1034:         <span class="ruby-identifier">sw</span>.<span class="ruby-identifier">set_policy</span>(<span class="ruby-constant">POLICY_AUTOMATIC</span>, <span class="ruby-constant">POLICY_AUTOMATIC</span>)
+1035:         <span class="ruby-identifier">vbox</span>.<span class="ruby-identifier">pack_start</span>(<span class="ruby-identifier">sw</span>, <span class="ruby-keyword kw">true</span>, <span class="ruby-keyword kw">true</span>, <span class="ruby-value">0</span>)
+1036:         <span class="ruby-identifier">sw</span>.<span class="ruby-identifier">add</span>(<span class="ruby-ivar">@treeview</span>)
+1037: 
+1038:         <span class="ruby-ivar">@status_bar</span> = <span class="ruby-constant">Statusbar</span>.<span class="ruby-identifier">new</span>
+1039:         <span class="ruby-identifier">vbox</span>.<span class="ruby-identifier">pack_start</span>(<span class="ruby-ivar">@status_bar</span>, <span class="ruby-keyword kw">false</span>, <span class="ruby-keyword kw">false</span>, <span class="ruby-value">0</span>)
+1040: 
+1041:         <span class="ruby-ivar">@filename</span> <span class="ruby-operator">||=</span> <span class="ruby-keyword kw">nil</span>
+1042:         <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@filename</span>
+1043:           <span class="ruby-identifier">data</span> = <span class="ruby-identifier">read_data</span>(<span class="ruby-ivar">@filename</span>)
+1044:           <span class="ruby-identifier">view_new_model</span> <span class="ruby-constant">Editor</span>.<span class="ruby-identifier">data2model</span>(<span class="ruby-identifier">data</span>)
+1045:         <span class="ruby-keyword kw">end</span>
+1046:       <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>parse (JSON::Pure::Parser)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>    <span class="ruby-comment cmt"># File lib/json/pure/parser.rb, line 70</span>
+70:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">parse</span>
+71:         <span class="ruby-identifier">reset</span>
+72:         <span class="ruby-identifier">obj</span> = <span class="ruby-keyword kw">nil</span>
+73:         <span class="ruby-keyword kw">until</span> <span class="ruby-identifier">eos?</span>
+74:           <span class="ruby-keyword kw">case</span>
+75:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">scan</span>(<span class="ruby-constant">OBJECT_OPEN</span>)
+76:             <span class="ruby-identifier">obj</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">raise</span> <span class="ruby-constant">ParserError</span>, <span class="ruby-node">&quot;source '#{peek(20)}' not in JSON!&quot;</span>
+77:             <span class="ruby-ivar">@current_nesting</span> = <span class="ruby-value">1</span>
+78:             <span class="ruby-identifier">obj</span> = <span class="ruby-identifier">parse_object</span>
+79:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">scan</span>(<span class="ruby-constant">ARRAY_OPEN</span>)
+80:             <span class="ruby-identifier">obj</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">raise</span> <span class="ruby-constant">ParserError</span>, <span class="ruby-node">&quot;source '#{peek(20)}' not in JSON!&quot;</span>
+81:             <span class="ruby-ivar">@current_nesting</span> = <span class="ruby-value">1</span>
+82:             <span class="ruby-identifier">obj</span> = <span class="ruby-identifier">parse_array</span>
+83:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">skip</span>(<span class="ruby-constant">IGNORE</span>)
+84:             ;
+85:           <span class="ruby-keyword kw">else</span>
+86:             <span class="ruby-identifier">raise</span> <span class="ruby-constant">ParserError</span>, <span class="ruby-node">&quot;source '#{peek(20)}' not in JSON!&quot;</span>
+87:           <span class="ruby-keyword kw">end</span>
+88:         <span class="ruby-keyword kw">end</span>
+89:         <span class="ruby-identifier">obj</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">raise</span> <span class="ruby-constant">ParserError</span>, <span class="ruby-value str">&quot;source did not contain any JSON!&quot;</span>
+90:         <span class="ruby-identifier">obj</span>
+91:       <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>to_json (JSON::Pure::Generator::GeneratorMethods::Hash)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>     <span class="ruby-comment cmt"># File lib/json/pure/generator.rb, line 158</span>
+158:           <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_json</span>(<span class="ruby-identifier">state</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">depth</span> = <span class="ruby-value">0</span>, <span class="ruby-operator">*</span>)
+159:             <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">state</span>
+160:               <span class="ruby-identifier">state</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">state</span>.<span class="ruby-identifier">from_state</span>(<span class="ruby-identifier">state</span>)
+161:               <span class="ruby-identifier">json_check_circular</span>(<span class="ruby-identifier">state</span>) { <span class="ruby-identifier">json_transform</span>(<span class="ruby-identifier">state</span>, <span class="ruby-identifier">depth</span>) }
+162:             <span class="ruby-keyword kw">else</span>
+163:               <span class="ruby-identifier">json_transform</span>(<span class="ruby-identifier">state</span>, <span class="ruby-identifier">depth</span>)
+164:             <span class="ruby-keyword kw">end</span>
+165:           <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

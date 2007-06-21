@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>read_data (MainWindow)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>      <span class="ruby-comment cmt"># File lib/json/editor.rb, line 1210</span>
+1210:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">read_data</span>(<span class="ruby-identifier">filename</span>)
+1211:         <span class="ruby-identifier">open</span>(<span class="ruby-identifier">filename</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+1212:           <span class="ruby-identifier">json</span> = <span class="ruby-identifier">f</span>.<span class="ruby-identifier">read</span>
+1213:           <span class="ruby-identifier">check_pretty_printed</span>(<span class="ruby-identifier">json</span>)
+1214:           <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@encoding</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-regexp re">/^utf8$/i</span>.<span class="ruby-identifier">match</span>(<span class="ruby-ivar">@encoding</span>)
+1215:             <span class="ruby-identifier">iconverter</span> = <span class="ruby-constant">Iconv</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">'utf8'</span>, <span class="ruby-ivar">@encoding</span>)
+1216:             <span class="ruby-identifier">json</span> = <span class="ruby-identifier">iconverter</span>.<span class="ruby-identifier">iconv</span>(<span class="ruby-identifier">json</span>)
+1217:           <span class="ruby-keyword kw">end</span>
+1218:           <span class="ruby-keyword kw">return</span> <span class="ruby-constant">JSON</span><span class="ruby-operator">::</span><span class="ruby-identifier">parse</span>(<span class="ruby-identifier">json</span>, <span class="ruby-identifier">:max_nesting</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>)
+1219:         <span class="ruby-keyword kw">end</span>
+1220:       <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">JSON</span><span class="ruby-operator">::</span><span class="ruby-constant">JSONError</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+1221:         <span class="ruby-constant">Editor</span>.<span class="ruby-identifier">error_dialog</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-node">&quot;Failed to parse JSON file: #{e}!&quot;</span>)
+1222:         <span class="ruby-keyword kw">return</span>
+1223:       <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">SystemCallError</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+1224:         <span class="ruby-identifier">quit</span>
+1225:       <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

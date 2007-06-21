@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Alias for #generate"
+full_name: JSON#unparse
+is_singleton: false
+name: unparse
+params: (obj, state = JSON.state.new)
+visibility: public

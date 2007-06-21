@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>select_file (MainWindow)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>      <span class="ruby-comment cmt"># File lib/json/editor.rb, line 1229</span>
+1229:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select_file</span>(<span class="ruby-identifier">message</span>)
+1230:         <span class="ruby-identifier">filename</span> = <span class="ruby-keyword kw">nil</span>
+1231:         <span class="ruby-identifier">fs</span> = <span class="ruby-constant">FileSelection</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">message</span>).<span class="ruby-identifier">set_modal</span>(<span class="ruby-keyword kw">true</span>).
+1232:           <span class="ruby-identifier">set_filename</span>(<span class="ruby-constant">Dir</span>.<span class="ruby-identifier">pwd</span> <span class="ruby-operator">+</span> <span class="ruby-value str">&quot;/&quot;</span>).<span class="ruby-identifier">set_transient_for</span>(<span class="ruby-keyword kw">self</span>)
+1233:         <span class="ruby-identifier">fs</span>.<span class="ruby-identifier">signal_connect</span>(<span class="ruby-identifier">:destroy</span>) { <span class="ruby-constant">Gtk</span>.<span class="ruby-identifier">main_quit</span> }
+1234:         <span class="ruby-identifier">fs</span>.<span class="ruby-identifier">ok_button</span>.<span class="ruby-identifier">signal_connect</span>(<span class="ruby-identifier">:clicked</span>) <span class="ruby-keyword kw">do</span>
+1235:           <span class="ruby-identifier">filename</span> = <span class="ruby-identifier">fs</span>.<span class="ruby-identifier">filename</span>
+1236:           <span class="ruby-identifier">fs</span>.<span class="ruby-identifier">destroy</span>
+1237:           <span class="ruby-constant">Gtk</span>.<span class="ruby-identifier">main_quit</span>
+1238:         <span class="ruby-keyword kw">end</span>
+1239:         <span class="ruby-identifier">fs</span>.<span class="ruby-identifier">cancel_button</span>.<span class="ruby-identifier">signal_connect</span>(<span class="ruby-identifier">:clicked</span>) <span class="ruby-keyword kw">do</span>
+1240:           <span class="ruby-identifier">fs</span>.<span class="ruby-identifier">destroy</span>
+1241:           <span class="ruby-constant">Gtk</span>.<span class="ruby-identifier">main_quit</span>
+1242:         <span class="ruby-keyword kw">end</span>
+1243:         <span class="ruby-identifier">fs</span>.<span class="ruby-identifier">show_all</span>
+1244:         <span class="ruby-constant">Gtk</span>.<span class="ruby-identifier">main</span>
+1245:         <span class="ruby-identifier">filename</span>
+1246:       <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

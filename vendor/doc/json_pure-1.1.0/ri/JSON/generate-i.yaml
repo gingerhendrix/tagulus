@@ -1,0 +1,15 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: 
+- !ruby/object:RI::AliasName 
+  name: unparse
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Unparse the Ruby data structure <em>obj</em> into a single line JSON string and return it. <em>state</em> is a JSON::State object, that can be used to configure the output further.
+- !ruby/struct:SM::Flow::P 
+  body: It defaults to a state object, that creates the shortest possible JSON text in one line and only checks for circular data structures. If you are sure, that the objects don't contain any circles, you can set <em>state</em> to nil, to disable these checks in order to create the JSON text faster. See also fast_generate.
+full_name: JSON#generate
+is_singleton: false
+name: generate
+params: (obj, state = JSON.state.new)
+visibility: public

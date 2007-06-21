@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Returns <em>true</em>, if <em>object</em> was already seen during this generating run.
+full_name: JSON::Pure::Generator::State#seen?
+is_singleton: false
+name: seen?
+params: (object)
+visibility: public

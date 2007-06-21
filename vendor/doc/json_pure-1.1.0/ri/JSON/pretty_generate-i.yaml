@@ -1,0 +1,13 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: 
+- !ruby/object:RI::AliasName 
+  name: pretty_unparse
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Unparse the Ruby data structure <em>obj</em> into a JSON string and return it. The returned string is a prettier form of the string returned by #unparse."
+full_name: JSON#pretty_generate
+is_singleton: false
+name: pretty_generate
+params: (obj)
+visibility: public
