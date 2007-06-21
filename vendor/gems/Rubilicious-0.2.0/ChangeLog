@@ -1,0 +1,220 @@
+* Thu Sep 23 07:20:39 2004, pabs <pabs@pablotron.org>
+  * initial CVS commit
+
+* Thu Sep 23 14:44:34 2004, pabs <pabs@pablotron.org>
+  * removing Rubilicious-0.1.0.gem
+
+* Thu Sep 23 14:46:13 2004, pabs <pabs@pablotron.org>
+  * releasing versoin 0.1.0
+
+* Thu Sep 23 14:52:41 2004, pabs <pabs@pablotron.org>
+  * rubilicious.gemspec: minor fixes
+  * added MANIFEST
+
+* Thu Sep 23 14:53:20 2004, pabs <pabs@pablotron.org>
+  * _really_ releasing 0.1.0
+
+* Thu Sep 23 14:56:27 2004, pabs <pabs@pablotron.org>
+  * rubilicious.gemspec: ARGH this time it better work
+  * finally releasing 0.1.0
+
+* Wed Sep 29 11:34:15 2004, pabs <pabs@pablotron.org>
+  * rubilicious.rb: don't fetch URL twice
+  * rubilicious.rb: inc version to 0.1.1
+  * rubilicious.gemspec: inc version to 0.1.1
+  * README: inc version to 0.1.1
+
+* Wed Sep 29 11:37:36 2004, pabs <pabs@pablotron.org>
+  * release version 0.1.1
+
+* Fri Oct 01 15:26:27 2004, pabs <pabs@pablotron.org>
+  * rubilicious.rb: handle multiple subs in Rubilicious#subs correctly
+  * rubilicious.rb: convert time in Rubilicious#inbox return
+  * rubilicious.rb: added Rubilicious#user_tags
+
+* Fri Oct 01 16:41:28 2004, pabs <pabs@pablotron.org>
+  * rubilicious.rb: fix time handling in user_tags
+  * rubilicious.rb: rename user tags to user_posts
+
+* Fri Oct 01 17:03:55 2004, pabs <pabs@pablotron.org>
+  * rubilicious.rb: add documentation to user_posts
+  * rubilicious.rb: add optional tag argument to user_posts
+  * rubilicious.rb: 4-digit year in Time#to_iso8601
+
+* Fri Oct 01 17:07:45 2004, pabs <pabs@pablotron.org>
+  * rubilicious.rb: increment version to 0.1.2
+  * README: increment version to 0.1.2
+  * rubilicious.gemspec: increment version to 0.1.2
+
+* Fri Oct 01 17:08:45 2004, pabs <pabs@pablotron.org>
+  * release version 0.1.2
+
+* Mon Oct 04 04:25:59 2004, pabs <pabs@pablotron.org>
+  * rubilicious.rb: add HTTP proxy support (roughtly based on a patch
+    from Guillaume Bisch <guillaume@bisch.org>
+  * rubilicious.rb: added Rubilicious#use_proxy override (defaults to
+    true), just in case people don't want to use the proxy
+
+* Mon Nov 01 02:50:06 2004, pabs <pabs@pablotron.org>
+  * rubilicious.rb: doc fix from josh lucas <josh@stonecottage.com>
+
+* Sat Nov 27 12:58:28 2004, pabs <pabs@pablotron.org>
+  * rubilicious.rb: change URI encoding to CGI::escape (suggested by
+    James Britt)
+  * rubilicious.rb: added Rubilicious#base_uri, to override the 
+    base URI of API requests (the Delicious API documentation says that
+    the URL could change at some point, so this will allow existing
+    rubilicious installs to work without code muckery.  You can also set
+    the RUBILICIOUS_BASE_URI environment variable (if it's not set, then
+    Rubilicious#base_uri defaults to 'http://del.icio.us/api'
+
+* Sat Nov 27 13:03:57 2004, pabs <pabs@pablotron.org>
+  * README: updated the last updated date :D
+
+* Fri Mar 11 02:53:17 2005, pabs <pabs@pablotron.org>
+  * rubilicious.rb: applied #delete patch from Nobuhiro IMAI
+    <nov@yo.rim.or.jp>                                                
+  * rubilicious.rb: use built-in delicious add method
+  * rubilicious.rb: add support for #update
+  * rubilicious.rb: add mandatory 1-second delay between calls (as per
+    the API documentation's request)
+
+* Fri Mar 11 02:58:10 2005, pabs <pabs@pablotron.org>
+  * README: update version to 0.1.4
+  * rubilicious.gemspec: ditto
+
+* Fri Mar 11 02:59:50 2005, pabs <pabs@pablotron.org>
+  * releasing 0.1.4
+
+* Sun May 29 19:31:03 2005, pabs <pabs@pablotron.org>
+  * README: add note about bugs.p.o
+  * README: increment versoin to 0.1.5
+  * rubilicious.rb: ditto
+  * rubilicious.gemspec: ditto
+
+* Sun May 29 19:57:36 2005, pabs <pabs@pablotron.org>
+  * rubilicious.rb: fix friggin HTTP proxy support (Fixes: #21)
+
+* Sun May 29 20:01:29 2005, pabs <pabs@pablotron.org>
+  * rubilicious.rb: fix Rubilicious#delete (reported by Ruben Laguna 
+    Fixes: #23)
+
+* Sun May 29 20:06:11 2005, pabs <pabs@pablotron.org>
+  * examples/add_link.rb: fix bugs reported by Jon on Rubilicious
+    project page (http://pablotron.org/software/rubilicious/) (Fixes: #24)
+
+* Sun May 29 20:10:53 2005, pabs <pabs@pablotron.org>
+  * ChangeLog: don't forget to note whichb ug was fixed!
+
+* Sun May 29 21:01:12 2005, pabs <pabs@pablotron.org>
+  * rubilicious.rb: add Rubilicious#update
+  * rubilicious.rb: fix Rubilicious#all (Fixes: #22)
+  * rubilicious.rb: add support for tag bundles (Rubilicious#bundles,
+    Rubilicious#set_bundle, and Rubilicious#delete_bundle)
+
+* Sun May 29 21:12:16 2005, pabs <pabs@pablotron.org>
+  * rubilicious.rb: add opt parameter to Rubilicious::new
+
+* Sun May 29 21:23:06 2005, pabs <pabs@pablotron.org>
+  * rubilicious.rb: better documentation for #new opt argument
+  * rubilicious.rb: del.icio.us => Delicious (except in URLs)
+  * rubilicious.rb: copyright year update
+  * COPYING: ditto
+
+* Sun May 29 21:27:20 2005, pabs <pabs@pablotron.org>
+  * rubilicious.gemspec: 'www.' => ''
+
+* Sun May 29 21:28:39 2005, pabs <pabs@pablotron.org>
+  * releasing 0.1.5
+
+* Sun May 29 22:29:02 2005, pabs <pabs@pablotron.org>
+  * added AUTHORS
+	* rubilicious.rb: removed shebang (as per Nobuhiro's request)
+	* rubilicious.rb: incremented version to 0.1.6
+	* README: ditto
+
+* Sun May 29 22:37:21 2005, pabs <pabs@pablotron.org>
+  * rubilicious.gemspec: increment versoin to 0.1.6
+
+* Sun Aug 13 23:04:22 2006, pabs <pabs@pablotron.org>
+  * rubilicious.rb: updated copyright
+  * README: same
+  * COPYING: same
+  * rubilicious.rb: preliminary delicious SSL api support
+
+* Mon Aug 14 02:43:12 2006, pabs <pabs@pablotron.org>
+  * rubilicious.gemspec: bump version to 0.2.0
+  * rubilicious.rb: same
+
+* Thu Aug 31 16:22:02 2006, pabs <pabs@pablotron.org>
+  * rubilicious.rb: 
+
+* Thu Aug 31 17:06:06 EDT 2006, Paul Duncan <pabs@pablotron.org>
+  * rubilicious.rb: removed Time, String, and Array additions.  I've 
+    added the last two back as Rubilicious::StringExtras and
+    Rubilicious::ArrayExtras respectively, but I need to do a bit of
+    tweaking to ensure backwards compatability.
+  * rubilicious.rb: switched from String#uri_escape and String#xml_escape
+    to Rubilicios#u and Rubilicious#h, respectively   
+  * rubilicious.rb: use built-in Time.iso8601 calls
+
+
+* Fri Sep  1 00:23:06 EDT 2006, Paul Duncan <pabs@pablotron.org>
+  * rubilicious.rb: slightly cleaner private/public
+  * rubilicious.rb: add replace and is_private support to
+    Rubilicious#add
+  * rubilicious.rb: fix Rubilicious#h so it actually does something
+  * rubilicious.rb: convert timestamps to GMT first (the delicious API
+    only supports ISO-8601 timestamps in GMT)
+
+* Fri Sep  1 00:35:55 EDT 2006, Paul Duncan <pabs@pablotron.org>
+  * README: added Installation section (just covers rubygems at the
+    moment, but I should have a note about the debian package, too)
+  * rubilicious.rb: update version to 0.2.0
+  * examples/add_link.rb: exit without proper cli args
+  * examples/del_to_xbel.rb: use Rubilicious.to_xbel() instead of
+    old Array#to_xbel
+
+* Fri Sep  1 01:17:58 EDT 2006, Paul Duncan <pabs@pablotron.org>
+  * rubilicious.rb: added Rubilicious::NoSSLError
+  * rubilicious.rb: added documentation for error classes
+  * rubilicious.rb: added documentation for Rubilicious::Extras
+  * rubilicious.rb: renamed set_http_ssl_attrs to init_http_ssl
+  * rubilicious.rb: misc documentation corrections
+
+* Fri Sep  1 02:57:51 EDT 2006, Paul Duncan <pabs@pablotron.org>
+  * rubilicious.rb: renamed Rubilicious.to_xbel to Rubilicious.xbel
+    (probably a lot less confusing)
+  * examples/del_to_xbel.rb: fancier OOP example
+
+* Thu Sep  7 03:58:00 EDT 2006, Paul Duncan <pabs@pablotron.org>
+  * rubilicious.rb: Fix long-standing bug with Rubilicious#all
+  * rubilicious.rb: No actual change, but verified that all, add,
+    update, dates, recent and recent work as advertised
+
+* Fri Sep  8 02:42:36 EDT 2006, Paul Duncan <pabs@pablotron.org>
+  * added release_notes-0.2.0.txt
+  * rubilicious.rb: moved inbox, sub, unsub, and user_posts methods to
+    Rubilicious::Extras::Rubilcious (included with include_inbox or
+    include_extras)
+  * rubilicious.rb: re-wrote SSL init/verification.  Explained in
+    the release notes and the Rubilicious#initialize documentation.
+
+* Fri Sep  8 02:45:48 EDT 2006, Paul Duncan <pabs@pablotron.org>
+  * rubilicious.rb: removed X509Error
+  * rubilicious.rb: removed old SSL cruft
+
+* Fri Sep  8 02:46:58 EDT 2006, Paul Duncan <pabs@pablotron.org>
+  * release_notes-0.2.0.txt: removed old notes
+
+* Fri Sep  8 03:03:53 EDT 2006, Paul Duncan <pabs@pablotron.org>
+  * rubilicious.rb: fixed minor typo
+  * rubilicious.rb: added documentation for 'ssl_init' and
+    'ssl_init_http' options.
+
+* Fri Sep  8 03:37:18 EDT 2006, Paul Duncan <pabs@pablotron.org>
+  * README: added reference to release notes
+  * README: expanded install section
+  * README: minor formating and wording changes
+  * rubilicious.rb: 'desc' => 'description' oops!
+  * examples/del_to_xbel.rb: fix XBELDump.run

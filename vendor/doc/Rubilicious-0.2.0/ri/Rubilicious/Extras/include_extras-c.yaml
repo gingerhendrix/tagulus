@@ -1,0 +1,14 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Add old Rubilicious 0.1.x-style String, Array, and Time methods to the environment. This method also adds the old inbox methods back in to Rubilicious. If you just want the old inbox methods without the other methods, see the include_inbox method.
+- !ruby/struct:SM::Flow::P 
+  body: "Note: This method is only to maintain source compatability with Rubilicious 0.1.x-style applications and should not be used in newer code."
+full_name: Rubilicious::Extras::include_extras
+is_singleton: true
+name: include_extras
+params: ()
+visibility: public

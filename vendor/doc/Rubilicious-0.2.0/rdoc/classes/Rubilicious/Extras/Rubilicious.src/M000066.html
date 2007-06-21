@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>sub (Rubilicious::Extras::Rubilicious)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File rubilicious.rb, line 232</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">sub</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">tag</span> = <span class="ruby-keyword kw">nil</span>)
+        <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span>, <span class="ruby-value str">&quot;Missing user&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">user</span>
+        <span class="ruby-identifier">args</span> = [<span class="ruby-node">&quot;user=#{u(user)}&quot;</span>, (<span class="ruby-identifier">tag</span> <span class="ruby-value">? </span><span class="ruby-node">&quot;tag=#{u(tag)}&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">nil</span>)]
+        <span class="ruby-identifier">get</span>(<span class="ruby-value str">'inbox/sub?'</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">compact</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">'&amp;amp;'</span>), <span class="ruby-value str">'post'</span>)
+        <span class="ruby-keyword kw">nil</span>
+      <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

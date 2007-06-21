@@ -1,0 +1,16 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Add the old inbox methods back to Rubilicious.
+- !ruby/struct:SM::Flow::P 
+  body: "Note: The inbox functions (Rubilicious#inbox, Rubilicious#sub, Rubilicious#unsub, etc) do <em>not</em> work with the current Delicious API (v1). They are included for compatability with non-Delicious that use the old Delicious API."
+- !ruby/struct:SM::Flow::P 
+  body: If you want to include all the old Rubilicious methods (including the changes to String, Array, and Time), see the include_extras method.
+full_name: Rubilicious::Extras::include_inbox
+is_singleton: true
+name: include_inbox
+params: ()
+visibility: public

@@ -1,0 +1,20 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Return all of a user's posts, optionally filtered by tag.
+- !ruby/struct:SM::Flow::P 
+  body: "WARNING: This method can generate a large number of requests to Delicious, and could be construed as abuse. Use sparingly, and at your own risk."
+- !ruby/struct:SM::Flow::P 
+  body: Raises an exception on error.
+- !ruby/struct:SM::Flow::P 
+  body: "Example:"
+- !ruby/struct:SM::Flow::VERB 
+  body: "  # save all posts every by 'delineator' to XBEL format to file\n  # &quot;delineator.xbel&quot;\n  File.open('delineator.xbel', 'w') do |file|\n    file.puts Rubilicious.xbel(r.user_posts('delineator'))\n  end\n"
+full_name: Rubilicious::Extras::Rubilicious#user_posts
+is_singleton: false
+name: user_posts
+params: (user, tag = nil)
+visibility: public

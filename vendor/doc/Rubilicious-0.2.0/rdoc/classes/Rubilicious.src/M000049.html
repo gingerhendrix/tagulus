@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>init_http_ssl (Rubilicious)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File rubilicious.rb, line 455</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">init_http_ssl</span>(<span class="ruby-identifier">http</span>)
+      <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@ssl_init_http</span>
+        <span class="ruby-ivar">@ssl_init_http</span>.<span class="ruby-identifier">call</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">http</span>)
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-comment cmt"># enable SSL for this HTTP connection</span>
+        <span class="ruby-identifier">http</span>.<span class="ruby-identifier">use_ssl</span> = <span class="ruby-keyword kw">true</span>
+
+        <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@ssl_verify</span>
+          <span class="ruby-comment cmt"># set the verify mode and the cert store</span>
+          <span class="ruby-identifier">http</span>.<span class="ruby-identifier">verify_mode</span> = <span class="ruby-ivar">@ssl_verify_mode</span>
+          <span class="ruby-identifier">http</span>.<span class="ruby-identifier">cert_store</span> = <span class="ruby-ivar">@ssl_store</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

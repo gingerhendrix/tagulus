@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>to_xbel (rubilicious.rb)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File rubilicious.rb, line 1023</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_xbel</span>(<span class="ruby-identifier">tag</span> = <span class="ruby-keyword kw">nil</span>)
+    <span class="ruby-identifier">now</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">gmtime</span>.<span class="ruby-identifier">iso8601</span>
+
+    <span class="ruby-identifier">ret</span> = [ <span class="ruby-value str">&quot;&lt;?xml version='1.0' encoding='utf-8'?&gt;&quot;</span>,
+            <span class="ruby-node">&quot;&lt;xbel version='1.0' added='#{now}'&gt;&quot;</span>,
+            <span class="ruby-value str">&quot;  &lt;title&gt;#@user's Delicious Bookmarks&lt;/title&gt;&quot;</span> ]
+  
+    <span class="ruby-identifier">tags</span> = <span class="ruby-identifier">all</span>(<span class="ruby-identifier">tag</span>).<span class="ruby-identifier">inject</span>({}) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tags</span>, <span class="ruby-identifier">bm</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">bm</span>[<span class="ruby-value str">'tags'</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">bm</span>[<span class="ruby-value str">'tags'</span>].<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+        <span class="ruby-identifier">bm</span>[<span class="ruby-value str">'tags'</span>].<span class="ruby-identifier">sort!</span>
+        <span class="ruby-comment cmt"># TODO: alias support</span>
+        <span class="ruby-identifier">bm</span>[<span class="ruby-value str">'tags'</span>].<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">tag</span><span class="ruby-operator">|</span> <span class="ruby-identifier">tags</span>[<span class="ruby-identifier">tag</span>] <span class="ruby-operator">||=</span> []; <span class="ruby-identifier">tags</span>[<span class="ruby-identifier">tag</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">bm</span> }
+      <span class="ruby-keyword kw">else</span> 
+        <span class="ruby-identifier">tags</span>[<span class="ruby-value str">'unsorted'</span>] <span class="ruby-operator">||=</span> []
+        <span class="ruby-identifier">tags</span>[<span class="ruby-value str">'unsorted'</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">bm</span>
+      <span class="ruby-keyword kw">end</span>
+
+      <span class="ruby-identifier">tags</span>
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-identifier">tags</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tag</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">ary</span> = <span class="ruby-identifier">tags</span>[<span class="ruby-identifier">tag</span>]
+      <span class="ruby-identifier">ret</span> <span class="ruby-operator">&lt;&lt;</span>  [ 
+        <span class="ruby-node">&quot;  &lt;folder id='#{tag}' added='#{now}'&gt;&quot;</span>,
+        <span class="ruby-comment cmt"># &quot;  &lt;folder id='#{tag}'&gt;&quot;,</span>
+        <span class="ruby-node">&quot;    &lt;title&gt;#{tag.capitalize}&lt;/title&gt;&quot;</span>,
+
+        <span class="ruby-identifier">ary</span>.<span class="ruby-identifier">sort</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span>[<span class="ruby-value str">'description'</span>] <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">b</span>[<span class="ruby-value str">'description'</span>] }.<span class="ruby-identifier">map</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">bm</span><span class="ruby-operator">|</span>
+          <span class="ruby-identifier">href</span>, <span class="ruby-identifier">bm_id</span> = <span class="ruby-identifier">u</span>(<span class="ruby-identifier">bm</span>[<span class="ruby-value str">'href'</span>]), <span class="ruby-node">&quot;#{tag}-#{bm['hash']}&quot;</span>, 
+          <span class="ruby-identifier">time</span> = <span class="ruby-identifier">bm</span>[<span class="ruby-value str">'time'</span>].<span class="ruby-identifier">iso8601</span>
+          <span class="ruby-identifier">title</span> = <span class="ruby-identifier">h</span>(<span class="ruby-identifier">bm</span>[<span class="ruby-value str">'description'</span>] <span class="ruby-operator">||</span> <span class="ruby-value str">''</span>)
+          <span class="ruby-identifier">desc</span> = <span class="ruby-identifier">h</span>(<span class="ruby-identifier">bm</span>[<span class="ruby-value str">'extended'</span>] <span class="ruby-operator">||</span> <span class="ruby-value str">''</span>)
+
+          [ <span class="ruby-node">&quot;    &lt;bookmark href='#{href}' id='#{bm_id}' added='#{time}'&gt;&quot;</span>,
+          <span class="ruby-comment cmt"># [ &quot;    &lt;bookmark href='#{href}' id='#{bm_id}'&gt;&quot;,</span>
+            <span class="ruby-node">&quot;      &lt;title&gt;#{title}&lt;/title&gt;&quot;</span>,
+            <span class="ruby-node">&quot;      &lt;desc&gt;#{desc}&lt;/desc&gt;&quot;</span>,
+            <span class="ruby-value str">&quot;    &lt;/bookmark&gt;&quot;</span> ,
+          ].<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;\n&quot;</span>)
+        <span class="ruby-keyword kw">end</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;\n&quot;</span>),
+
+        <span class="ruby-value str">'  &lt;/folder&gt;'</span>,
+      ].<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;\n&quot;</span>)
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-identifier">ret</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">'&lt;/xbel&gt;'</span>
+    <span class="ruby-identifier">ret</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;\n&quot;</span>)
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

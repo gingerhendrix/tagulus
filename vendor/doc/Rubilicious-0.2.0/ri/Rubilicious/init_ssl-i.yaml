@@ -1,0 +1,14 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Initialize SSL for this Rubilicious instance.
+- !ruby/struct:SM::Flow::P 
+  body: "NOTE: SSL certificate verification is disabled by default. See Rubilicious#initialize for information on enabling SSL certificate verification."
+full_name: Rubilicious#init_ssl
+is_singleton: false
+name: init_ssl
+params: (opt)
+visibility: protected

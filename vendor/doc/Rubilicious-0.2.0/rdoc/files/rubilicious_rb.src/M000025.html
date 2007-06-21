@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>http_get (rubilicious.rb)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File rubilicious.rb, line 542</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">http_get</span>(<span class="ruby-identifier">url</span>)
+    <span class="ruby-comment cmt"># get proxy info</span>
+    <span class="ruby-identifier">proxy_host</span>, <span class="ruby-identifier">proxy_port</span> = <span class="ruby-identifier">find_http_proxy</span>
+    <span class="ruby-comment cmt"># $stderr.puts &quot;DEBUG: proxy: host = #{proxy_host}, port = #{proxy_port}&quot;</span>
+
+    <span class="ruby-comment cmt"># get host, port, and base URI for API queries</span>
+    <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-ivar">@base_uri</span>)
+    <span class="ruby-identifier">base</span> = <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">request_uri</span>
+
+    <span class="ruby-comment cmt"># prepend base to url</span>
+    <span class="ruby-identifier">url</span> = <span class="ruby-node">&quot;#{base}/#{url}&quot;</span>
+
+    <span class="ruby-comment cmt"># connect to delicious</span>
+    <span class="ruby-identifier">http</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-constant">Proxy</span>(<span class="ruby-identifier">proxy_host</span>, <span class="ruby-identifier">proxy_port</span>).<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">host</span>, <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span>)
+
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">scheme</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'https'</span>
+      <span class="ruby-comment cmt"># check to make sure we have SSL support</span>
+      <span class="ruby-identifier">raise</span> <span class="ruby-constant">NoSSLError</span>, <span class="ruby-value str">&quot;Unsupported URI scheme 'https'&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-constant">HAVE_SSL</span>
+      <span class="ruby-identifier">init_http_ssl</span>(<span class="ruby-identifier">http</span>)
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-comment cmt"># start HTTP connection</span>
+    <span class="ruby-identifier">http</span> = <span class="ruby-identifier">http</span>.<span class="ruby-identifier">start</span>
+
+    <span class="ruby-comment cmt"># get URL, check for error</span>
+    <span class="ruby-identifier">resp</span> = <span class="ruby-identifier">http</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">url</span>, <span class="ruby-ivar">@headers</span>)
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">HTTPError</span>, <span class="ruby-node">&quot;HTTP #{resp.code}: #{resp.message}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">resp</span>.<span class="ruby-identifier">code</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/2\d{2}/</span>
+
+    <span class="ruby-comment cmt"># close HTTP connection, return response</span>
+    <span class="ruby-identifier">http</span>.<span class="ruby-identifier">finish</span>
+    <span class="ruby-identifier">resp</span>.<span class="ruby-identifier">body</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

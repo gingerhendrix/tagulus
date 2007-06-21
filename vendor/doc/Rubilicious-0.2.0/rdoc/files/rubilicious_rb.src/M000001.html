@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>find_http_proxy (rubilicious.rb)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File rubilicious.rb, line 487</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">find_http_proxy</span>
+    <span class="ruby-identifier">ret</span> = [<span class="ruby-keyword kw">nil</span>, <span class="ruby-keyword kw">nil</span>]
+
+    <span class="ruby-comment cmt"># check the platform.  If we're running in windows then we need to </span>
+    <span class="ruby-comment cmt"># check the registry</span>
+    <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@use_proxy</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-constant">RUBY_PLATFORM</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/win32/i</span>
+        <span class="ruby-comment cmt"># Find a proxy in Windows by checking the registry.</span>
+        <span class="ruby-comment cmt"># this code shamelessly copied from Raggle :D</span>
+
+        <span class="ruby-identifier">require</span> <span class="ruby-value str">'win32/registry'</span>
+
+        <span class="ruby-constant">Win32</span><span class="ruby-operator">::</span><span class="ruby-constant">Registry</span><span class="ruby-operator">::</span><span class="ruby-identifier">open</span>(
+          <span class="ruby-constant">Win32</span><span class="ruby-operator">::</span><span class="ruby-constant">Registry</span><span class="ruby-operator">::</span><span class="ruby-constant">HKEY_CURRENT_USER</span>,
+          <span class="ruby-value str">'Software\Microsoft\Windows\CurrentVersion\Internet Settings'</span>
+        ) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">reg</span><span class="ruby-operator">|</span>
+          <span class="ruby-comment cmt"># check and see if proxy is enabled</span>
+          <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">reg</span>.<span class="ruby-identifier">read</span>(<span class="ruby-value str">'ProxyEnable'</span>)[<span class="ruby-value">1</span>] <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>
+            <span class="ruby-comment cmt"># get server, port, and no_proxy (overrides)</span>
+            <span class="ruby-identifier">server</span> = <span class="ruby-identifier">reg</span>.<span class="ruby-identifier">read</span>(<span class="ruby-value str">'ProxyServer'</span>)[<span class="ruby-value">1</span>]
+            <span class="ruby-identifier">np</span> = <span class="ruby-identifier">reg</span>.<span class="ruby-identifier">read</span>(<span class="ruby-value str">'ProxyOverride'</span>)[<span class="ruby-value">1</span>]
+
+            <span class="ruby-identifier">server</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/^([^:]+):(.+)$/</span>
+            <span class="ruby-identifier">ret</span> = [<span class="ruby-identifier">$1</span>, <span class="ruby-identifier">$2</span>]
+
+            <span class="ruby-comment cmt"># don't bother with no_proxy support</span>
+            <span class="ruby-comment cmt"># ret['no_proxy'] = np.gsub(/;/, ',') if np &amp;&amp; np.length &gt; 0</span>
+          <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-comment cmt"># handle UNIX systems</span>
+        <span class="ruby-constant">PROXY_ENV_VARS</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">env_var</span><span class="ruby-operator">|</span>
+          <span class="ruby-keyword kw">if</span> <span class="ruby-constant">ENV</span>[<span class="ruby-identifier">env_var</span>]
+            <span class="ruby-comment cmt"># if we found a proxy, then parse it</span>
+            <span class="ruby-identifier">ret</span> = <span class="ruby-constant">ENV</span>[<span class="ruby-identifier">env_var</span>].<span class="ruby-identifier">sub</span>(<span class="ruby-regexp re">/^http:\/\/([^\/]+)\/?$/</span>, <span class="ruby-value str">'\1'</span>).<span class="ruby-identifier">split</span>(<span class="ruby-value str">':'</span>)
+            <span class="ruby-identifier">ret</span>[<span class="ruby-value">1</span>] = <span class="ruby-identifier">ret</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">ret</span>[<span class="ruby-value">1</span>]
+            <span class="ruby-keyword kw">break</span>
+          <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-comment cmt"># $stderr.puts &quot;DEBUG: http_proxy = #{ENV['http_proxy']}, ret = [#{ret.join(',')}]&quot;</span>
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">else</span> 
+      <span class="ruby-comment cmt"># proxy is disabled</span>
+      <span class="ruby-identifier">ret</span> = [<span class="ruby-keyword kw">nil</span>, <span class="ruby-keyword kw">nil</span>]
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-comment cmt"># return host and port</span>
+    <span class="ruby-identifier">ret</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

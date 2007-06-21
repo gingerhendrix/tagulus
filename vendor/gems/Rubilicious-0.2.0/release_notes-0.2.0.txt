@@ -1,0 +1,188 @@
+Rubilicious 0.2.0 Release Notes
+===============================
+
+Table of Contents
+=================
+  1. Overview
+  2. API Changes
+    2.1 Delicious SSL URL and SSL Options
+    2.2 Removed Inbox and Subscription Methods
+    2.3 Removed Monkey Patches
+  3. Signed RubyGems Package
+  4. URLs
+
+
+Overview
+========
+Rubilicious 0.2.x includes several changes which may affect your
+existing code.  This document explains each of the changes, the reason
+behind them, and how legacy code can be changed to support the new API.
+
+An additional section explains the signed Rubilicious gem and how you
+can verify the Rubilicious gem using the new RubyGems certificate
+interface.
+
+
+2. API Changes
+==============
+There are several major changes to the Rubilicious 0.2.0 API which may
+be incompatible with code written for the Rubilicious 0.1.x API.  The
+changes are:
+
+    * Switched to the new Delicious SSL-based API.
+    * Removed the inbox, subscription, and user_posts calls.  
+    * Removed the Rubilicious changes to Array, Time, and String.
+
+Each change is covered in detail in the following sections.
+
+2.1 Delicious SSL URL and SSL Options
+-------------------------------------
+The change to the Delicious SSL URL should be relatively transparent.
+The default Rubilicious base URI has been changed to
+"https://api.del.icio.us/v1", although you can override this as in
+version 0.1.x, by passing a custom base URI via the Rubilicious.new
+'base_uri' option, or by defining the RUBILICIOUS_BASE_URI environment
+variable.  For example, to set your base URI to
+'http://tasty.pablotron.org/api' instead of Delicious, the code would
+look like this:
+
+    # set tasty API url and connect
+    tasty_api_url = 'http://tasty.pablotron.org/api'
+    rb = Rubilicious.new(user, pass, 'base_uri' => tasty_api_url)
+
+Rubilicious does _not_ verify the server's SSL certificate by default.
+This is deliberate.  I'm not entirely sure how reliable the default
+OpenSSL certificate list is on most platforms.  If you're sure your
+platform is properly configured, you can enable SSL certificate
+verification like so:
+
+    # connect to delicious, enable SSL certificate verification
+    r = Rubilicious.new(user, pass, 'ssl_verify' => true)
+
+Rubilicious uses the built-in OpenSSL certificate directory by default,
+this can be overridden using the 'ssl_cert_path' option, or by defining
+the environment variables RUBILICIOUS_SSL_CERT_DIR or SSL_CERT_DIR.  A
+more detailed description of the various SSL options is available in the
+Rubilicious#initialize documentation.
+
+2.2 Removed Inbox and Subscription Methods
+------------------------------------------
+The new Delicious API removes the inbox, subscribe, and unsubscribe
+methods, so these have been removed from Rubilicious, along with the
+Rubilicious#user_posts method (which relied on the subscribe method to 
+do it's dirty work).  If you're using Rubilicious to connect to a
+non-Delicious social bookmarking site which still supports the inbox and
+subscription methods, you can re-enable them by like this:
+
+    # re-enable the inbox, subscription, and user_posts methods
+    Rubilicious::Extras.include_inbox
+
+2.3 Removed Monkey Patches
+--------------------------
+The old Rubilicious API added several methods to the top-level Array,
+Time, and String classes.  All of these methods have been removed or
+merged back in to Rubilicious.  You can re-enable the deprecated
+old-style methods, with the following bit of code:
+
+    # re-enable inbox and subscription API, and the deprecated monkey
+    # patch API
+    Rubilicious::Extras.include_extras
+
+The call above re-enables the inbox and subscription API (covered in the
+section above), and also adds the following deprecated methods:
+
+    * String#xml_escape (replaced by CGI.escapeHTML in 0.2.0)
+    * String#uri_escape (replaced by CGI.escape in 0.2.0)
+    * Array#to_xbel (replaced by Rubilicious.xbel in 0.2.0)
+    * Time.from_iso8601 (replaced by Time.iso8601 in 0.2.0)
+    * Time#to_iso8601 (replaced by Time#gmtime#iso8601 in 0.2.0)
+
+Note that these methods are deprecated and may disappear in a future
+release.
+
+
+3. Signed RubyGems Package
+==========================
+The gem file for Rubilicious 0.2.0 is cryptographically signed
+using the (relatively) new RubyGems signing interface.  Full
+documentation for both deploying and using the RubyGems certificate
+interface is available online in the RubyGems manual, but here's a brief
+overview of the steps necessary to validate and verify a signed gem.
+
+By the way, if you skipped ahead and gawked at the instructions below,
+remember that none of this is _required_ to use a signed gem; they can
+be installed and run exactly like any other gem file.  That said,
+verifying the authenticity of package files is a good way to save
+yourself the headache of a future security fiasco.  So, without any
+further ado...
+
+First, you'll need to download and verify the certificates used to sign
+the gem file itself.  Here are the URLs:
+
+  http://pablotron.org/files/certs/ca.crt
+  http://pablotron.org/files/certs/ca.crt.asc
+  http://pablotron.org/files/certs/rubygems.crt
+  http://pablotron.org/files/certs/rubygems.crt.asc
+
+The .crt files are PEM-encoded X.509 certificate files, and the .asc
+files are OpenPGP signatures of their certificate counterparts.
+
+If you have GnuPG installed, you can verify the signatures on each of
+these files like so:
+
+  # grab my PGP key from your local PGP keyserver
+  # (also available online at http://pablotron.org/files/pabskey.asc)
+  gpg --recv-keys 82C29562 wwwkeys.us.pgp.net
+
+  # alternatively, you can grab it online like so:
+  # wget -O- http://pablotron.org/files/pabskey.asc | gpg --import
+
+
+  # verify that both certificates were signed by me
+  for pgp_sig in {ca,rubygems}.crt.asc; do pgp_sig $sig; done
+
+If everything checks out okay and you either, a) believe that my
+PGP signature is legitimate, or b) can establish a trusted relationship
+via GnuPG, then it's reasonably safe to assume that the certificates
+were, in fact, issued by me.  And I'm a trustworthy guy, so let's add my
+certificates to RubyGems's list of trusted certificates:
+
+  # add both certificates to your list of trusted gem certs
+  for cert in {ca,rubygems}.crt; do sudo gem cert -a $cert; done
+
+(If you change your mind and decide either me or my certs aren't
+trustworthy, you can use "gem cert -r" to remove the certificates from
+your trust list).
+
+At this point we're ready to install the gem.  It's business as usual,
+except for an additional flag to set our RubyGems security policy.
+The HighSecurity policy tells RubyGems to only install signed gem files
+that are from trusted sources.  Here's how we enable it:
+
+  # URL to gem file.  once it's in the RubyGems repositories, you can
+  # change this from a URL to just the package name 'rubilicious'.
+  gem_file="rubilicious-0.2.0.gem"
+  gem_url="http://gems.pablotron.org/gems/$gem_file"
+
+  # install gem from remote url using the high security policy
+  wget "$gem_url"
+  sudo gem install "$gem_file" -P HighSecurity
+
+And we're done!  If the gem file isn't signed, there was a problem with
+the validity of the certificates or the gem file, gem will refuse to
+install the gem file.  The best part is, that is the _only_ step you
+have to perform on any gem signed by me in the future.
+
+
+4. URLs
+=======
+* Tarball (tar.gz):
+  * Download:   http://pablotron.org/files/rubilicious-0.2.0.tar.gz
+  * Signature:  http://pablotron.org/files/rubilicious-0.2.0.tar.gz.asc
+* RubyGems Package (gem):
+  * Download:   http://gems.pablotron.org/gems/rubilicious-0.2.0.gem
+  * Signature:  http://gems.pablotron.org/gems/rubilicious-0.2.0.gem.asc
+* Documentation:
+  * ChangeLog:  http://pablotron.org/software/rubilicious/ChangeLog-0.2.0
+  * API Docs:   http://pablotron.org/software/rubilicious/doc/
+  * Release Notes: http://pablotron.org/software/rubilicious/release_notes-0.2.0.txt

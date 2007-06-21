@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Rubilicious::Extras::Array#to_xbel
+is_singleton: false
+name: to_xbel
+params: (tag = nil)
+visibility: public

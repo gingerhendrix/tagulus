@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: XML escape elements, including spaces, ?, and +
+full_name: Rubilicious::Extras::String#uri_escape
+is_singleton: false
+name: uri_escape
+params: ()
+visibility: public

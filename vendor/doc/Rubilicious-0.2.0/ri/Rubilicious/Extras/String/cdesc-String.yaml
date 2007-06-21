@@ -1,0 +1,26 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Module containing methods to maintain compatability with methods added to the top-level String class in Rubilicious 0.1.x.
+- !ruby/struct:SM::Flow::P 
+  body: "Note: These methods are deprecated and may be removed from a future version of Rubilicious."
+constants: []
+
+full_name: Rubilicious::Extras::String
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: uri_escape
+- !ruby/object:RI::MethodSummary 
+  name: uri_escape
+- !ruby/object:RI::MethodSummary 
+  name: xml_escape
+- !ruby/object:RI::MethodSummary 
+  name: xml_escape
+name: String
+superclass: 

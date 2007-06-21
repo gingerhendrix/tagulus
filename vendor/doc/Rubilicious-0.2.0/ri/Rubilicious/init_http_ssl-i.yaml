@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Initialize SSL for a particular HTTP connection
+full_name: Rubilicious#init_http_ssl
+is_singleton: false
+name: init_http_ssl
+params: (http)
+visibility: protected

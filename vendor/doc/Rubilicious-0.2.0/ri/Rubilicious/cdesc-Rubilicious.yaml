@@ -1,0 +1,75 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: 
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: base_uri
+  rw: RW
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: base_uri
+  rw: RW
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: use_proxy
+  rw: RW
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: use_proxy
+  rw: RW
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: user
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: user
+  rw: R
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: xbel
+- !ruby/object:RI::MethodSummary 
+  name: xbel
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Rubilicious - Delicious (http://del.icio.us/) bindings for Ruby.
+- !ruby/struct:SM::Flow::P 
+  body: You'll need to create an account at Delicious (http://del.icio.us/) in order to use this API.
+- !ruby/struct:SM::Flow::P 
+  body: "Simple Examples:"
+- !ruby/struct:SM::Flow::VERB 
+  body: "  # load rubilicious\n  require 'rubilicious'\n\n  # connect to delicious and get a list of your recent posts\n  r = Rubilicious.new('user', 'password')\n  r.recent.each do |post|\n    puts &quot;#{post['description']}: #{post['href']}&quot;\n  end\n\n  # add a new link to delicious\n  r.add('http://pablotron.org/', 'Pablotron.org')\n\n  # save recent funny posts to an XBEL file\n  File.open('funny_links.xbel', 'w') do |file|\n    file.puts Rubilicious.xbel(r.recent('funny'))\n  end\n"
+constants: 
+- !ruby/object:RI::Constant 
+  comment: 
+  name: VERSION
+  value: "'0.2.0'"
+- !ruby/object:RI::Constant 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: check for https support (requires OpenSSL)
+  name: HAVE_SSL
+  value: begin     require 'net/https'
+- !ruby/object:RI::Constant 
+  comment: 
+  name: VERSION
+  value: "'0.2.0'"
+- !ruby/object:RI::Constant 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: check for https support (requires OpenSSL)
+  name: HAVE_SSL
+  value: begin     require 'net/https'
+full_name: Rubilicious
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: init_http_ssl
+- !ruby/object:RI::MethodSummary 
+  name: init_http_ssl
+- !ruby/object:RI::MethodSummary 
+  name: init_ssl
+- !ruby/object:RI::MethodSummary 
+  name: init_ssl
+name: Rubilicious
+superclass: Object

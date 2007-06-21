@@ -1,0 +1,49 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: include_extras
+- !ruby/object:RI::MethodSummary 
+  name: include_extras
+- !ruby/object:RI::MethodSummary 
+  name: include_inbox
+- !ruby/object:RI::MethodSummary 
+  name: include_inbox
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Module containing methods to maintain compatability with methods from Rubilicious 0.1.x.
+- !ruby/struct:SM::Flow::P 
+  body: "Note: These methods are deprecated and may be removed from a future version of Rubilicious."
+- !ruby/struct:SM::Flow::P 
+  body: "If you have an application that depends on the old 0.1-style methods added by Rubilicious -- String#uri_escape, Array#to_xbel, etc -- you can do one of the following:"
+- !ruby/object:SM::Flow::LIST 
+  contents: 
+  - !ruby/struct:SM::Flow::LI 
+    label: "1."
+    body: Add a call to Rubilicious::Extras.include_extras before calling any of the old-style methods.
+  - !ruby/struct:SM::Flow::LI 
+    label: "2."
+    body: "Include one of the Extra classes piecemeal. For example, if your application depends on Array#to_xbel, the following code will add Array#to_xbel:"
+  - !ruby/struct:SM::Flow::VERB 
+    body: "  class Array\n    include Rubilicious::Extras::Array\n  end\n"
+  - !ruby/struct:SM::Flow::LI 
+    label: "3."
+    body: Fix your code. Each of the old-style calls maps to either a new non-toplevel method or a Ruby built-in method. For example, Array#to_xbel can be replaced by Rubilicious.xbel(ary), and String#xml_escape can be replaced by CGI.escapeHTML(str).
+  type: :NUMBER
+constants: []
+
+full_name: Rubilicious::Extras
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: Extras::Rubilicious
+- !ruby/object:RI::IncludedModule 
+  name: Extras
+- !ruby/object:RI::IncludedModule 
+  name: Extras::Rubilicious
+- !ruby/object:RI::IncludedModule 
+  name: Extras
+instance_methods: []
+
+name: Extras
+superclass: 

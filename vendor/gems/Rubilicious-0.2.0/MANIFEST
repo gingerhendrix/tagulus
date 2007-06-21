@@ -1,0 +1,9 @@
+./ChangeLog
+./COPYING
+./examples/add_link.rb
+./examples/del_to_xbel.rb
+./examples/list_tags.rb
+./README
+./MANIFEST
+./rubilicious.gemspec
+./rubilicious.rb

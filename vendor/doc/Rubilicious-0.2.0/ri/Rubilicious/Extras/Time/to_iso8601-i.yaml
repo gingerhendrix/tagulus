@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Rubilicious::Extras::Time#to_iso8601
+is_singleton: false
+name: to_iso8601
+params: ()
+visibility: public

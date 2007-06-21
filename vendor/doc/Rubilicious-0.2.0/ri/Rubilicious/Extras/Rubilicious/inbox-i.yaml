@@ -1,0 +1,18 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Returns a array of inbox entries, optionally filtered by date.
+- !ruby/struct:SM::Flow::P 
+  body: Raises an exception on error.
+- !ruby/struct:SM::Flow::P 
+  body: "Example:"
+- !ruby/struct:SM::Flow::VERB 
+  body: "  # print a list of posts and who posted them\n  r.inbox.each { |post| puts &quot;#{post['user']},#{post['href']}&quot; }\n"
+full_name: Rubilicious::Extras::Rubilicious#inbox
+is_singleton: false
+name: inbox
+params: (date = nil)
+visibility: public

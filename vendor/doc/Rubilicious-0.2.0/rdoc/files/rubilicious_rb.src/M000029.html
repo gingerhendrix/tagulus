@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>new (rubilicious.rb)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File rubilicious.rb, line 709</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">pass</span>, <span class="ruby-identifier">opt</span> = {})
+    <span class="ruby-ivar">@user</span>, <span class="ruby-ivar">@use_proxy</span> = <span class="ruby-identifier">user</span>, <span class="ruby-keyword kw">true</span>
+
+    <span class="ruby-comment cmt"># set use proxy</span>
+    <span class="ruby-ivar">@use_proxy</span> = <span class="ruby-identifier">opt</span>[<span class="ruby-value str">'use_proxy'</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">opt</span>.<span class="ruby-identifier">key?</span>(<span class="ruby-value str">'use_proxy'</span>)
+
+    <span class="ruby-comment cmt"># set API URL (note that this can be changed by the user later)</span>
+    <span class="ruby-ivar">@base_uri</span> = <span class="ruby-identifier">opt</span>[<span class="ruby-value str">'base_uri'</span>] <span class="ruby-operator">||</span> 
+                <span class="ruby-constant">ENV</span>[<span class="ruby-value str">'RUBILICIOUS_BASE_URI'</span>] <span class="ruby-operator">||</span> 
+                <span class="ruby-value str">'https://api.del.icio.us/v1'</span>
+
+    <span class="ruby-comment cmt"># if we have SSL support, then set the SSL verify mode</span>
+    <span class="ruby-comment cmt"># (defaults to VERIFY_NONE, which is horribly insecure)</span>
+    <span class="ruby-keyword kw">if</span> <span class="ruby-constant">HAVE_SSL</span>
+      <span class="ruby-identifier">init_ssl</span>(<span class="ruby-identifier">opt</span>)
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-comment cmt"># set user agent string</span>
+    <span class="ruby-identifier">user_agent</span> = <span class="ruby-identifier">opt</span>[<span class="ruby-value str">'user_agent'</span>] <span class="ruby-operator">||</span>
+                 <span class="ruby-node">&quot;Rubilicious/#{Rubilicious::VERSION} Ruby/#{RUBY_VERSION}&quot;</span>
+
+    <span class="ruby-comment cmt"># build default HTTP headers</span>
+    <span class="ruby-ivar">@headers</span> = {
+      <span class="ruby-value str">'Authorization'</span>   =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Basic '</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-node">&quot;#{user}:#{pass}&quot;</span>].<span class="ruby-identifier">pack</span>(<span class="ruby-value str">'m'</span>).<span class="ruby-identifier">strip</span>,
+      <span class="ruby-value str">'User-Agent'</span>      =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user_agent</span>,
+    }
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

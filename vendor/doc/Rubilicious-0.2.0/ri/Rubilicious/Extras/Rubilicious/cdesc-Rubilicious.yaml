@@ -1,0 +1,38 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Rubilicious::Extras::Rubilicious
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: inbox
+- !ruby/object:RI::MethodSummary 
+  name: inbox
+- !ruby/object:RI::MethodSummary 
+  name: inbox_dates
+- !ruby/object:RI::MethodSummary 
+  name: inbox_dates
+- !ruby/object:RI::MethodSummary 
+  name: sub
+- !ruby/object:RI::MethodSummary 
+  name: sub
+- !ruby/object:RI::MethodSummary 
+  name: subs
+- !ruby/object:RI::MethodSummary 
+  name: subs
+- !ruby/object:RI::MethodSummary 
+  name: unsub
+- !ruby/object:RI::MethodSummary 
+  name: unsub
+- !ruby/object:RI::MethodSummary 
+  name: user_posts
+- !ruby/object:RI::MethodSummary 
+  name: user_posts
+name: Rubilicious
+superclass: 

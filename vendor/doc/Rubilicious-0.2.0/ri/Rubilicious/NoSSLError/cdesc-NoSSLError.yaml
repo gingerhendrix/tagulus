@@ -1,0 +1,17 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Raised if an application attempts to connect to an https resource without OpenSSL support.
+constants: []
+
+full_name: Rubilicious::NoSSLError
+includes: []
+
+instance_methods: []
+
+name: NoSSLError
+superclass: Error
