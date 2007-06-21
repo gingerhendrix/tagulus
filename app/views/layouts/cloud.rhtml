@@ -5,33 +5,20 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <title>Cloud: <%= controller.action_name %></title>
-  <%= stylesheet_link_tag 'reset-fonts-grids' %>
   
-  <%=stylesheet_link_tag "layout"%>
+  <%= javascript_include_merged :cssquery %>
+  <%= javascript_include_merged :mochikit %>
+  <%= javascript_include_merged :yui %>
+  <script src="/javascripts/tagcloud.js"></script>  
+
+  <%= stylesheet_link_merged :base %>
   
   <%= automatic_stylesheets %>
-  
-  <script src="/javascripts/MochiKit/MochiKit.js"></script>
-  <script src ="/javascripts/cssQuery/cssQuery-p.js" ></script>
-  <!-- Dependencies -->
-  <!-- core CSS -->
+
+  <!-- YUI CSS -->
   <link rel="stylesheet" type="text/css" href="/javascripts/yui/tabview/assets/tabview.css">
+  <link rel="stylesheet" type="text/css" href="/javascripts/yui/tabview/assets/border_tabs.css">
 
-   <!-- optional skin for border tabs -->
-   <link rel="stylesheet" type="text/css" href="/javascripts/yui/tabview/assets/border_tabs.css">
-
-  <script src = "/javascripts/yui/yahoo/yahoo.js" ></script>
-  <script src = "/javascripts/yui/yahoo-dom-event/yahoo-dom-event.js" ></script>
-  <script src = "/javascripts/yui/element/element-beta-min.js"></script>
-  <script src = "/javascripts/yui/dragdrop/dragdrop-min.js" ></script>
-  <script src="/javascripts/yui/animation/animation-min.js"></script>
-  <script src = "/javascripts/yui/slider/slider-min.js" ></script>
-  <script src = "/javascripts/yui/tabview/tabview-min.js" ></script>
-   
-  <script src="/javascripts/tagcloud.js"></script>
-  
-  
-    
 </head>
 <body>
 <div id="clouds">

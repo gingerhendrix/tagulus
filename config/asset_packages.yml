@@ -1,0 +1,21 @@
+--- 
+javascripts: 
+- cssquery:
+  - cssQuery/cssQuery-p.js
+- mochikit: 
+  - MochiKit/Base
+  - MochiKit/Iter
+  - MochiKit/DOM
+  - MochiKit/Signal
+- yui:
+  - yui/yahoo/yahoo
+  - yui/yahoo-dom-event/yahoo-dom-event
+  - yui/element/element-beta-min
+  - yui/dragdrop/dragdrop-min
+  - yui/animation/animation-min
+  - yui/slider/slider-min
+  - yui/tabview/tabview-min
+stylesheets: 
+- base: 
+  - reset-fonts-grids
+  - layout
