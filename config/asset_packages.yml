@@ -1,7 +1,7 @@
 --- 
 javascripts: 
 - cssquery:
-  - cssQuery/cssQuery-p.js
+  - cssQuery/cssQuery-p
 - mochikit: 
   - MochiKit/Base
   - MochiKit/Iter
