@@ -13,10 +13,10 @@
                 var width = this.width;
                 document.write('<div class="slider" style="width: '+ (width + 60) + 'px">');
                 document.write('<span id="'+prefix + '_min" style="position: relative; font-size: 8px; left: 6px;">0</span><span id="'+prefix + '_max" style="position: relative; left: ' +width + 'px; font-size: 8px">200</span>');
-                document.write('<div id="'+prefix+'_sliderbg" style="background-image : url(/images/slider/small/horizBg.png); width : ' + (width + 15) + 'px; height: 25px; position: relative; top: 0px; cursor: pointer; ">');
-                document.write('<div id="'+prefix + '_sliderthumb" style="position: relative; top: 0px; width: 15px; height: 15px;"><img id="'+prefix+'_sliderthumbimg" src="/images/slider/small/horizSlider.png" width="15" height="15"/></div>');
+                document.write('<div id="'+prefix+'_sliderbg" style="background-image : url(/images/slider/small/horizBg.png); width : ' + (width + 16) + 'px; height: 16px; position: relative; top: 0px; cursor: pointer; ">');
+                document.write('<div id="'+prefix + '_sliderthumb" style="position: relative; top: 0px !important; width: 16px; height: 16px;"><img id="'+prefix+'_sliderthumbimg" src="/images/slider/small/horizSlider.png" width="16" height="16"/></div>');
                 document.write('</div>');
-                document.write('<div id="'+prefix+'_slidervalue" style="position: relative; top: -26px; left: ' + (width + 15) + 'px; padding-left: 20px;">0</div>');
+                document.write('<div id="'+prefix+'_slidervalue" style="position: relative; top: -16px; left: ' + (width + 8) + 'px; padding-left: 20px;">0</div>');
                 document.write('</div>')
             }
             
@@ -46,49 +46,138 @@
                 }
             }
         }
+    </script>
+    <script>
+    var ColorPicker = function() {
+        var Slider=YAHOO.widget.Slider;
+        var Color=YAHOO.util.Color;
+        var Dom=YAHOO.util.Dom;
+    
+        var pickerSize=180;
         
+        var hue,picker,panel;
+        
+        var onOk = function(){};
+    
+        // hue, int[0,359]
+        var getH = function() {
+            var h = (pickerSize - hue.getValue()) / pickerSize;
+            h = Math.round(h*360);
+            return (h == 360) ? 0 : h;
+        }
+    
+        // saturation, int[0,1], left to right
+        var getS = function() {
+            return picker.getXValue() / pickerSize;
+        }
+    
+        // value, int[0,1], top to bottom
+        var getV = function() {
+            return (pickerSize - picker.getYValue()) / pickerSize;
+        }
+    
+        var swatchUpdate = function() {
+            var h=getH(), s=getS(), v=getV();
+            YAHOO.log("hsv " + [h,s,v]);
+    
+            Dom.get("hval").value = h;
+            Dom.get("sval").value = Math.round(s*100);
+            Dom.get("vval").value = Math.round(v*100);
+    
+            var rgb = Color.hsv2rgb(h, s, v);
+    
+            var styleDef = "rgb(" + rgb.join(",") + ")";
+            Dom.setStyle("swatch", "background-color", styleDef);
+    
+            Dom.get("rval").value = rgb[0];
+            Dom.get("gval").value = rgb[1];
+            Dom.get("bval").value = rgb[2];
+    
+            Dom.get("hexval").value = Color.rgb2hex(rgb[0], rgb[1], rgb[2]);
+        };
+    
+        var hueUpdate = function(newOffset) {
+            YAHOO.log("hue update: " + newOffset , "warn");
+            var rgb = Color.hsv2rgb(getH(), 1, 1);
+            var styleDef = "rgb(" + rgb.join(",") + ")";
+            Dom.setStyle("pickerDiv", "background-color", styleDef);
+    
+            swatchUpdate();
+        };
+    
+        pickerUpdate = function(newOffset) {
+            YAHOO.log("picker update [" + newOffset.x + ", " + newOffset.y + "]" , "warn");
+            swatchUpdate();
+        };
+        
+        var okHandler = function(){
+            var h=getH(), s=getS(), v=getV();
+            var rgb = Color.hsv2rgb(h, s, v);
+            onOk(rgb);
+            hide();
+        };
+        
+        var cancelHandler = function(){
+           
+           onOk = function(){};
+           hide();
+        }
+        
+        var hide = function(){
+             var pickerEl = document.getElementById("ddPicker");
+             pickerEl.style.visibility = "hidden";
+        }
+
+        
+        return {
+    
+            init: function () {
+                hue = Slider.getVertSlider("hueBg", "hueThumb", 0, pickerSize);
+                hue.subscribe("change", hueUpdate);
+    
+                picker = Slider.getSliderRegion("pickerDiv", "selector", 
+                        0, pickerSize, 0, pickerSize);
+                picker.subscribe("change", pickerUpdate);
+    
+                hueUpdate(0);
+                
+                btnOk = document.getElementById("btnOk");
+                btnOk.addEventListener("click", okHandler, true)
+                
+                btnCancel = document.getElementById("btnCancel");
+                btnCancel.addEventListener("click", cancelHandler, true)
+        
+                panel = new YAHOO.util.DD("ddPicker");
+                panel.setHandleElId("pickerHandle");
+        
+                }
+            ,
+            show : function(color, callback){
+                onOk = callback;
+                var pickerEl = document.getElementById("ddPicker");
+                pickerEl.style.visibility = "visible";
+            }
+        }
+    }();
+        
+        YAHOO.util.Event.on(window, "load", ColorPicker.init);
     </script>
 <dt>Cloud Settings</dt>
 <dd>
     <dl id="cloud-settings" class="collapsable">
         <dt>Limit</dt>
-        <dd><span id="limit_min" style="position: relative; font-size: 8px; left: 6px;">0</span><span id="limit_max" style="position: relative; left: 198px; font-size: 8px">200</span>
-            <div id="limit_sliderbg" style="background-image : url(/images/slider/horizBg.png); width : 218px; height: 26px; position: relative; top: 0px; cursor: pointer; ">
-                <div id="limit_sliderthumb" style="position: relative; top: 7px; width: 18px; height: 20px;"><img id="limit_sliderthumbimg" src="/images/slider/horizSlider.png" width="18" height="20"/></div>
-            </div>
-            <div id="limit_slidervalue" style="position: relative; top: -26px; left: 218px; padding-left: 20px;">0</div>
-            <script>
+        <dd><script>
             var f = function(){
-                var slider;
-                var limit_min;
-                var limit_max;
-                var limit_width = 200;
-                function sliderInit(){
-                   limit_min = 0;
-                   limit_max = tc.tags.length; 
-                   
-                   document.getElementById("limit_min").innerHTML = limit_min;
-                   document.getElementById("limit_max").innerHTML = limit_max;
-                   slider = YAHOO.widget.Slider.getHorizSlider("limit_sliderbg", "limit_sliderthumb", 0, limit_width);
-                   slider.animate = true;
-                   slider.subscribe("change", displayNewValue);
-                   slider.subscribe("change", updateTagCloud);
+                var slider = new Slider("limit");
+                slider.min = 0;
+                slider.max = tc.tags.length;
+                slider.width = 200;
+                slider.emitHTML();
+                slider.onchange = function(val){
+                      tc.options.limit = val;
+                      tc.update();
                 }
-                var oldVal;
-                var newVal;
-                function displayNewValue(offsetFromStart) {
-                   // determine the actual value from the offset
-                   newVal = Math.round(((offsetFromStart/limit_width)*(limit_max-limit_min))+limit_min);
-                   document.getElementById("limit_slidervalue").innerHTML = newVal;
-                }
-                function updateTagCloud(){
-                   if(oldVal!=newVal){
-                        oldVal=newVal;
-                        tc.options.limit = newVal;
-                        tc.replaceElement(document.getElementById('tagCloud'))
-                    }
-                }
-                window.addEventListener("load", sliderInit, false);
+                window.addEventListener("load", function(){ slider.init(); slider.setValue(tc.options.limit)}, true);
             };
             f();
             </script>   
@@ -160,6 +249,7 @@
                 var slider = new Slider("width");
                 slider.min = 0;
                 slider.max = 1200;
+                slider.width = 200;
                 slider.emitHTML();
                 slider.onchange = function(val){
                       tc.display.setWidth(val);
@@ -170,6 +260,28 @@
             </script>
                         
         </dd>
+    </dl>
+</dd>
+<dd></dd>
+    <dt>Tag Classes</dt>
+     <dd>
+         <div id="tagPreview">
+             
+         </div>      
+         <script>
+                connect(tc.display, 'recalculate', function(){
+                     var previewStr = "";
+                     var classes =tc.options.classes;
+                     for(var i=0; i<classes; i++){
+                        var d =  (classes-i)/classes;
+                        var color = tc.display.colorDistribution(d);
+                        color = color.map(Math.floor);
+                        previewStr += "<span  class='previewClass'  style='font-size: "+tc.display.fontDistribution(d) + "px; opacity: " + tc.display.opacityDistribution(d) + ";color: rgb(" + color[0] + "," + color[1] + "," + color[2]  + ");'>A</span>";    
+                     }
+                     document.getElementById("tagPreview").innerHTML = previewStr;                    
+                });
+            </script>  
+       <dl>
         <dt>Font Size</dt>
         <dd>
             <div id="fontPreview">
@@ -279,8 +391,129 @@
             </script>    
             </div>
         </dd>
+        
+        <dt style="clear: left">Color</dt>
+        <dd>
+            <div id="colorPreview">
+                
+            </div>
+            <script>
+                connect(tc.display, 'recalculate', function(){
+                     var previewStr = "";
+                     var classes =tc.options.classes;
+                     for(var i=0; i<classes; i++){
+                        var d =  (classes-i)/classes;
+                        var color = tc.display.colorDistribution(d);
+                        color = color.map(Math.floor)
+                        //alert("color " + color);
+                        previewStr += "<span class='previewClass' style='font-size: 18pt; color: rgb(" + color[0] + "," + color[1] + "," + color[2]  + ");'>A</span>";    
+                     }
+                     document.getElementById("colorPreview").innerHTML = previewStr;                    
+                });
+            </script>
+            <div id="color1" style="float: left; margin-right: 20px;">
+            <h3>Color 1</h3>
+                <div class="swatch" id="color1Swatch" style="width: 80px; height: 50px; background-color: #000000; border: 1px solid black; margin-bottom: 10px; cursor: pointer;" >
+                &nbsp;                            
+                </div>
+                <script>
+                  function Swatch(id, color){
+                      var swatch = document.getElementById(id);
+                      function updateSwatch(rgb){
+                          swatch.style.backgroundColor = "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
+                          tc.display.options.colors[color] = rgb;
+                          tc.display.redisplay(); 
+                      };
+                      function initSwatch(){
+                          var rgb = tc.display.options.colors[color];
+                          swatch.style.backgroundColor = "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
+                      };
+                      swatch.addEventListener("click", function(){ ColorPicker.show(null, updateSwatch)}, true);
+                      window.addEventListener("load", initSwatch, true);
+                  };
+                  new Swatch("color1Swatch", 1);
+                    
+                </script>
+            </div>
+            <div id="color2" style="float: left;">
+            <h3>Color 2</h3>
+                <div class="swatch" id="color2Swatch" style="width: 80px; height: 50px; background-color: #000000; border: 1px solid black; margin-bottom: 10px; cursor: pointer;">
+                &nbsp;                            
+                </div>
+                <script>
+                    new Swatch("color2Swatch", 0);
+                </script>
+                
+            </div>
+        </dd>
 
     </dl>
 </dd>
 </dl>
 
+<br style="clear: both"/>
+
+<style type="text/css">
+ #ddPicker { position: absolute; background-color: #eeeeee;  width: 380px; height: 260px; top: 40%; left: 40%; visibility: hidden;}
+ #ddPicker input { font-size: .85em }
+ #pickerHandle { background-color: #bbbbbb; height: 10px; cursor: move; }
+ #hueThumb { cursor:default; width:18px; height:18px; z-index: 9; position:absolute; }
+ #hueBg {-moz-outline: none; outline:0px none; position:absolute; left:216px; height:198px; width:18px; background:url(/images/colorpicker/hue.png) no-repeat; top:18px; }
+ #pickerDiv {-moz-outline: none; outline: 0px; position: absolute; height:187px; width:188px; background-color:#FF0000; top:20px; }
+ #pickerbg { position: absolute; z-index: 1; top:0px; left:0px; }
+ #selector { cursor:default; width:11px; height:11px; z-index: 9; position:absolute; top:0px; left:0px; }
+ #valdiv { text-align:left; position:absolute; top: 86px; left:246px; }
+ #valdiv input{width: 2em;}
+ input#hexval{ width: 4em; }
+ #swatch { position:absolute; left:260px; top:30px; height:60px; width:60px; border:2px solid #aaaaaa; }
+ #buttonsDiv {
+     position: absolute;
+     bottom: 10px;
+     right: 20px;
+ }
+ 
+ #buttonsDiv input{
+     width: 5em;
+ }    
+</style>
+
+<div id="ddPicker">
+    <div id="pickerHandle">&nbsp;</div>
+    <div id="pickerDiv" tabindex="-1" hidefocus="true">
+
+      <img id="pickerbg" src="/images/colorpicker/pickerbg.png" alt="" />
+      <div id="selector"><img src="/images/colorpicker/select.gif" /></div> 
+    </div>
+
+     <div id="hueBg" tabindex="-1" hidefocus="true">
+      <div id="hueThumb"><img src="/images/colorpicker/hline.png" /></div> 
+    </div> 
+
+    <div id="valdiv">
+        <form name="rgbform">
+        <br />
+        R <input autocomplete="off" name="rval" id="rval" type="text" value="0" size="3" maxlength="3" />
+
+        H <input autocomplete="off" name="hval" id="hval" type="text" value="0" size="3" maxlength="3" />
+        <br />
+        G <input autocomplete="off" name="gval" id="gval" type="text" value="0" size="3" maxlength="3" />
+        S <input autocomplete="off" name="gsal" id="sval" type="text" value="0" size="3" maxlength="3" />
+        <br />
+        B <input autocomplete="off" name="bval" id="bval" type="text" value="0" size="3" maxlength="3" />
+        V <input autocomplete="off" name="vval" id="vval" type="text" value="0" size="3" maxlength="3" />
+        <br />
+        <br />
+        # <input autocomplete="off" name="hexval" id="hexval" type="text" value="0" size="6" maxlength="6" />
+        <br />
+
+        </form>
+    </div>
+    
+     <div id="swatch">&nbsp;</div>
+    <div id="buttonsDiv">
+            <form name="buttonsform">
+                <input name="ok" id="btnOk" type="button" value="OK"/>
+                <input name="cancel" id="btnCancel" type="button" value="Cancel"/>
+            </form>
+    </div>
+</div>

@@ -1,2 +1,11 @@
-
- <%=makeCloud(@cloud)%>
+      <%= link_to_cloud_json @cloud %>
+      <div id='tagCloud'>
+      </div>
+      <script>
+        var tc = new TagCloud(cloud.tag_frequencies, document.getElementById('tagCloud'), {limit: 0, sort : "alpha"}, {width: 600, 
+                                                                                                   font_distribution: "linear",
+                                                                                                   font_max: 24,
+                                                                                                   font_min: 6,
+                                                                                                   font_unit: "px",
+                                                                                                   colors : [[57,55,65],[57,55,65]] });
+      </script>

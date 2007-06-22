@@ -214,14 +214,21 @@ function TagCloudDisplay(tagcloud, element, options){
     
     this.redisplay = function(){
         this.recalculate();
+        console.log("***** Redisplay ******")
         for(var i=0; i<this.tagcloud.options.classes; i++){
             var d = (this.tagcloud.options.classes-i)/this.tagcloud.options.classes;
+            console.log("Class " + (i+1) );
             var fontSize = this.fontDistribution(d);
             var opacity = this.opacityDistribution(d);
             var color = this.colorDistribution(d);
-            cssQuery(".tag"+(i+1), element).forEach(bind(function(el){
+            color = color.map(Math.floor);
+            console.log("Color " + color);
+            var elements = cssQuery(".tag"+(i+1), element);
+            console.log("Elements " + elements.length);
+            elements.forEach(bind(function(el){
                 el.style.fontSize = "" + fontSize + "" + this.options.font_unit;
                 el.style.opacity = "" + opacity/100 + "";
+                //console.log("rgb(" + color[0] + ", " + color[1] + "," +  color[2] +")");
                 el.style.color = "rgb(" + color[0] + ", " + color[1] + "," +  color[2] +")";
             }, this));
         }

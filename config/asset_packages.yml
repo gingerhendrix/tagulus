@@ -15,6 +15,7 @@ javascripts:
   - yui/animation/animation-min
   - yui/slider/slider-min
   - yui/tabview/tabview-min
+  - yui/color/color
 stylesheets: 
 - base: 
   - reset-fonts-grids
