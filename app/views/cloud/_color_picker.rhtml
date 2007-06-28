@@ -1,0 +1,69 @@
+
+<style type="text/css">
+ #ddPicker { position: absolute; background-color: #eeeeee;  width: 380px; height: 260px; top: 40%; left: 40%; visibility: hidden;}
+ #ddPicker input { font-size: .85em }
+ #pickerHandle { background-color: #bbbbbb; height: 10px; cursor: move; }
+ #hueThumb { cursor:default; width:18px; height:18px; z-index: 9; position:absolute; }
+ #hueBg {-moz-outline: none; outline:0px none; position:absolute; left:216px; height:198px; width:18px; background:url(/images/colorpicker/hue.png) no-repeat; top:18px; }
+ #pickerDiv {-moz-outline: none; outline: 0px; position: absolute; height:187px; width:188px; background-color:#FF0000; top:20px; }
+ #pickerbg { position: absolute; z-index: 1; top:0px; left:0px; }
+ #selector { cursor:default; width:11px; height:11px; z-index: 9; position:absolute; top:0px; left:0px; }
+ #valdiv { text-align:left; position:absolute; top: 86px; left:246px; }
+ #valdiv input{width: 2em;}
+ input#hexval{ width: 4em; }
+ #swatch { position:absolute; left:260px; top:30px; height:60px; width:60px; border:2px solid #aaaaaa; }
+ #buttonsDiv {
+     position: absolute;
+     bottom: 10px;
+     right: 20px;
+ }
+ 
+ #buttonsDiv input{
+     width: 5em;
+ }    
+</style>
+
+<script>
+    YAHOO.util.Event.on(window, "load", ColorPicker.init);
+</script>
+
+<div id="ddPicker">
+    <div id="pickerHandle">&nbsp;</div>
+    <div id="pickerDiv" tabindex="-1" hidefocus="true">
+
+      <img id="pickerbg" src="/images/colorpicker/pickerbg.png" alt="" />
+      <div id="selector"><img src="/images/colorpicker/select.gif" /></div> 
+    </div>
+
+     <div id="hueBg" tabindex="-1" hidefocus="true">
+      <div id="hueThumb"><img src="/images/colorpicker/hline.png" /></div> 
+    </div> 
+
+    <div id="valdiv">
+        <form name="rgbform">
+        <br />
+        R <input autocomplete="off" name="rval" id="rval" type="text" value="0" size="3" maxlength="3" />
+
+        H <input autocomplete="off" name="hval" id="hval" type="text" value="0" size="3" maxlength="3" />
+        <br />
+        G <input autocomplete="off" name="gval" id="gval" type="text" value="0" size="3" maxlength="3" />
+        S <input autocomplete="off" name="gsal" id="sval" type="text" value="0" size="3" maxlength="3" />
+        <br />
+        B <input autocomplete="off" name="bval" id="bval" type="text" value="0" size="3" maxlength="3" />
+        V <input autocomplete="off" name="vval" id="vval" type="text" value="0" size="3" maxlength="3" />
+        <br />
+        <br />
+        # <input autocomplete="off" name="hexval" id="hexval" type="text" value="0" size="6" maxlength="6" />
+        <br />
+
+        </form>
+    </div>
+    
+     <div id="swatch">&nbsp;</div>
+    <div id="buttonsDiv">
+            <form name="buttonsform">
+                <input name="ok" id="btnOk" type="button" value="OK"/>
+                <input name="cancel" id="btnCancel" type="button" value="Cancel"/>
+            </form>
+    </div>
+</div>

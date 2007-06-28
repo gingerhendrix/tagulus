@@ -16,6 +16,9 @@ javascripts:
   - yui/slider/slider-min
   - yui/tabview/tabview-min
   - yui/color/color
+- ui:
+  - ui/ColorPicker
+  - ui/Slider
 stylesheets: 
 - base: 
   - reset-fonts-grids

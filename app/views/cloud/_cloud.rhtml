@@ -7,5 +7,8 @@
                                                                                                    font_max: 24,
                                                                                                    font_min: 6,
                                                                                                    font_unit: "px",
-                                                                                                   colors : [[57,55,65],[57,55,65]] });
+                                                                                                   colors : [[57,55,65],[57,55,65]],
+                                                                                                   visible : false });
+        window.addEventListener("load", function(){ window.setTimeout(function(){tc.show();}, 1000); }, true);
+        //need to trigger after all the controls have initialised                                                                                                    
       </script>

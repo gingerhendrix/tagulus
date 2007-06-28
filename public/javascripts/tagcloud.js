@@ -14,7 +14,8 @@ function TagCloud(folksonomy, element, options, displayOptions){
         filter : ["blogs", "blog"],
         limit : false,
         weight : 'linear',
-        style : {width : 600}
+        style : {width : 600},
+        visible: true
     }
     
     this.sort = true;
@@ -50,12 +51,18 @@ function TagCloud(folksonomy, element, options, displayOptions){
         }
     }
     
+    this.show = function(){
+        this.options.visible = true;
+        this.update();
+    } 
+    
+    
     this.emitHTML = function(){
         
         var str = "";
         var tags = this.tags;
         var tagMap = this.tagMap;
-        if(this.options.limit){
+        if(this.options.limit && this.options.limit != 0 && this.options.limit != "0"){
             tags = tags.sort(partial(weightsSort, tagMap));
             tags = tags.slice(0, this.options.limit);
             var min, max;
@@ -111,8 +118,12 @@ function TagCloud(folksonomy, element, options, displayOptions){
     }
     
     this.update = function(){
-        this.element.innerHTML = this.emitHTML();
+        console.log("Update " + this.options.visible);
+        if(this.options.visible){
+            this.element.innerHTML = this.emitHTML();
+        }
         this.display.redisplay();
+        signal(this, "update");
     }
     
     function filter(){//TODO
@@ -193,19 +204,22 @@ function TagCloudDisplay(tagcloud, element, options){
     this.init = function(){
         this.setWidth(this.options.width);
         this.element.style.fontFamily = this.options.font_family;
+        this.recalculate(true);
     }
     
-    this.recalculate = function(){
-        if(this.options.font_distribution == "linear"){
-            this.fontDistribution = partial(linearDistribution, this.options.font_min, this.options.font_max);
-        }else{
-             this.fontDistribution = partial(constantDistribution, this.options.font_min);
-        }
-        this.opacityDistribution = partial(linearDistribution, this.options.opacity_min, this.options.opacity_max);
-        this.colorDistribution = function(d){
-            return map(function(arg){
-                return linearDistribution(arg[0], arg[1], arg[2]);
-            }, izip(this.options.colors[0], this.options.colors[1], [d,d,d]));
+    this.recalculate = function(force){
+        if(force || this.tagcloud.options.visible){
+            if(this.options.font_distribution == "linear"){
+                this.fontDistribution = partial(linearDistribution, this.options.font_min, this.options.font_max);
+            }else{
+                 this.fontDistribution = partial(constantDistribution, this.options.font_min);
+            }
+            this.opacityDistribution = partial(linearDistribution, this.options.opacity_min, this.options.opacity_max);
+            this.colorDistribution = function(d){
+                return map(function(arg){
+                    return linearDistribution(arg[0], arg[1], arg[2]);
+                }, izip(this.options.colors[0], this.options.colors[1], [d,d,d]));
+            }
         }
         signal(this, "recalculate");
     }
@@ -214,23 +228,26 @@ function TagCloudDisplay(tagcloud, element, options){
     
     this.redisplay = function(){
         this.recalculate();
-        console.log("***** Redisplay ******")
-        for(var i=0; i<this.tagcloud.options.classes; i++){
-            var d = (this.tagcloud.options.classes-i)/this.tagcloud.options.classes;
-            console.log("Class " + (i+1) );
-            var fontSize = this.fontDistribution(d);
-            var opacity = this.opacityDistribution(d);
-            var color = this.colorDistribution(d);
-            color = color.map(Math.floor);
-            console.log("Color " + color);
-            var elements = cssQuery(".tag"+(i+1), element);
-            console.log("Elements " + elements.length);
-            elements.forEach(bind(function(el){
-                el.style.fontSize = "" + fontSize + "" + this.options.font_unit;
-                el.style.opacity = "" + opacity/100 + "";
-                //console.log("rgb(" + color[0] + ", " + color[1] + "," +  color[2] +")");
-                el.style.color = "rgb(" + color[0] + ", " + color[1] + "," +  color[2] +")";
-            }, this));
+        if(this.tagcloud.options.visible){
+             this.setWidth(this.options.width);
+            console.log("Tagcloud redisplaying")
+            for(var i=0; i<this.tagcloud.options.classes; i++){
+                var d = (this.tagcloud.options.classes-i)/this.tagcloud.options.classes;
+                //console.log("Class " + (i+1) );
+                var fontSize = this.fontDistribution(d);
+                var opacity = this.opacityDistribution(d);
+                var color = this.colorDistribution(d);
+                color = color.map(Math.floor);
+                //console.log("Color " + color);
+                var elements = cssQuery(".tag"+(i+1), element);
+                //console.log("Elements " + elements.length);
+                elements.forEach(bind(function(el){
+                    el.style.fontSize = "" + fontSize + "" + this.options.font_unit;
+                    el.style.opacity = "" + opacity/100 + "";
+                    //console.log("rgb(" + color[0] + ", " + color[1] + "," +  color[2] +")");
+                    el.style.color = "rgb(" + color[0] + ", " + color[1] + "," +  color[2] +")";
+                }, this));
+            }
         }
     }
     function linearDistribution(min, max, progress){

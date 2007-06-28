@@ -1,236 +1,166 @@
-<dl>
-    <script>
-        function Slider(prefix){
-            this.min = 0;
-            this.max = 100;
-            this.width = 200;
-            this.onchange = function(){};
-            var newVal;
-            var oldVal;
-            var slider;
-            
-            this.emitHTML = function(){
-                var width = this.width;
-                document.write('<div class="slider" style="width: '+ (width + 60) + 'px">');
-                document.write('<span id="'+prefix + '_min" style="position: relative; font-size: 8px; left: 6px;">0</span><span id="'+prefix + '_max" style="position: relative; left: ' +width + 'px; font-size: 8px">200</span>');
-                document.write('<div id="'+prefix+'_sliderbg" style="background-image : url(/images/slider/small/horizBg.png); width : ' + (width + 16) + 'px; height: 16px; position: relative; top: 0px; cursor: pointer; ">');
-                document.write('<div id="'+prefix + '_sliderthumb" style="position: relative; top: 0px !important; width: 16px; height: 16px;"><img id="'+prefix+'_sliderthumbimg" src="/images/slider/small/horizSlider.png" width="16" height="16"/></div>');
-                document.write('</div>');
-                document.write('<div id="'+prefix+'_slidervalue" style="position: relative; top: -16px; left: ' + (width + 8) + 'px; padding-left: 20px;">0</div>');
-                document.write('</div>')
-            }
-            
-            this.init = function(){
-               document.getElementById(prefix + "_min").innerHTML = this.min;
-               document.getElementById(prefix + "_max").innerHTML = this.max;
-               slider = YAHOO.widget.Slider.getHorizSlider(prefix+"_sliderbg", prefix + "_sliderthumb", 0, this.width);
-               slider.animate = true;
-               slider.subscribe("change", bind(displayNewValue, this));
-               slider.subscribe("slideEnd", bind(updateTagCloud, this));
-            }
-            
-            this.setValue = function(val){
-                slider.setValue(((val-this.min)/(this.max-this.min))*this.width);
-            }
-            
-            function displayNewValue(offset){
-               // determine the actual value from the offset
-               newVal = Math.round(((offset/this.width)*(this.max-this.min))+this.min);
-               document.getElementById(prefix + "_slidervalue").innerHTML = newVal;
-            }
-            
-            function updateTagCloud(){
-               if(oldVal!=newVal){
-                    oldVal=newVal;
-                    this.onchange(newVal);
-                }
-            }
-        }
-    </script>
-    <script>
-    var ColorPicker = function() {
-        var Slider=YAHOO.widget.Slider;
-        var Color=YAHOO.util.Color;
-        var Dom=YAHOO.util.Dom;
-    
-        var pickerSize=180;
-        
-        var hue,picker,panel;
-        
-        var onOk = function(){};
-    
-        // hue, int[0,359]
-        var getH = function() {
-            var h = (pickerSize - hue.getValue()) / pickerSize;
-            h = Math.round(h*360);
-            return (h == 360) ? 0 : h;
-        }
-    
-        // saturation, int[0,1], left to right
-        var getS = function() {
-            return picker.getXValue() / pickerSize;
-        }
-    
-        // value, int[0,1], top to bottom
-        var getV = function() {
-            return (pickerSize - picker.getYValue()) / pickerSize;
-        }
-    
-        var swatchUpdate = function() {
-            var h=getH(), s=getS(), v=getV();
-            YAHOO.log("hsv " + [h,s,v]);
-    
-            Dom.get("hval").value = h;
-            Dom.get("sval").value = Math.round(s*100);
-            Dom.get("vval").value = Math.round(v*100);
-    
-            var rgb = Color.hsv2rgb(h, s, v);
-    
-            var styleDef = "rgb(" + rgb.join(",") + ")";
-            Dom.setStyle("swatch", "background-color", styleDef);
-    
-            Dom.get("rval").value = rgb[0];
-            Dom.get("gval").value = rgb[1];
-            Dom.get("bval").value = rgb[2];
-    
-            Dom.get("hexval").value = Color.rgb2hex(rgb[0], rgb[1], rgb[2]);
-        };
-    
-        var hueUpdate = function(newOffset) {
-            YAHOO.log("hue update: " + newOffset , "warn");
-            var rgb = Color.hsv2rgb(getH(), 1, 1);
-            var styleDef = "rgb(" + rgb.join(",") + ")";
-            Dom.setStyle("pickerDiv", "background-color", styleDef);
-    
-            swatchUpdate();
-        };
-    
-        pickerUpdate = function(newOffset) {
-            YAHOO.log("picker update [" + newOffset.x + ", " + newOffset.y + "]" , "warn");
-            swatchUpdate();
-        };
-        
-        var okHandler = function(){
-            var h=getH(), s=getS(), v=getV();
-            var rgb = Color.hsv2rgb(h, s, v);
-            onOk(rgb);
-            hide();
-        };
-        
-        var cancelHandler = function(){
-           
-           onOk = function(){};
-           hide();
-        }
-        
-        var hide = function(){
-             var pickerEl = document.getElementById("ddPicker");
-             pickerEl.style.visibility = "hidden";
-        }
 
-        
-        return {
+<script>
+   function Collapsable(root, options){
+       var default_options = {initiallyHidden : true};
     
-            init: function () {
-                hue = Slider.getVertSlider("hueBg", "hueThumb", 0, pickerSize);
-                hue.subscribe("change", hueUpdate);
-    
-                picker = Slider.getSliderRegion("pickerDiv", "selector", 
-                        0, pickerSize, 0, pickerSize);
-                picker.subscribe("change", pickerUpdate);
-    
-                hueUpdate(0);
-                
-                btnOk = document.getElementById("btnOk");
-                btnOk.addEventListener("click", okHandler, true)
-                
-                btnCancel = document.getElementById("btnCancel");
-                btnCancel.addEventListener("click", cancelHandler, true)
-        
-                panel = new YAHOO.util.DD("ddPicker");
-                panel.setHandleElId("pickerHandle");
-        
+       function init(){
+           this.options = merge(default_options, options);
+           var children = root.childNodes;
+            for(var i=0; i<children.length; i++){
+                var child = children[i];
+                if(child.nodeName == "DT"){
+                    var sibling = child.nextSibling; 
+                    while(sibling != null && sibling.nodeName != "DD"){
+                        sibling = sibling.nextSibling;
+                    } 
+                    if(sibling != null){
+                         child.addEventListener("click", partial(toggle, sibling), true);
+                         sibling.visible = this.options.initiallyHidden;
+                         toggle(sibling);
+                   }
                 }
-            ,
-            show : function(color, callback){
-                onOk = callback;
-                var pickerEl = document.getElementById("ddPicker");
-                pickerEl.style.visibility = "visible";
+             }
+       }
+       
+       function toggle(el){
+            if(el.visible){
+                el.visible = false;
+                el.style.position = "absolute";
+                el.style.top = "-1000px";
+            }else{
+                el.visible = true;
+                el.style.position = "relative";
+                el.style.top = "0px";
             }
-        }
-    }();
+       }
+       
+       init();
+   }
+   window.addEventListener("load", function(){  
+           new Collapsable(document.getElementById("settingsList"), {initiallyHidden: false});
+           var subList = cssQuery("#settingsList dl.collapsable");
+           subList.forEach(function(element){
+               new Collapsable(element, {initiallyHidden: true});
+           });
+       }, true);
         
-        YAHOO.util.Event.on(window, "load", ColorPicker.init);
-    </script>
+    
+    
+</script>
+
+<dl id="settingsList" class="collapsable">
 <dt>Cloud Settings</dt>
 <dd>
     <dl id="cloud-settings" class="collapsable">
-        <dt>Limit</dt>
-        <dd><script>
+        <dt>Limit <span id="limitValue" class="preview"></span></dt>
+        <dd>
+            <script>
+            connect(tc, 'update', function(){
+                 if(tc.options.limit==0){
+                     document.getElementById("limitValue").innerHTML = "Off";
+                 }else{
+                     document.getElementById("limitValue").innerHTML = tc.options.limit;
+                 }                    
+            });
+            </script>
+            <script>
             var f = function(){
                 var slider = new Slider("limit");
                 slider.min = 0;
                 slider.max = tc.tags.length;
-                slider.width = 200;
+                slider.width = 260;
                 slider.emitHTML();
                 slider.onchange = function(val){
                       tc.options.limit = val;
                       tc.update();
                 }
-                window.addEventListener("load", function(){ slider.init(); slider.setValue(tc.options.limit)}, true);
+                window.addEventListener("load", function(){ slider.init(); slider.setValue(tc.options.limit);}, true);
             };
             f();
             </script>   
-        </dd>
-    
-        
-        <dt>Sort Function</dt>
+        </dd>    
+        <dt>Sort Function <span id="sort_function_value" class="preview"></span></dt>
+        <script>
+            connect(tc, 'update', function(){
+                     document.getElementById("sort_function_value").innerHTML = tc.options.sort;
+            });
+            </script>
         <dd>
-        <ul class="radiolist">
-        <li><input type="radio" name="sort_function" value="Random" checked="true" onchange="tc.options.sort='random'; tc.replaceElement(document.getElementById('tagCloud'))">Random</input>
+        <ul class="radiolist" >
+            <script>
+                window.addEventListener("load", function(){ 
+                    document.getElementById("sort_function_" + tc.options.sort).checked = true;
+                }, true);
+            </script>
+        <li><input type="radio" id="sort_function_random" name="sort_function" value="Random" onchange="tc.options.sort='random'; tc.update()">Random</input>
         </li>
-        <li><input type="radio" name="sort_function" value="Weighted" onchange="tc.options.sort='weighted'; tc.replaceElement(document.getElementById('tagCloud'))">Weighted</input>
+        <li><input type="radio" id="sort_function_weighted" name="sort_function" value="Weighted" onchange="tc.options.sort='weighted'; tc.update()">Weighted</input>
         </li>
-        <li><input type="radio" name="sort_function" value="Alpha" onchange="tc.options.sort='alpha'; tc.replaceElement(document.getElementById('tagCloud'))">Alpha</input>
+        <li><input type="radio" id="sort_function_alpha" name="sort_function" value="Alpha" onchange="tc.options.sort='alpha'; tc.update()">Alpha</input>
         </li>
         </ul>
         </dd>
-        <dt>Display Order</dt>
+        <dt>Display Order <span id="sort_order_value" class="preview"></span></dt>
+        <script>
+            connect(tc, 'update', function(){
+                     document.getElementById("sort_order_value").innerHTML = tc.options.sort_order;
+            });
+            </script>
         <dd>
             <ul class="radiolist">
-            <li><input type="radio" name="sort_order" value="Normal" onchange="tc.options.sort_order = 'normal'; tc.replaceElement(document.getElementById('tagCloud'))">Normal</input>
+                <script>
+                window.addEventListener("load", function(){ 
+                    document.getElementById("sort_order_" + tc.options.sort_order).checked = true;
+                }, true);
+            </script>
+            <li><input type="radio" id="sort_order_normal" name="sort_order" value="Normal" onchange="tc.options.sort_order = 'normal'; tc.update()">Normal</input>
             </li>
-            <li><input type="radio" name="sort_order" value="Centered" onchange="tc.options.sort_order = 'center'; tc.replaceElement(document.getElementById('tagCloud'))">Centered</input>
+            <li><input type="radio" id="sort_order_center" name="sort_order" value="Centered" onchange="tc.options.sort_order = 'center'; tc.update()">Centered</input>
             </li>
-            <li><input type="radio" name="sort_order" value="Reversed" onchange="tc.options.sort_order = 'reverse'; tc.replaceElement(document.getElementById('tagCloud'))">Reversed</input>
+            <li><input type="radio" id="sort_order_reverse" name="sort_order" value="Reversed" onchange="tc.options.sort_order = 'reverse'; tc.update()">Reversed</input>
             </li>
             </ul>
         </dd>
         
-        <dt>Weight</dt>
+        <dt>Weight <span id="weight_value" class="preview"></span></dt>
         <dd>
+            <script>
+            connect(tc, 'update', function(){
+                     document.getElementById("weight_value").innerHTML = tc.options.weight;
+            });
+            </script>
         <ul class="radiolist">
-        <li><input type="radio" name="tag_weight" value="Linear" onchange="tc.options.weight='linear'; tc.replaceElement(document.getElementById('tagCloud'))">Linear</input>
+            <script>
+                window.addEventListener("load", function(){ 
+                    document.getElementById("tag_weight_" + tc.options.weight).checked = true;
+                }, true);
+            </script>
+        <li><input type="radio" id="tag_weight_linear" name="tag_weight" value="Linear" onchange="tc.options.weight='linear'; tc.update()">Linear</input>
         </li>
-        <li><input type="radio" name="tag_weight" value="Logarithmic" onchange="tc.options.weight='log'; tc.replaceElement(document.getElementById('tagCloud'))">Logarithmic</input>
+        <li><input type="radio" id="tag_weight_log" name="tag_weight" value="Logarithmic" onchange="tc.options.weight='log'; tc.update()">Logarithmic</input>
         </li>
         </ul>
         </dd>
         
-        <dt>Classes</dt>
+        <dt>Classes <span id="classes_value" class="preview"></span></dt>
+        <script>
+            connect(tc, 'update', function(){
+                     document.getElementById("classes_value").innerHTML = tc.options.classes;
+            });
+         </script>
         <dd>
             <script>
             var f = function(){
                 var slider = new Slider("classes");
                 slider.min = 1;
                 slider.max = 10;
-                slider.width = 200;
+                slider.width = 260;
                 slider.emitHTML();
                 slider.onchange = function(val){
                       tc.options.classes = val;
                       tc.update();
                 }
-                window.addEventListener("load", function(){ slider.init(); slider.setValue(tc.options.classes)}, true);
+                window.addEventListener("load", function(){ slider.init(); slider.setValue(tc.options.classes);}, true);
             };
             f();
             </script>
@@ -241,18 +171,24 @@
 
 <dt>Display Settings</dt>
 <dd>
-    <dl>
-        <dt>Width</dt>
+    <dl class="collapsable">
+        <dt>Width <span id="width_value" class="preview"></span></dt>
+        <script>
+          connect(tc.display, 'recalculate', function(){
+                     document.getElementById("width_value").innerHTML = tc.display.options.width;
+            });
+         </script>
         <dd>
             <script>
             var f = function(){
                 var slider = new Slider("width");
                 slider.min = 0;
                 slider.max = 1200;
-                slider.width = 200;
+                slider.width = 260;
                 slider.emitHTML();
                 slider.onchange = function(val){
-                      tc.display.setWidth(val);
+                      tc.display.options.width = val;
+                      tc.display.redisplay();
                 }
                 window.addEventListener("load", function(){ slider.init(); slider.setValue(tc.display.options.width)}, true);
             };
@@ -263,11 +199,10 @@
     </dl>
 </dd>
 <dd></dd>
-    <dt>Tag Classes</dt>
+    <dt>Tag Styles</dt>
+     
      <dd>
-         <div id="tagPreview">
-             
-         </div>      
+         <span id="tagPreview"></span>
          <script>
                 connect(tc.display, 'recalculate', function(){
                      var previewStr = "";
@@ -281,12 +216,10 @@
                      document.getElementById("tagPreview").innerHTML = previewStr;                    
                 });
             </script>  
-       <dl>
-        <dt>Font Size</dt>
+       <dl class="collapsable">
+        <dt>Font Size<span id="fontPreview" class="preview"></span></dt>
         <dd>
-            <div id="fontPreview">
-                
-            </div>
+            
             <script>
                 connect(tc.display, 'recalculate', function(){
                      var previewStr = "";
@@ -319,7 +252,7 @@
 
             <div id="fontMax" style="float: left">
             <h3>Max</h3>
-            <script>
+            <script type="text/javascript" language="JavaScript1.6">
                 function f(){
                     var slider = new Slider("font_max");
                     slider.min = 2;
@@ -331,17 +264,14 @@
                          tc.display.redisplay();
                     }
                     window.addEventListener("load", function(){ slider.init(); slider.setValue(tc.display.options.font_max)}, true);
-                }
+                };
                 f();
             </script>            
             </div>
 
         </dd>
-        <dt style="clear: left">Opacity</dt>
+        <dt style="clear: left">Opacity <span id="opacityPreview" class="preview"></span></dt>
         <dd>
-            <div id="opacityPreview">
-                
-            </div>
             <script>
                 connect(tc.display, 'recalculate', function(){
                      var previewStr = "";
@@ -392,11 +322,9 @@
             </div>
         </dd>
         
-        <dt style="clear: left">Color</dt>
+        <dt style="clear: left">Color <span id="colorPreview" class="preview"></span></dt>
         <dd>
-            <div id="colorPreview">
-                
-            </div>
+            
             <script>
                 connect(tc.display, 'recalculate', function(){
                      var previewStr = "";
@@ -452,68 +380,4 @@
 </dl>
 
 <br style="clear: both"/>
-
-<style type="text/css">
- #ddPicker { position: absolute; background-color: #eeeeee;  width: 380px; height: 260px; top: 40%; left: 40%; visibility: hidden;}
- #ddPicker input { font-size: .85em }
- #pickerHandle { background-color: #bbbbbb; height: 10px; cursor: move; }
- #hueThumb { cursor:default; width:18px; height:18px; z-index: 9; position:absolute; }
- #hueBg {-moz-outline: none; outline:0px none; position:absolute; left:216px; height:198px; width:18px; background:url(/images/colorpicker/hue.png) no-repeat; top:18px; }
- #pickerDiv {-moz-outline: none; outline: 0px; position: absolute; height:187px; width:188px; background-color:#FF0000; top:20px; }
- #pickerbg { position: absolute; z-index: 1; top:0px; left:0px; }
- #selector { cursor:default; width:11px; height:11px; z-index: 9; position:absolute; top:0px; left:0px; }
- #valdiv { text-align:left; position:absolute; top: 86px; left:246px; }
- #valdiv input{width: 2em;}
- input#hexval{ width: 4em; }
- #swatch { position:absolute; left:260px; top:30px; height:60px; width:60px; border:2px solid #aaaaaa; }
- #buttonsDiv {
-     position: absolute;
-     bottom: 10px;
-     right: 20px;
- }
- 
- #buttonsDiv input{
-     width: 5em;
- }    
-</style>
-
-<div id="ddPicker">
-    <div id="pickerHandle">&nbsp;</div>
-    <div id="pickerDiv" tabindex="-1" hidefocus="true">
-
-      <img id="pickerbg" src="/images/colorpicker/pickerbg.png" alt="" />
-      <div id="selector"><img src="/images/colorpicker/select.gif" /></div> 
-    </div>
-
-     <div id="hueBg" tabindex="-1" hidefocus="true">
-      <div id="hueThumb"><img src="/images/colorpicker/hline.png" /></div> 
-    </div> 
-
-    <div id="valdiv">
-        <form name="rgbform">
-        <br />
-        R <input autocomplete="off" name="rval" id="rval" type="text" value="0" size="3" maxlength="3" />
-
-        H <input autocomplete="off" name="hval" id="hval" type="text" value="0" size="3" maxlength="3" />
-        <br />
-        G <input autocomplete="off" name="gval" id="gval" type="text" value="0" size="3" maxlength="3" />
-        S <input autocomplete="off" name="gsal" id="sval" type="text" value="0" size="3" maxlength="3" />
-        <br />
-        B <input autocomplete="off" name="bval" id="bval" type="text" value="0" size="3" maxlength="3" />
-        V <input autocomplete="off" name="vval" id="vval" type="text" value="0" size="3" maxlength="3" />
-        <br />
-        <br />
-        # <input autocomplete="off" name="hexval" id="hexval" type="text" value="0" size="6" maxlength="6" />
-        <br />
-
-        </form>
-    </div>
-    
-     <div id="swatch">&nbsp;</div>
-    <div id="buttonsDiv">
-            <form name="buttonsform">
-                <input name="ok" id="btnOk" type="button" value="OK"/>
-                <input name="cancel" id="btnCancel" type="button" value="Cancel"/>
-            </form>
-    </div>
-</div>
+ <%= render :partial => 'cloud/color_picker' %>

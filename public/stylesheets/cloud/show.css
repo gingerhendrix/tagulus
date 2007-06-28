@@ -12,7 +12,7 @@
 }
 
 #controls{
-    width: 400px;
+    width:360px;
     float: right;
     margin-left: 50px;
     padding-bottom: 50px;
@@ -24,11 +24,12 @@
 }
 
 #controls .yui-nav .selected a{
-  background-color: #95BEEF;
+  background-color: transparent;
 }    
 
 #controls .yui-content{
-   background-color: #95BEEF;
+background-color: transparent;
+   /*background-color: #95BEEF;*/
 }
 
 #links{
