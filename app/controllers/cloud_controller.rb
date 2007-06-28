@@ -92,7 +92,16 @@ class CloudController < ApplicationController
     else
       render :action => 'new'
     end
-    
+  end
+  
+  def create_blogger_cloud
+    @cloud = BloggerCloud.new(params[:cloud])
+    if @cloud.save
+      flash[:notice] = 'Cloud was successfully created.'
+      redirect_to :action => 'show', :id => @cloud
+    else
+      render :action => 'new'
+    end
   end
 
   def edit

@@ -2,7 +2,11 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 7) do
+ActiveRecord::Schema.define(:version => 8) do
+
+  create_table "blogger_cloud_data", :force => true do |t|
+    t.column "url", :string
+  end
 
   create_table "clouds", :force => true do |t|
     t.column "name",    :string
