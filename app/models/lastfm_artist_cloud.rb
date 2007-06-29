@@ -1,14 +1,7 @@
 require 'rexml/document'
+require 'yaml'
 
 class LastfmArtistCloud < Cloud
-  belongs_to :data, :class_name => "LastfmArtistCloudData", :foreign_key => "data_id"
-  after_save :update_frequencies
-  before_save :save_data
-  
-  def initialize(p={})
-    self.data = LastfmArtistCloudData.new
-    super p
-  end
   
   def update_frequencies
     uri = URI.parse("http://ws.audioscrobbler.com/1.0/user/#{self.username}/topartists.xml");
@@ -30,19 +23,16 @@ class LastfmArtistCloud < Cloud
   end
   
   def username
-    self.data.username
+    @data[:username]
   end
   
   def username=(u)
-    self.data.username=u    
+    @data[:username]=u    
   end
   
   def name
     "Last.fm Top Artists for #{username}"
   end
   
-  def save_data
-    self.data.save!
-  end
-  
+    
 end

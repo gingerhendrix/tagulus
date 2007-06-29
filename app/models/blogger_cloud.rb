@@ -1,15 +1,5 @@
 class BloggerCloud < Cloud
-  belongs_to :data, :class_name => "BloggerCloudData", :foreign_key => "data_id"
-  after_save :update_frequencies
-  before_save :save_data
-  
-  attr_accessor :url
-  
-  def initialize(p={})
-    self.data = BloggerCloudData.new
-    super p
-  end
-  
+
   def update_frequencies
     uri = URI.parse("http://#{url}/feeds/posts/default");
     response = Net::HTTP.get_response(uri);
@@ -31,16 +21,12 @@ class BloggerCloud < Cloud
     end
   end
   
-  def save_data
-    self.data.save!
-  end
-  
   def url=(u)
-    self.data.url = u
+   @data[:url] = u
   end
   
   def url
-    self.data.url
+   @data[:url]
   end 
   
   def name

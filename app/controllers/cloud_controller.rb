@@ -51,7 +51,7 @@ class CloudController < ApplicationController
   end
 
   def new_text_cloud
-    @cloud = TextCloud.new
+   
   end
 
   def create_text_cloud

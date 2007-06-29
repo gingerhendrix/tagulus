@@ -1,18 +1,6 @@
 
 class TextCloud < Cloud
-  belongs_to :data, :class_name => "TextCloudData", :foreign_key => "data_id"
-  after_save :update_frequencies
-  before_save :save_data
-  
-  def save_data
-    self.data.save
-  end
-  
-  def initialize(p={})
-    self.data = TextCloudData.new
-    super p
-  end
-  
+   
   def update_frequencies
       self.data.content.split.each do |word|
       tag = self.tag_frequencys.find :first, :conditions => ["tag= ?, cloud_id=?", word, self.id]
@@ -26,11 +14,11 @@ class TextCloud < Cloud
   end
   
   def content
-    self.data.content
+    @data[:content]
   end
 
   def content=(c)
-    self.data.content=c
+    @data[:content] = c
   end
   
 end

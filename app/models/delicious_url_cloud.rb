@@ -1,14 +1,6 @@
 require 'digest/md5'
 
 class DeliciousUrlCloud < Cloud
-  belongs_to :data, :class_name => "DeliciousUrlCloudData", :foreign_key => "data_id"
-  after_save :update_frequencies
-  before_save :save_data
-  
-  def initialize(p={})
-    self.data = DeliciousUrlCloudData.new
-    super p
-  end
   
   def update_frequencies
     #get json document from http://badges.del.icio.us/feeds/json/url/data?hash=
@@ -31,19 +23,14 @@ class DeliciousUrlCloud < Cloud
   end
   
   def url
-    self.data.url
+    @data[:url]
   end
   
   def url=(u)
-    self.data.url=u    
+    @data[:url]=u    
   end
   
   def name
     "Tags for #{url}"
   end
-  
-  def save_data
-    self.data.save!
-  end
-  
 end
