@@ -6,7 +6,8 @@ class DeliciousUrlCloud < Cloud
     #get json document from http://badges.del.icio.us/feeds/json/url/data?hash=
     #see http://del.icio.us/help/json/url
     hash = Digest::MD5.hexdigest(self.url)
-    uri = URI.parse("http://badges.del.icio.us/feeds/json/url/data?hash=#{hash}");
+    uri = URI.parse("http://badges.del.icio.us/feeds/json/url/data?hash=#{hash}")
+    puts "Retrieving http://badges.del.icio.us/feeds/json/url/data?hash=#{hash}"
     response = Net::HTTP.get_response(uri);
     json = response.body;
     puts "json #{json}"

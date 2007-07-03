@@ -1,8 +1,17 @@
-<div id="yui-main" class="new">
 
-    <div class="block">
-        <h1>Create a Cloud</h1>
-        <h2>1. Pick a Cloud Type</h2>
-        <%= render :partial => 'cloud_type_form' %>
-    </div>
+<div id="yui-main">
+
+<div class="block newTextCloud">
+
+<h1>Create</h1>
+
+<% form_tag :action => 'create' do %>
+  <input type="hidden" name="cloud_type" value="<%=@cloud_type%>"></input></p>
+  <%= render :partial => "/cloud/_new/#{@cloud_type}_form" %>
+  <%= submit_tag "Create" %>
+<% end %>
+<br/>
+<%= link_to '&laquo;&thinsp;Back', :action => 'new' %>
+
+</div>
 </div>

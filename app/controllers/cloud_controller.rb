@@ -39,63 +39,14 @@ class CloudController < ApplicationController
   end
   
   def new
-  
+    factory = CloudFactory.instance
+    @cloud_type = params[:cloud_type]
+    @cloud = factory.newCloud @cloud_type, {}
   end
-  
-  def new_delicious_cloud
     
-  end
-  
-  def new_lastfm_artist_cloud
-    
-  end
-
-  def new_text_cloud
-   
-  end
-
-  def create_text_cloud
-    @cloud = TextCloud.new(params[:cloud])
-    if @cloud.save
-      flash[:notice] = 'Cloud was successfully created.'
-      redirect_to :action => 'show', :id => @cloud
-    else
-      render :action => 'new'
-    end
-  end
-  
-  def create_delicious_cloud
-    @cloud = DeliciousCloud.new(params[:cloud])
-    if @cloud.save
-      flash[:notice] = 'Cloud was successfully created.'
-      redirect_to :action => 'show', :id => @cloud
-    else
-      render :action => 'new'
-    end
-  end
-  
-  def create_delicious_url_cloud
-    @cloud = DeliciousUrlCloud.new(params[:cloud])
-    if @cloud.save
-      flash[:notice] = 'Cloud was successfully created.'
-      redirect_to :action => 'show', :id => @cloud
-    else
-      render :action => 'new'
-    end
-  end
-  
-  def create_lastfm_artist_cloud
-    @cloud = LastfmArtistCloud.new(params[:cloud])
-    if @cloud.save
-      flash[:notice] = 'Cloud was successfully created.'
-      redirect_to :action => 'show', :id => @cloud
-    else
-      render :action => 'new'
-    end
-  end
-  
-  def create_blogger_cloud
-    @cloud = BloggerCloud.new(params[:cloud])
+  def create
+    factory = CloudFactory.instance
+    @cloud = factory.newCloud params[:cloud_type], params[:cloud]
     if @cloud.save
       flash[:notice] = 'Cloud was successfully created.'
       redirect_to :action => 'show', :id => @cloud
@@ -104,6 +55,7 @@ class CloudController < ApplicationController
     end
   end
 
+  
   def edit
     @cloud = Cloud.find(params[:id])
   end

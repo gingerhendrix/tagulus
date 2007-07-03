@@ -36,3 +36,5 @@ class LastfmArtistCloud < Cloud
   
     
 end
+
+
