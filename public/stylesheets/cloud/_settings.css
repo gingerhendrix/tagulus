@@ -17,6 +17,7 @@
     padding-left: 0.5em;
     margin-bottom: 4px;
     cursor: pointer;
+    clear: both;
 }
 
 #settings dl dd{

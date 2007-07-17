@@ -377,6 +377,35 @@
 
     </dl>
 </dd>
+<dt>Behaviour</dt>
+<dd>
+    <dl class="collapsable">
+        <dt>Navigation <span id="navigation_value" class="preview"></span></dt>
+        <script>
+            var navBehaviour = new NavigableBehaviour();
+            navBehaviour.url = "http://del.icio.us/tag/%t"
+            
+            function onNavigationToggle(el){
+                urlEl = document.getElementById("navigationUrl");
+                preview = document.getElementById("navigation_value");
+                if (el.checked){
+                    urlEl.disabled = false; 
+                    preview.innerHTML = "On"
+                    tc.behaviour.add(navBehaviour);
+                }else{
+                    urlEl.disabled = true;
+                    preview.innerHTML = "Off"
+                    tc.behaviour.remove(navBehaviour)
+               }
+            }
+            
+        </script>
+        <dd>
+            <label for="navigationBehaviour" style="width: 3em; display: block; float: left">On</label><input type="checkbox" name="navigationBehaviour" onchange="onNavigationToggle(this)" value="on"></input><br style="clear: both"/>
+            <label for="navigationUrl" style="width: 3em; display: block; float: left">URL</label><input type="text" name="navigationUrl" disabled="true" id="navigationUrl" onchange="navBehaviour.url=this.value" value="http://del.icio.us/tag/%t"></input>(%t - tag name) 
+        </dd>
+    </dl>
+</dd>
 </dl>
 
 <br style="clear: both"/>

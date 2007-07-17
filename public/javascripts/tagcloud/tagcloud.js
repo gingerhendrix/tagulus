@@ -5,8 +5,7 @@
   * 0.3 - 08/06/07 -  
   */
   
-  
-function TagCloud(folksonomy, element, options, displayOptions){
+function TagCloud(source, element, options, displayOptions){
     var default_options = {
         classes : 6,
         sort : "random",
@@ -17,30 +16,32 @@ function TagCloud(folksonomy, element, options, displayOptions){
         style : {width : 600},
         visible: true
     }
-    
-    this.sort = true;
-    this.center = true;
-    this.filter = ["blogs", "blog"];
     this.element = element;
     
     function init(){
         this.tags = [];
         this.tagMap = {};
+        this.displayTags = [];
+        this.groups = [];
+        this.tagGroups = {};
+        this.tagElements = {};
+    
         this.wordCount = 0;
         this.options = merge(default_options, options);
         this.display = new TagCloudDisplay(this, element, displayOptions);
-    
+        this.behaviour = new TagCloudBehaviour(this, element);
         makeTagMap();
+        makeCloud();
         this.display.init();
         this.update();
     }
     
     function makeTagMap(){
-        for(var i=0; i<folksonomy.length; i++){
-               this.tags.push(folksonomy[i].tag);
-               //var freq = Math.log(Number(folksonomy[i].frequency));
-               var freq =  folksonomy[i].frequency;
-               this.tagMap[folksonomy[i].tag] = freq;
+        for(var i=0; i<source.length; i++){
+               this.tags.push(source[i].tag);
+               //var freq = Math.log(Number(source[i].frequency));
+               var freq =  source[i].frequency;
+               this.tagMap[source[i].tag] = freq;
                this.wordCount += freq;
                  if(!this.max || freq>this.max){
                      this.max = freq;
@@ -57,9 +58,8 @@ function TagCloud(folksonomy, element, options, displayOptions){
     } 
     
     
-    this.emitHTML = function(){
-        
-        var str = "";
+    var makeCloud = function(){
+        //var str = "";
         var tags = this.tags;
         var tagMap = this.tagMap;
         if(this.options.limit && this.options.limit != 0 && this.options.limit != "0"){
@@ -90,6 +90,8 @@ function TagCloud(folksonomy, element, options, displayOptions){
         }else if(this.options.sort_order == "reverse"){
             tags = tags.reverse();
         }
+        var groups = [];
+        var tagGroups = {};
         for(var i=0; i<tags.length; i++){
             var tag = tags[i];
             if(this.options.weight == 'log'){
@@ -106,21 +108,41 @@ function TagCloud(folksonomy, element, options, displayOptions){
             var group =  Math.ceil(((classes-1)*(weight-min))/(max-min));
             
             group = classes - group; //invert order
-            
-            str += "<span class='tag tag"+group+"'>" + tag + " </span>";//"(" +weight + "," + group +") 
+            tagGroups[tag] = group;
+            if(!groups[group]){
+                groups[group] = []
+            }
+            groups[group].push(tag);
+            //str += "<span class='tag tag"+group+"'>" + tag + " </span>";//"(" +weight + "," + group +") 
         }
-        return str;
+        this.displayTags = tags;
+        this.groups = groups;
+        this.tagGroups = tagGroups;
     }
     
-    this.replaceElement = function(){
-        this.element.innerHTML = this.emitHTML();
-        this.display.redisplay();
+    var emitDOM = function(){
+        var div = document.createElement("div");
+        for(var i=0; i<this.displayTags.length; i++){
+            var tag = this.displayTags[i];
+            var group = this.tagGroups[tag];
+            var span = document.createElement("span");
+            span.setAttribute("class", "tag tag"+group);
+            span.style.whiteSpace = "nowrap"
+            span.innerHTML = tag;
+            div.appendChild(span);
+            this.tagElements[tag] = span;
+            div.appendChild(document.createTextNode(" "));
+            span.addEventListener("click", partial(this.behaviour.onclick, tag), true);
+        }
+        return div;
     }
     
     this.update = function(){
         console.log("Update " + this.options.visible);
         if(this.options.visible){
-            this.element.innerHTML = this.emitHTML();
+            makeCloud();
+            this.element.innerHTML =  "";
+            this.element.appendChild(emitDOM());
         }
         this.display.redisplay();
         signal(this, "update");
@@ -178,90 +200,11 @@ function TagCloud(folksonomy, element, options, displayOptions){
             return 0;
         }
     }
+    
+    emitDOM = bind(emitDOM, this);
+    makeCloud = bind(makeCloud, this);
     makeTagMap = bind(makeTagMap, this);
     init = bind(init, this);
-    init()
+    init();
 };
 
-function TagCloudDisplay(tagcloud, element, options){
-    this.tagcloud = tagcloud;
-    var default_options = {
-        width : 600,
-        font_family: "verdana, arial, helvetica, sans-serif",
-        font_distribution: "linear",
-        font_max: 24,
-        font_min: 8,
-        font_unit: "px",
-        opacity_min : 10,
-        opacity_max : 100,
-        color: [0,255,100],
-        color_distribution : "linear",
-        colors : [[255,0,0],[0,0,255]]
-    };
-    this.element = element;
-    this.options = merge(default_options, options);
-    
-    this.init = function(){
-        this.setWidth(this.options.width);
-        this.element.style.fontFamily = this.options.font_family;
-        this.recalculate(true);
-    }
-    
-    this.recalculate = function(force){
-        if(force || this.tagcloud.options.visible){
-            if(this.options.font_distribution == "linear"){
-                this.fontDistribution = partial(linearDistribution, this.options.font_min, this.options.font_max);
-            }else{
-                 this.fontDistribution = partial(constantDistribution, this.options.font_min);
-            }
-            this.opacityDistribution = partial(linearDistribution, this.options.opacity_min, this.options.opacity_max);
-            this.colorDistribution = function(d){
-                return map(function(arg){
-                    return linearDistribution(arg[0], arg[1], arg[2]);
-                }, izip(this.options.colors[0], this.options.colors[1], [d,d,d]));
-            }
-        }
-        signal(this, "recalculate");
-    }
-    
-    
-    
-    this.redisplay = function(){
-        this.recalculate();
-        if(this.tagcloud.options.visible){
-             this.setWidth(this.options.width);
-            console.log("Tagcloud redisplaying")
-            for(var i=0; i<this.tagcloud.options.classes; i++){
-                var d = (this.tagcloud.options.classes-i)/this.tagcloud.options.classes;
-                //console.log("Class " + (i+1) );
-                var fontSize = this.fontDistribution(d);
-                var opacity = this.opacityDistribution(d);
-                var color = this.colorDistribution(d);
-                color = color.map(Math.floor);
-                //console.log("Color " + color);
-                var elements = cssQuery(".tag"+(i+1), element);
-                //console.log("Elements " + elements.length);
-                elements.forEach(bind(function(el){
-                    el.style.fontSize = "" + fontSize + "" + this.options.font_unit;
-                    el.style.opacity = "" + opacity/100 + "";
-                    //console.log("rgb(" + color[0] + ", " + color[1] + "," +  color[2] +")");
-                    el.style.color = "rgb(" + color[0] + ", " + color[1] + "," +  color[2] +")";
-                }, this));
-            }
-        }
-    }
-    function linearDistribution(min, max, progress){
-        return ((max-min)*progress)+min;
-    }
-    
-    function colorDistribution(min, max, progress){
-            return map(function(arg){
-                return linearDistribution(arg[0], arg[1], arg[2]);
-            }, izip(min, max, [d,d,d]));
-    }
-    
-    this.setWidth = function(width){
-        this.options.width = width;
-        this.element.style.width = width + "px";
-    }    
-}
