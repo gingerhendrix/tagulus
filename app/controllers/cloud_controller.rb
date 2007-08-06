@@ -15,16 +15,16 @@ class CloudController < ApplicationController
   end
 
   def show
+    _show
+  end
+  
+  def show_chart
+    _show    
+  end
+  
+  def _show
     @cloud = Cloud.find(params[:id])
     @tag_frequencies = @cloud.tag_frequencys.find :all, :order => "frequency DESC"
-    
-    if @cloud[:type] == "TextCloud"
-      if @cloud.content.length > 400  
-        @content = @cloud.content[0..400] + "..."
-      else
-        @content = @cloud.content    
-      end
-    end
   end
   
   def json

@@ -1,0 +1,92 @@
+
+
+<div id="yui-main">
+
+<div class="block">
+
+<h1><%= @cloud.name %></h1>
+
+<div id="chart">
+<h2>Chart</h2>
+  <div>
+    <canvas id="tag_graph" height="600" width="600"></canvas>
+  </div>
+  <%= link_to_cloud_json @cloud %>
+  <script>
+    var dataOptions = {
+        limit: 1,
+        showOther: false
+    };
+    
+    function drawGraph() {
+        var accumulator = 0;
+        var data = [];
+        var labels = [];
+        var otherFreq = 0;
+        for(var i=0; i<cloud.tag_frequencies.length; i++){
+            var tag = cloud.tag_frequencies[i];
+            if( tag.frequency > dataOptions.limit){
+                data.push([i, tag.frequency]);
+                labels.push({v:i, label: tag.tag});
+            }else{
+                otherFreq+= tag.frequency;            
+            }
+        }
+        if(dataOptions.showOther){
+            data.push([i, otherFreq]);
+            labels.push({v:i, label : "other"});
+        }
+       var options = {
+           "IECanvasHTC": "/javascripts/PlotKit/iecanvas.htc",
+           "colorScheme": PlotKit.Base.palette(PlotKit.Base.baseColors()[0]),
+           "padding": {left: 0, right: 0, top: 10, bottom: 30},
+           "xTicks": labels,
+        };
+        var layout = new PlotKit.Layout("pie", options);
+        layout.addDataset("frequency", data);
+        layout.evaluate();
+        var canvas = MochiKit.DOM.getElement("tag_graph");
+        var plotter = new PlotKit.SweetCanvasRenderer(canvas, layout, options);
+        plotter.render();
+    }
+    MochiKit.DOM.addLoadEvent(drawGraph);  
+  </script>
+</div>
+
+<script type="text/javascript">
+var myTabs = new YAHOO.widget.TabView("controls");
+</script> 
+ 
+<div id="controls" class="yui-navset">
+    <ul class="yui-nav">
+        <li class="selected"><a href="#settings"><em>Settings</em></a></li>
+        <li><a href="#export"><em>Export</em></a></li>
+    </ul>
+    <div class="yui-content">
+        <div id="settings" class="panel visible">
+            <dl id="settingsList" class="collapsable">
+                <dt>Chart Settings</dt>
+                <dd>...</dd>
+            </dl>                
+         </div>
+
+        <div id="export" class="panel">
+            
+        </div>
+    </div>
+</div>
+
+<div id="links">
+<%= link_to 'Edit', :action => 'edit', :id => @cloud %> |
+<%= link_to 'Back', :action => 'index' %>
+</div>
+
+
+</div>
+</div>
+
+<script type="text/javascript" src="/javascripts/MochiKit/MochiKit.js"></script>
+<script type="text/javascript" src="/javascripts/PlotKit/Base.js"></script>
+<script type="text/javascript" src="/javascripts/PlotKit/Layout.js"></script>
+<script type="text/javascript" src="/javascripts/PlotKit/Canvas.js"></script>
+<script type="text/javascript" src="/javascripts/PlotKit/SweetCanvas.js"></script>

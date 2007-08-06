@@ -5,6 +5,11 @@
 
 <h1><%= @cloud.name %></h1>
 
+<div id="vis_menu">
+<%= link_to 'Cloud', :action => 'show', :id => @cloud %>
+<%= link_to 'Chart', :action => 'show_chart', :id => @cloud %>
+</div>
+
 <div id="cloud">
 <h2>Cloud</h2>
   <%= render :partial => 'cloud/cloud' %>
