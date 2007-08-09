@@ -11,6 +11,10 @@
     float: left;
 }
 
+#tag_graph{
+    background-color: transparent;
+}
+
 #controls{
     width:360px;
     float: right;

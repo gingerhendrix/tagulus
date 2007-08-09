@@ -11,11 +11,10 @@ function TagChart(options){
       layout : {
           style : "pie",
          "IECanvasHTC": "/javascripts/PlotKit/iecanvas.htc",
-         "colorScheme": PlotKit.Base.palette(PlotKit.Base.baseColors()[0]),
          "padding": {left: 0, right: 0, top: 10, bottom: 30},
       },
       renderer : {
-          
+         "colorScheme": PlotKit.Base.baseColors()
       }            
     }
     
@@ -33,6 +32,20 @@ function TagChart(options){
       layout.evaluate();
       
       renderer.clear();
+      renderer.render();
+    }
+    
+    this.relayout = function(){
+      layout = new PlotKit.Layout(this.options.layout.style, this.options.layout);
+      renderer.clear();
+      renderer.layout = layout;
+    }
+    
+    this.rerender = function(){
+      renderer.clear();
+      
+      var canvas = MochiKit.DOM.getElement("tag_graph");
+      renderer = new PlotKit.SweetCanvasRenderer(canvas, layout, this.options.renderer);
       renderer.render();
     }
     
