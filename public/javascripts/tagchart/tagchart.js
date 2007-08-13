@@ -10,11 +10,20 @@ function TagChart(options){
       },
       layout : {
           style : "pie",
-         "IECanvasHTC": "/javascripts/PlotKit/iecanvas.htc",
-         "padding": {left: 0, right: 0, top: 10, bottom: 30},
+          IECanvasHTC: "/javascripts/PlotKit/iecanvas.htc",
+          padding: {left: 0, right: 0, top: 10, bottom: 30},
+          barOrientation : "vertical",
+          barWidthFillFraction : "0.75"
       },
       renderer : {
-         "colorScheme": PlotKit.Base.baseColors()
+         "colorScheme": PlotKit.Base.baseColors(),
+         drawXAxis : true,
+         drawYAxis : true,
+         axisLineWidth : 0.5,
+         axisTickSize : 3.0,
+         axisLabelColor : MochiKit.Color.Color.fromHexString("#666666"),
+         axisLabelFontSize : 9,
+         axisLabelWidth : 50,
       }            
     }
     
