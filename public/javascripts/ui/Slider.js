@@ -7,15 +7,29 @@
             var oldVal;
             var slider;
             
+            function html(){
+              var width = this.width;
+              
+              var html = '<div class="slider" style="width: '+ (width + 60) + 'px">'
+               + '<span id="'+prefix + '_min" style="position: relative; font-size: 8px; left: 6px;">0</span><span id="'+prefix + '_max" style="position: relative; left: ' +width + 'px; font-size: 8px">200</span>'
+               + '<div id="'+prefix+'_sliderbg" style="background-image : url(/images/slider/small/horizBg.png); width : ' + (width + 16) + 'px; height: 16px; position: relative; top: 0px; cursor: pointer; ">'
+               + '<div id="'+prefix + '_sliderthumb" style="position: relative; top: 0px !important; width: 16px; height: 16px;"><img id="'+prefix+'_sliderthumbimg" src="/images/slider/small/horizSlider.png" width="16" height="16"/></div>'
+               + '</div>'
+               + '<div id="'+prefix+'_slidervalue" style="position: relative; top: -16px; left: ' + (width + 8) + 'px; padding-left: 20px;">0</div>'
+               + '</div>';
+              
+              return html;
+            }
+            
+            this.getElement = function(){
+              var div =  document.createElement("div");
+              div.innerHTML = html.call(this);
+              return div;
+            }
+            
+            
             this.emitHTML = function(){
-                var width = this.width;
-                document.write('<div class="slider" style="width: '+ (width + 60) + 'px">');
-                document.write('<span id="'+prefix + '_min" style="position: relative; font-size: 8px; left: 6px;">0</span><span id="'+prefix + '_max" style="position: relative; left: ' +width + 'px; font-size: 8px">200</span>');
-                document.write('<div id="'+prefix+'_sliderbg" style="background-image : url(/images/slider/small/horizBg.png); width : ' + (width + 16) + 'px; height: 16px; position: relative; top: 0px; cursor: pointer; ">');
-                document.write('<div id="'+prefix + '_sliderthumb" style="position: relative; top: 0px !important; width: 16px; height: 16px;"><img id="'+prefix+'_sliderthumbimg" src="/images/slider/small/horizSlider.png" width="16" height="16"/></div>');
-                document.write('</div>');
-                document.write('<div id="'+prefix+'_slidervalue" style="position: relative; top: -16px; left: ' + (width + 8) + 'px; padding-left: 20px;">0</div>');
-                document.write('</div>')
+              document.write(html.call(this));
             }
             
             this.init = function(){
