@@ -2,12 +2,13 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 20) do
+ActiveRecord::Schema.define(:version => 21) do
 
   create_table "clouds", :force => true do |t|
-    t.column "name", :string
-    t.column "type", :string
-    t.column "data", :text
+    t.column "name",   :string
+    t.column "type",   :string
+    t.column "data",   :text
+    t.column "status", :integer, :default => 0
   end
 
   create_table "tag_frequencies", :force => true do |t|

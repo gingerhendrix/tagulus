@@ -5,6 +5,7 @@
 <script type="text/javascript" src="/javascripts/PlotKit/Canvas.js"></script>
 <script type="text/javascript" src="/javascripts/PlotKit/SweetCanvas.js"></script>
 <script type="text/javascript" src="/javascripts/tagchart/tagchart.js"></script>
+<script type="text/javascript" src="/javascripts/ui/Collapsable.js"></script>
 
 <div id="yui-main">
 
@@ -286,6 +287,16 @@
         ]//groups
       }];
     window.addEventListener("load", function(){ makeSettings(settings, document.getElementById("settings"))}, true);
+    window.addEventListener("load", 
+                            function(){  
+                             var subList = cssQuery("#settings dl");
+                             subList.forEach(
+                               function(element){
+                                 new Collapsable(element, {initiallyHidden: true});
+                               }
+                             );
+                            }, 
+                            true);
   </script>
 </div>
 
