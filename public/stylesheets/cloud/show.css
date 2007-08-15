@@ -7,14 +7,25 @@
 }
 
 #cloud{
-    width: 400px;
     float: left;
+    margin-right: 2em;
+}
+#tagCloud{
+    background-color: #ffffff;
+    padding: 1em;
+    -moz-border-radius: 15px;
+    min-height: 300px;
+}
+
+#controls{
+    background-color: #ffffff;
+    padding: 1em;
+    -moz-border-radius: 15px;
 }
 
 #controls{
     width:360px;
-    float: right;
-    margin-left: 50px;
+    float: left;
     padding-bottom: 50px;
 }
 

@@ -9,12 +9,12 @@
 
 <div id="yui-main">
 
-<div class="block">
-
-<h1><%= @cloud.name %></h1>
+<div class="title">
+  <h1><%= @cloud.name %></h1>
+</div>
+<%= render :partial => 'cloud/view_menu' %>
 
 <div id="chart">
-<h2>Chart</h2>
   <div>
     <canvas id="tag_graph" height="600" width="600"></canvas>
   </div>
@@ -311,168 +311,9 @@ var myTabs = new YAHOO.widget.TabView("controls");
     </ul>
     <div class="yui-content">
         <div id="settings" class="panel visible">
-            <dl id="settingsList" class="collapsable">
-                <dt>Data Settings</dt>
-                <dd>
-                    <dl class="collapsable">
-                        <dt>Limit</dt>
-                        <dd>
-                        Limit:
-                        <input type="radio" name="limit_type" value="frequency"/>Frequency
-                        <input type="radio" name="limit_type" value="items" checked="checked"/>Items 
-                        
-                        </dd>                        
-                    </dl>
-                </dd>
-                <dt>Chart Settings</dt>
-                <dd>
-                  <dl class="collapsable">
-                    <dt>Chart type</dt>
-                    <dd>
-                        <input type="radio" name="chart_type" value="pie" checked="checked" onchange="chartTypeChange(this)"/>Pie
-                        <input type="radio" name="chart_type" value="bar" onchange="chartTypeChange(this)"/>Bar
-                        <input type="radio" name="chart_type" value="line" onchange="chartTypeChange(this)"/>Line
-                        <script>
-                            function chartTypeChange(el){
-                                chart.options.layout.style = el.value;
-                                chart.relayout();
-                                chart.reload();
-                            }
-                        </script>
-                    </dd>
-                    <dt>Bar Chart Settings</dt>
-                    <dd>
-                       <dl>
-                        <dt>Orientation</dt>
-                        <dd>
-                            <input type="radio" name="chart_orientation" value="vertical" checked="checked" onchange="chartOrientationChange(this)"/>Vertical
-                            <input type="radio" name="chart_orientation" value="horizontal" onchange="chartOrientationChange(this)"/>Horizontal
-                            <script>
-                                function chartOrientationChange(el){
-                                    chart.options.layout.barOrientation = el.value;
-                                    chart.relayout();
-                                    chart.reload();
-                                }
-                            </script>
-                        </dd>
-                        <dt>
-                        <dt>Bar Width</dt>
-                        <dd>
-                            <script>
-               /*             var f = function(){
-                                  var slider = new Slider("chart_barwidth");
-                                  slider.min = 0;
-                                  slider.max = 100;
-                                  slider.width = 260;
-                                  slider.emitHTML();
-                                  slider.onchange = function(val){
-                                        chart.options.layout.barWidthFillFraction = val/100;
-                                        chart.relayout();
-                                        chart.reload();
-                                  }
-                                  window.addEventListener("load", function(){ slider.init(); slider.setValue(75); }, true);
-                              };
-                              f();*/
-                              </script>
-                          </dd>                    
-                      </dl>
-                  </dd>
-                  <dt>Display Settings</dt>
-                    <dd>
-                        <dl>
-                          <dt>Basic Options</dt>
-                          <dd>
-                          <ul>
-                            <li>Color Scheme
-                            <select onchange="chartColorSchemeChange(this.value)">
-                                  <option value="colorScheme">Bright Primary Colors</option>
-                                  <option value="basePrimaryColors">Primary Colors</option>
-                                  <option value="baseDarkPrimaryColors">Dark Primary Colors</option>
-                                  <option value="baseBlueColors">3-Color Blue</option>
-                                  <option value="officeBlue">Blue</option>
-                                  <option value="officeRed">Red</option>
-                                  <option value="officeGreen">Green</option>
-                                  <option value="officePurple">Purple</option>
-                                  <option value="officeCyan">Cyan</option>
-                                  <option value="officeOrange">Orange</option>
-                                  <option value="officeBlack">Black</option>
-                              </select>
-                              <script>
-                                  function chartColorSchemeChange(scheme){
-                                    var colors = PlotKit.Base[scheme]();
-                                    if(colors.colorScheme){
-                                      MochiKit.Base.update(chart.options.renderer, colors);
-                                    }else{
-                                      chart.options.renderer.colorScheme = colors;
-                                      chart.options.renderer.backgroundColor = MochiKit.Color.Color.fromHexString("#ffffff");
-                                    }
-                                    chart.rerender();
-                                    chart.reload();
-                                  }
-                              </script>
-                            </li>
-                            <li>
-                            <input type="checkbox" onchange="chartFillChange(this.checked)"/>Fill
-                                                          
-                              <script>
-                              function chartFillChange(fill){
-                                chart.options.renderer.shouldFill = fill;
-                                chart.rerender();
-                                chart.reload();
-                              }
-                              </script>
-                            </li>
-                            <li><input type="checkbox" onchange="chartStrokeChange(this.checked)"/>Stroke 
-                              <script>
-                              function chartStrokeChange(stroke){
-                                chart.options.renderer.shouldStroke = stroke;
-                                chart.rerender();
-                                chart.reload();
-                              }
-                              </script>
-                            </li>
-                            <li><input type="checkbox" onchange="chartBackgroundChange(this.checked)"/>Background 
-                              <script>
-                              function chartBackgroundChange(bg){
-                                chart.options.renderer.drawBackground = bg;
-                                chart.rerender();
-                                chart.reload();
-                              }
-                              </script>
-                            </li>
-                           </ul>
-                          </dd>
-                          <dt>Axis Options</dt>
-                          <dd>
-                            <dl>
-                               <dt>x-axis</dt>
-                               <dd>
-                               <ul>
-                               <li><input type="checkbox" onchange="chartXAxisChange(this.checked)"/>Show
-                               <script>
-                                  function chartXAxisChange(show){
-                                    chart.options.renderer.drawXAxis = show;
-                                    chart.rerender();
-                                    chart.reload();
-                                  }
-                              </script>
-                               </li>
-                               </ul>
-                               </dd>
-                               <dt>y-axis</dt>
-                               <dd></dd>
-                             </dl>
-                            <h3></h3>
-                          </dd>
-                      </dl>
-                  </dd>
-               </dl>
-            </dd>
-          </dl>                
-         </div>
+        </div>
 
         <div id="export" class="panel">
-            
         </div>
     </div>
 </div>
@@ -483,5 +324,4 @@ var myTabs = new YAHOO.widget.TabView("controls");
 </div>
 
 
-</div>
 </div>

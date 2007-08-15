@@ -20,14 +20,42 @@ body{
 	
 }
 
+#yui-main > div.block {
+    /*background-image : url(/images/block-background.png);*/
+}
 
 #bd h1, #bd h2, #bd h3{
     color: #002280;
     font-family: verdana, arial, helvetica, sans-serif;
 }
+
+img.button {
+    padding: 2px;
+    -moz-border-radius: 20%;
+    background-color: #ffffff;
+    margin: 5px;
+    margin-bottom: 1em;
+    margin-top: -0.5em;
+}
+
+div.title {
+    display: block;
+    margin-bottom: 1em;
+    margin-right: 2em;
+    float: left;
+    
+}
+
+
 #bd h1{
-    font-size: 3em;
-    margin-bottom: 0.5em;
+    background-color: #ffffff;
+    -moz-border-radius: 10%;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    padding-top: 0.2em;
+    padding-bottom: 0.4em;
+    font-size: 2em;
+    display: inline;
 }
 
 #bd h2{
@@ -66,7 +94,7 @@ body{
 }
 
 .block{
-    background-color: #ffffff;
+    background-color: transparent;
     padding-left: 1em;
     padding-right: 1em;
     padding-top: 1em;
