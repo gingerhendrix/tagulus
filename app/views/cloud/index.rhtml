@@ -5,19 +5,19 @@
             <h2>Random<h2>
             <h3><%= link_to @random.name, :action => 'show', :id => @random %></h3>
             <%= link_to_cloud_json @random %>               
-      <div id='randomCloud'>
-      </div>
-      <script>
-       window.addEventListener("load", function(){ 
-                       var tc = new TagCloud(cloud.tag_frequencies, document.getElementById('randomCloud'), {limit: 100, sort : "alpha"}, {width: 440, 
-                                                                                                           font_distribution: "linear",
-                                                                                                           font_max: 24,
-                                                                                                           font_min: 6,
-                                                                                                           font_unit: "px",
-                                                                                                           colors : [[57,55,65],[57,55,65]],
-                                                                                                           visible : true });
-                       }, true);       
-      </script>
+              <div id='randomCloud'>
+              </div>
+              <script>
+               window.addEventListener("load", function(){ 
+                               var tc = new TagCloud(cloud.tag_frequencies, document.getElementById('randomCloud'), {limit: 100, sort : "alpha"}, {width: 440, 
+                                                                                                                   font_distribution: "linear",
+                                                                                                                   font_max: 24,
+                                                                                                                   font_min: 6,
+                                                                                                                   font_unit: "px",
+                                                                                                                   colors : [[57,55,65],[57,55,65]],
+                                                                                                                   visible : true });
+                               }, true);       
+              </script>
         </div>
         
         <div class="yui-g block">

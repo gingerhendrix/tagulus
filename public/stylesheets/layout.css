@@ -20,8 +20,8 @@ body{
 	
 }
 
-#yui-main > div.block {
-    /*background-image : url(/images/block-background.png);*/
+#yui-main div.block {
+    background-color: #ffffff;
 }
 
 #bd h1, #bd h2, #bd h3{
