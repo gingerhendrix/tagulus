@@ -9,3 +9,14 @@
     padding-bottom: 40px;
     padding-left: 2em;    
 }
+
+dl#latest dt{
+    width: 30%;
+    clear: left;
+    font-family: vedana, arial, helvetica, sans-serif;
+    font-size: 91%;
+}
+
+dl#latest dd{
+    padding-left: 2em;
+}
