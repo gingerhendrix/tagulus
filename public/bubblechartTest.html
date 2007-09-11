@@ -3,9 +3,9 @@
     <script src="/javascripts/bubblechart/bubblechart.js"></script>
     <script>
       window.addEventListener("load", function(){
-        var data = [];
-        for(var i=0; i<30; i++){
-            data.push(Math.floor( Math.pow(i, 3) * 100 * Math.random())); 
+        var data = [];// [10, 5, 4, 3, 2, 1];
+        for(var i=1; i<20; i++){
+            data.push( Math.pow(i, 2)* 1.0 * Math.random()); 
         }
         new BubbleChart(data, document.getElementById("canvas"));
       }, false)
