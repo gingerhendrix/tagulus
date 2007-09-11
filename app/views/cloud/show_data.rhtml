@@ -1,0 +1,93 @@
+
+<div id="yui-main">
+
+<div class="title">
+  <h1>Data for <%= @cloud.name %></h1>
+</div>
+<%= render :partial => 'cloud/view_menu' %>
+
+<div id="data" class="block yui-skin-sam">
+  <h2>Tags</h2>
+  <div id="tag_frequencies">Not Loaded
+  </div>
+  <style>
+    .yui-dt-table td{
+        display: block;
+        
+    }
+  
+  </style>
+  <script type="text/javascript">
+  YAHOO.util.Event.addListener(window, "load", function() {
+    YAHOO.example.Basic = new function() {
+        var myColumnDefs = [
+            {key:"tag", sortable:true},
+            {key:"frequency", formatter:YAHOO.widget.DataTable.formatNumber, sortable:true},
+        ];
+
+        this.myDataSource = new YAHOO.util.DataSource("/cloud/json/<%= @cloud.id %>?");
+        this.myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+        this.myDataSource.responseSchema = {
+            resultsList: "tag_frequencies",
+            fields: ["tag","frequency"]
+        };
+        
+        var configs = {
+            paginated:true, // Enables built-in client-side pagination
+            paginator:{ // Configurable options
+                containers: null, // Create container DIVs dynamically
+                currentPage: 1, // Show page 1
+                dropdownOptions: [10,25,50], // Show these in the rows-per-page dropdown
+                pageLinks: 4, // Show links to all pages
+                rowsPerPage: 10 // Show up to 500 rows per page
+            }
+       };
+        
+        this.myDataTable = new YAHOO.widget.DataTable("tag_frequencies",
+                myColumnDefs, this.myDataSource, configs);
+     };
+  });
+  </script>
+  <h2>Items</h2>
+  <div id="tagged_items">
+  <script>
+    YAHOO.util.Event.addListener(window, "load", function() {
+    var tagged_items_datatable = new function() {
+        var linkFormatter =function(elCell, oRecord, oColumn, oData) {
+            console.log("Record: " + oRecord.toSource());
+            elCell.innerHTML = "<a href='"+oRecord._oData['data.href']+"' title='"+oData+"'>"+oData+"</a>"; 
+        } 
+        
+        var myColumnDefs = [
+            {key:"id", sortable:true, width: "3em", },
+            {key:"data.time",  formatter: YAHOO.widget.DataTable.formatDate,  label: "Time", sortable: true, width: "5em",},
+            {key:"data.description", formatter : linkFormatter, label: "description", sortable: true, width: "20em",},
+            {key:"tags", sortable:true, width: "35em", },
+        ];
+
+        this.myDataSource = new YAHOO.util.DataSource("/cloud/items_json/<%= @cloud.id %>?");
+        this.myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+        this.myDataSource.responseSchema = {
+            resultsList: "items",
+            fields: ["id","tags", "data.href", "data.description", {key: "data.time", parser: YAHOO.util.DataSource.parseDate}]
+        };
+        
+        var configs = {
+            paginated:true, // Enables built-in client-side pagination
+            paginator:{ // Configurable options
+                containers: null, // Create container DIVs dynamically
+                currentPage: 1, // Show page 1
+                dropdownOptions: [10,25,50], // Show these in the rows-per-page dropdown
+                pageLinks: 4, // Show links to all pages
+                rowsPerPage: 10 // Show up to 500 rows per page
+            },
+            width: "700px"
+       };
+        
+        this.myDataTable = new YAHOO.widget.DataTable("tagged_items",
+                myColumnDefs, this.myDataSource, configs);
+     };
+  });
+  </script>
+  </div>
+</div>

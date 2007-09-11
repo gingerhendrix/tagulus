@@ -11,11 +11,15 @@ javascripts:
   - yui/yahoo/yahoo
   - yui/yahoo-dom-event/yahoo-dom-event
   - yui/element/element-beta-min
+  - yui/datasource/datasource-beta-min
   - yui/dragdrop/dragdrop-min
   - yui/animation/animation-min
+  - yui/connection/connection-min
   - yui/slider/slider-min
   - yui/tabview/tabview-min
   - yui/color/color
+  - yui/logger/logger-min
+  - yui/datatable/datatable-beta
 - ui:
   - ui/ColorPicker
   - ui/Slider
@@ -28,3 +32,8 @@ stylesheets:
 - base: 
   - reset-fonts-grids
   - layout
+- yui:
+  - yui/tabview/assets/tabview
+  - yui/tabview/assets/border_tabs
+  - yui/datatable/assets/datatable
+  - yui/datatable/assets/skins/sam/datatable-skin.css 

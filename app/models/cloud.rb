@@ -1,5 +1,6 @@
 class Cloud < ActiveRecord::Base
   has_many :tag_frequencys
+  has_many :tagged_items
   
   after_create :update_frequencies
   before_save :save_data

@@ -22,9 +22,32 @@ class CloudController < ApplicationController
     _show    
   end
   
+  def show_data
+    _show
+  end
+  
   def _show
     @cloud = Cloud.find(params[:id])
     @tag_frequencies = @cloud.tag_frequencys.find :all, :order => "frequency DESC"
+    @tagged_items = @cloud.tagged_items.find :all
+  end
+  
+  def items_json
+    cloud = Cloud.find(params[:id])
+    items = cloud.tagged_items.find :all
+    json_items = []
+    items.each do |i|
+      json_item = {}
+      json_item[:id] = i.id
+      json_item[:tags] = i.taggings.find(:all).map do |tagging| 
+          tagging.tag.tag 
+      end
+      json_item[:data] = i.data
+      json_items.push json_item 
+    end 
+    json = {:name => cloud.name, :items => json_items}
+    #TODO: prepend with "var cloud = " or similar via a JSONP argument
+    render :text => JSON.generate(json)  
   end
   
   def json
@@ -35,7 +58,12 @@ class CloudController < ApplicationController
       json_frequencies.push({:tag => tf.tag, :frequency => tf.frequency})
     end 
     json_cloud = {:name => cloud.name, :tag_frequencies => json_frequencies}
-    render :text => "var cloud = " + JSON.generate(json_cloud)
+    #TODO: prepend with "var cloud = " or similar via a JSONP argument
+    if(callback = params[:callback])
+      render :text => callback + "(" + JSON.generate(json_cloud) + ")";
+    else
+      render :text => JSON.generate(json_cloud)
+    end
   end
   
   def new

@@ -11,7 +11,7 @@ class CloudFactory
     #ugly initializer - move this responsibility elsewhere 
     @clouds = {:lastfm_artist_cloud => LastfmArtistCloud,
                :blogger_cloud => BloggerCloud,
-               :delicious_cloud => DeliciousCloud,
+               :delicious_user_cloud => DeliciousUserCloud,
                :delicious_url_cloud => DeliciousUrlCloud,
                :technorati_cloud => TechnoratiCloud}
   end
