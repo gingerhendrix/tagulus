@@ -32,7 +32,6 @@ function BubbleChart(data, canvas){
             var y = (j+1)*gridSize;
             if(!intersects(x, y, radius)){
               console.log("Found space " + i + "," + j);
-
               circles.push({x: x, y: y, radius: radius})
               bounds.x = Math.max(bounds.x, x+radius);
               bounds.y = Math.max(bounds.y, y+radius);

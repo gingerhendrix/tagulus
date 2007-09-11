@@ -12,7 +12,7 @@ function BubbleChart(data, canvas){
   draw();
   
   function computeBubbles(){
-    //Algoritn, draw center circle then rotate around exterior
+    //Algorithm, draw center circle then rotate around exterior
     var value =  data[0];
     var radius = value;
     circles.push({x: 0, y: 0, radius: radius, color : "#000000"});
