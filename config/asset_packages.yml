@@ -36,4 +36,4 @@ stylesheets:
   - yui/tabview/assets/tabview
   - yui/tabview/assets/border_tabs
   - yui/datatable/assets/datatable
-  - yui/datatable/assets/skins/sam/datatable-skin.css 
+  - yui/datatable/assets/skins/sam/datatable-skin
