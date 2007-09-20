@@ -1,0 +1,21 @@
+
+#tags, #tagged_items_tab{
+    max-height: 600px;
+    overflow: auto;
+    background-color: #e0f0ff;
+}
+
+#tags h2, #tagged_items_tab h2{
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+#tag_frequencies, #tagged_items{
+    margin-left: 40px;
+    margin-right: 60px;
+}
+
+#tag_frequencies table, #tagged_items table{
+    width: 100%;
+    table-layout: fixed;
+}

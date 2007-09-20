@@ -1,0 +1,27 @@
+
+<script type="text/javascript" src="/javascripts/bubblechart/bubblechart.js"></script>
+
+<div id="yui-main">
+    <div class="title">
+      <h1><%= @cloud.name %></h1>
+    </div>
+    <%= render :partial => 'cloud/view_menu' %>
+
+
+    <div id="bubble" class="block">
+        <div>
+            <canvas id="tag_bubble" height="600" width="600"></canvas>
+        </div>
+        <%= link_to_cloud_json @cloud %>
+        <script type="text/javascript">
+        window.addEventListener("load", function(){
+            var freqs = cloud.tag_frequencies.slice(0, 30);
+            var data = freqs.map(function(tf){
+                return {radius : tf.frequency, label : tf.tag};
+            });
+            var bubbleChart = new BubbleChart(data, document.getElementById("tag_bubble"));
+         }, false);
+        </script>       
+        
+    </div>
+</div>

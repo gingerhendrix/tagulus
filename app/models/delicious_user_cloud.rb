@@ -4,7 +4,7 @@ class DeliciousUserCloud < Cloud
   attr_accessor :password
   
   def update_frequencies
-    r = Rubilicious.new(self.username, self.password, {'base_uri' => "http://localhost/eclipse/DeliciousMock"})
+    r = Rubilicious.new(self.username, self.password) # , {'base_uri' => "http://localhost/eclipse/DeliciousMock"}
     tag_frequency_array = self.tag_frequencys.find :all
     tag_frequencies = {}
     tag_frequency_array.map do |tf|

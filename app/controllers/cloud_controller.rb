@@ -26,6 +26,10 @@ class CloudController < ApplicationController
     _show
   end
   
+  def show_bubble
+    _show
+  end
+  
   def _show
     @cloud = Cloud.find(params[:id])
     @tag_frequencies = @cloud.tag_frequencys.find :all, :order => "frequency DESC"
