@@ -24,10 +24,10 @@ javascripts:
   - ui/ColorPicker
   - ui/Slider
 - tagcloud:
-  - tagcloud/tagcloud.js
-  - tagcloud/tagclouddisplay.js
-  - tagcloud/tagcloudbehaviour.js
-  - tagcloud/behaviour.js
+  - tagcloud/tagcloud
+  - tagcloud/tagclouddisplay
+  - tagcloud/tagcloudbehaviour
+  - tagcloud/behaviour
 stylesheets: 
 - base: 
   - reset-fonts-grids
