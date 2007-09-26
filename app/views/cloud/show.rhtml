@@ -1,40 +1,113 @@
 
 <div id="yui-main">
 
-
     <div class="title">
-       <span class="cloud_bg"><h1><%= @cloud.name %></h1></span>
+      <h1><%= @cloud.name %></h1>
     </div>
+  
+<div class="block yui-g" style="min-height: 400px">
     
-    <%= render :partial => 'cloud/view_menu' %>
-    
-    <div id="cloud">
-      <%= render :partial => 'cloud/cloud' %>
-    </div>
-    <script type="text/javascript">
-    var myTabs = new YAHOO.widget.TabView("controls");
-    </script> 
-     
-    <div id="controls" class="yui-navset">
-        <ul class="yui-nav">
-            <li class="selected"><a href="#settings"><em>Settings</em></a></li>
-            <li><a href="#export"><em>Export</em></a></li>
-        </ul>
-        <div class="yui-content">
-            <div id="settings" class="panel visible">
-                <%= render :partial => 'cloud/cloud_settings' %>
-             </div>
-    
-            <div id="export" class="panel">
-                <%= render :partial => 'cloud/cloud_export' %>
-            </div>
+    <div id="sourcePanel" class="panel">
+        <div class="title">
+            <h2>Source</h2>
         </div>
+        <ul>
+            <li><%= @cloud.class.to_s.underscore.titleize %></li>
+        </ul>
     </div>
     
-    <div id="links">
-    <%= link_to 'Edit', :action => 'edit', :id => @cloud %> |
-    <%= link_to 'Back', :action => 'index' %>
+    <div id="tagsPanel" class="panel">
+        <div class="title">
+            <h2>Tags</h2>
+        </div>
+       <ul>
+          <li><%= @cloud.tag_frequencys.count %> distinct tags</li>
+        </ul>
     </div>
 
-
+    <div id="itemsPanel" class="panel">
+        <div class="title">
+            <h2>Items</h2>
+        </div>        
+        <ul>
+           <li><%= @cloud.tagged_items.count %> items</li>
+           <li><%= number_with_precision(@cloud.tags_per_item,2) %> tags per item (average)</li>
+        </ul>
+    
+    </div>
+    
+    <div id="openViews">
+        <h3>Saved Views</h3>
+        <ul>
+            <% @cloud.charts.find(:all).each do |chart| %>
+              <li>
+                <%= link_to "Untitled " + (chart.chart_type ? chart.chart_type.titleize : "Chart"), 
+                            :controller => :chart,
+                            :action => :show,
+                            :id => chart.id %>
+             </li>
+            <% end %>
+        </ul>
+    </div>
+    
+    <div id="actions">
+        <div class="actionGroup">
+            <h3>Browse</h3>
+            <div class="button">
+                <a href="<%= url_for :action => :show_tags, :id => @cloud  %>">
+                    <image src="/images/icons/data.png" title="Replace this image"/>
+                    View Tags
+                </a>    
+            </div>
+            <div class="button">
+                <a href="<%= url_for :action => :show_tags, :id => @cloud %>">
+                    <image src="/images/icons/data.png" title="Replace this image"/>
+                    View Items
+                </a>
+            </div>
+         </div>
+         <div class="actionGroup">
+            <h3>Chart</h3>
+            <div class="button">
+                <a href="<%= url_for :controller => :chart, 
+                                     :action => :create, 
+                                     :cloud_id => @cloud, 
+                                     :chart_type => :tag_cloud 
+                         %>">
+                    <image src="/images/icons/cloud.png" title="Replace this image"/>
+                    Tag Cloud
+               </a>
+            </div>
+                    
+            <div class="button">
+                <a href="<%= url_for :controller => :chart, 
+                                     :action => :create, 
+                                     :cloud_id => @cloud, 
+                                     :chart_type => :pie 
+                        %>">
+                    <image src="/images/icons/chart.png" title="Replace this image"/>
+                    Pie Chart
+               </a>
+            </div>
+            <div class="button">
+                <a href="<%= url_for :controller => :chart, 
+                                     :action => :create, 
+                                     :cloud_id => @cloud, 
+                                     :chart_type => :bar %>">
+                    <image src="/images/icons/chart.png" title="Replace this image"/>
+                    Bar Chart
+               </a>
+            </div>
+            <div class="button"> 
+                <a href="<%= url_for :controller => :chart, 
+                                     :action => :create, 
+                                     :cloud_id => @cloud, 
+                                     :chart_type => :line %>">
+                    <image src="/images/icons/chart.png" title="Replace this image"/>
+                    Line Chart
+               </a>
+            </div>  
+        </div>
+      </div>
+    
 </div>

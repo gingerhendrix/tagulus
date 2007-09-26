@@ -7,7 +7,7 @@ class CloudFactory
     @@instance
   end
   
-  def initialize#
+  def initialize
     #ugly initializer - move this responsibility elsewhere 
     @clouds = {:lastfm_artist_cloud => LastfmArtistCloud,
                :blogger_cloud => BloggerCloud,

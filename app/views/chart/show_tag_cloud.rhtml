@@ -1,0 +1,63 @@
+
+<div id="yui-main">
+
+
+    <div class="title">
+       <span class="cloud_bg"><h1><%= @cloud.name %></h1></span>
+    </div>
+ 
+    <div id="cloud">
+      <%= render :partial => 'chart/cloud' %>
+    </div>
+    <script type="text/javascript">
+    var myTabs = new YAHOO.widget.TabView("controls");
+    </script> 
+    
+    <script type="text/javascript" src="/javascripts/ui/Settings.js"></script>
+    <script type="text/javascript" src="/javascripts/utils/utils.js"></script>
+    
+    <script type="text/javascript" src="/javascripts/app/chart/data_settings.js"></script>
+    <script type="text/javascript" src="/javascripts/app/chart/tag_cloud_settings.js"></script>
+    
+    <script type="text/javascript">
+        window.addEventListener("load",
+             function(){ 
+                makeSettings(app.chart.tag_cloud_settings(cloud, tc), document.getElementById("settings")); 
+               }, true);
+    </script>
+    
+    <script src="/javascripts/ui/Collapsable.js"></script>
+    <script>
+        window.addEventListener("load", function(){  
+             new Collapsable(document.getElementById("settings"), {initiallyHidden: false});
+             var subList = cssQuery("#settings dl");
+             subList.forEach(function(element){
+                 new Collapsable(element, {initiallyHidden: true});
+             });
+        }, true);
+    </script>
+  
+     
+    <div id="controls" class="yui-navset">
+        <ul class="yui-nav">
+            <li class="selected"><a href="#settings"><em>Settings</em></a></li>
+            <li><a href="#export"><em>Export</em></a></li>
+        </ul>
+        <div class="yui-content">
+            <div id="settings" class="panel visible">
+                <!-- render :partial => 'chart/cloud_settings' -->
+             </div>
+    
+            <div id="export" class="panel">
+                <%= render :partial => 'chart/cloud_export' %>
+            </div>
+        </div>
+    </div>
+    
+    <div id="links">
+    <%= link_to 'Edit', :action => 'edit', :id => @cloud %> |
+    <%= link_to 'Back', :action => 'index' %>
+    </div>
+
+
+</div>

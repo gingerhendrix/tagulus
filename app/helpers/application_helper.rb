@@ -15,4 +15,8 @@ module ApplicationHelper
     end
     "<!-- Automatic Stylesheets -->\n" + out + "\n<!-- -->\n"
    end
+   
+   def render_javascript(file)
+     "<script>" + (render :file => file) + "</script>"
+   end
 end

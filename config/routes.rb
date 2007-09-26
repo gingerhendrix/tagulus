@@ -13,7 +13,21 @@ ActionController::Routing::Routes.draw do |map|
   # -- just remember to delete public/index.html.
   # map.connect '', :controller => "welcome"
 
+
+  
+  #We don't need the cloud_id in the url (since we look it up from Chart)
+  #but it's nice to have it in anyway
+  map.connect "cloud/:cloud_id/chart/create/:chart_type", :controller => "chart", :action => "create"
+  map.connect "cloud/:cloud_id/chart/:id", :controller => "chart", :action => "show"
+  #But we'll also leave in the cloud_id free versions at lower priority
+  map.connect "cloud/chart/create/:chart_type", :controller => "chart", :action => "create"
+  map.connect "cloud/chart/:id", :controller => "chart", :action => "show"
+  
   map.connect "cloud/new/:cloud_type", :controller => "cloud", :action => "new"
+  map.connect "cloud/create", :controller => "cloud", :action => "create"
+  map.connect "cloud/:id", :controller => "cloud", :action => "show"
+  map.connect "cloud/:id/:action", :controller => "cloud"
+
 
   # Allow downloading Web Service WSDL as a file with an extension
   # instead of a file named 'wsdl'

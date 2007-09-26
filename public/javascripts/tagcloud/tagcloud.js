@@ -11,7 +11,9 @@ function TagCloud(source, element, options, displayOptions){
         sort : "random",
         sort_order : "normal",
         filter : ["blogs", "blog"],
-        limit : false,
+        data : {
+          limit : false  
+        },
         weight : 'linear',
         style : {width : 600},
         visible: true
@@ -62,9 +64,9 @@ function TagCloud(source, element, options, displayOptions){
         //var str = "";
         var tags = this.tags;
         var tagMap = this.tagMap;
-        if(this.options.limit && this.options.limit != 0 && this.options.limit != "0"){
+        if(this.options.data.limit && this.options.data.limit != 0 && this.options.data.limit != "0"){
             tags = tags.sort(partial(weightsSort, tagMap));
-            tags = tags.slice(0, this.options.limit);
+            tags = tags.slice(0, this.options.data.limit);
             var min, max;
             tags.forEach(function(tag){
                 var freq = tagMap[tag];

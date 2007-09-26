@@ -1,0 +1,49 @@
+@import url(_settings.css);
+@import url(_export.css);
+
+
+#yui-main div.block{
+    /*min-height: 800px;*/
+}
+
+#cloud{
+    float: left;
+    margin-right: 2em;
+}
+#tagCloud{
+    background-color: #ffffff;
+    padding: 1em;
+    -moz-border-radius: 15px;
+    min-height: 300px;
+}
+
+#controls{
+    background-color: #ffffff;
+    padding: 1em;
+    -moz-border-radius: 15px;
+}
+
+#controls{
+    width:360px;
+    float: left;
+    padding-bottom: 50px;
+}
+
+#controls .yui-nav a{
+    background-color: #FFF;
+    font-family: verdana, helvetica, arial, sans-serif;
+}
+
+#controls .yui-nav .selected a{
+  background-color: transparent;
+}    
+
+#controls .yui-content{
+background-color: transparent;
+   /*background-color: #95BEEF;*/
+}
+
+#links{
+    clear: both;
+    padding-top: 4em;
+}

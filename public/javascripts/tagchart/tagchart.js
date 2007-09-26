@@ -70,7 +70,7 @@ function TagChart(options){
     }
     
     function initChart(){
-       layout = new PlotKit.Layout("pie", this.options.layout);
+       layout = new PlotKit.Layout(this.options.layout.style, this.options.layout);
        layout.addDataset("frequency", data);
        layout.options.xTicks = labels;
        layout.evaluate();

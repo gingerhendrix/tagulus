@@ -1,49 +1,70 @@
-@import url(_settings.css);
-@import url(_export.css);
 
-
-#yui-main div.block{
-    /*min-height: 800px;*/
+.panel{
+    padding: 10px;
+    margin: 20px;
+    min-height: 120px;
+    width: 200px;
+    float: left; 
 }
 
-#cloud{
-    float: left;
-    margin-right: 2em;
+.panel .title{
+   margin: 0;
+   display: block;
+   
 }
-#tagCloud{
+
+.panel h2{
+    margin: 0;
     background-color: #ffffff;
-    padding: 1em;
-    -moz-border-radius: 15px;
-    min-height: 300px;
 }
 
-#controls{
-    background-color: #ffffff;
-    padding: 1em;
-    -moz-border-radius: 15px;
-}
-
-#controls{
-    width:360px;
-    float: left;
-    padding-bottom: 50px;
-}
-
-#controls .yui-nav a{
-    background-color: #FFF;
-    font-family: verdana, helvetica, arial, sans-serif;
-}
-
-#controls .yui-nav .selected a{
-  background-color: transparent;
-}    
-
-#controls .yui-content{
-background-color: transparent;
-   /*background-color: #95BEEF;*/
-}
-
-#links{
+.panel ul{
+    margin-top: 1.2em;
+    display: block;
     clear: both;
-    padding-top: 4em;
+}
+
+.panel li{
+    margin-left: 0px;
+    list-style: none;    
+}
+
+#actions{
+    clear: both;
+}
+
+#actions .actionGroup {
+   margin-left: 2em;
+}
+
+#actions .button{
+    float: left;
+    text-align : center;
+    margin-left: 2em;
+}
+
+#actions .button img{
+    display: block;
+}
+
+#actions h3{
+    clear: both;
+}
+
+#openViews{
+    clear: both;
+    margin-left: 2em;
+}
+
+#openViews ul{
+    margin-left: 2em;
+}
+
+
+#openViews li{
+   list-style: disc;
+   float: left;
+   margin-left: 1em;
+   margin-right: 1em;
+   
 }

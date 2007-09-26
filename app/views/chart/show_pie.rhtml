@@ -1,0 +1,70 @@
+
+<script type="text/javascript" src="/javascripts/MochiKit/MochiKit.js"></script>
+<script type="text/javascript" src="/javascripts/PlotKit/Base.js"></script>
+<script type="text/javascript" src="/javascripts/PlotKit/Layout.js"></script>
+<script type="text/javascript" src="/javascripts/PlotKit/Canvas.js"></script>
+<script type="text/javascript" src="/javascripts/PlotKit/SweetCanvas.js"></script>
+<script type="text/javascript" src="/javascripts/tagchart/tagchart.js"></script>
+<script type="text/javascript" src="/javascripts/ui/Settings.js"></script>
+<script type="text/javascript" src="/javascripts/ui/Collapsable.js"></script>
+<script type="text/javascript" src="/javascripts/utils/utils.js"></script>
+
+<div id="yui-main">
+
+<div class="title">
+  <h1><%= @cloud.name %></h1>
+</div>
+
+<div id="chart">
+  <div>
+    <canvas id="tag_graph" height="600" width="600" style="position: absolute"></canvas>
+  </div>
+  <%= link_to_cloud_json @cloud %>
+  <script type="text/javascript">
+    var chart = new TagChart({layout : { style : "pie"} });
+  </script>
+  <script type="text/javascript" src="/javascripts/app/chart/data_settings.js"></script>
+  <script type="text/javascript" src="/javascripts/app/chart/chart_settings.js"></script>
+  <script type="text/javascript" src="/javascripts/app/chart/pie_settings.js"></script>
+  <script type="text/javascript">
+    window.addEventListener("load",
+         function(){ 
+            makeSettings(app.chart.pie_settings(cloud, chart), document.getElementById("settings")); 
+           }, true);
+    window.addEventListener("load", 
+        function(){  
+         var subList = cssQuery("#settings dl");
+         subList.forEach(
+           function(element){
+             new Collapsable(element, {initiallyHidden: true});
+           }
+         );
+        }, true);
+  </script>
+</div>
+
+<script type="text/javascript">
+var myTabs = new YAHOO.widget.TabView("controls");
+</script> 
+ 
+<div id="controls" class="yui-navset">
+    <ul class="yui-nav">
+        <li class="selected"><a href="#settings"><em>Settings</em></a></li>
+        <li><a href="#export"><em>Export</em></a></li>
+    </ul>
+    <div class="yui-content">
+        <div id="settings" class="panel visible">
+        </div>
+
+        <div id="export" class="panel">
+        </div>
+    </div>
+</div>
+
+<div id="links">
+<%= link_to 'Edit', :action => 'edit', :id => @cloud %> |
+<%= link_to 'Back', :action => 'index' %>
+</div>
+
+
+</div>

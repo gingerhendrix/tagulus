@@ -2,7 +2,12 @@
 <div id="yui-main">
     <div class="yui-g">
         <div id="random" class="yui-u first block">
-            <h2>Random<h2>
+            <h2>Random</h2>
+            <% if @random.nil? %>
+                <div id='randomCloud' style="width: 400px; height: 300px">
+                No clouds found
+                </div>
+            <% else %>
             <h3><%= link_to @random.name, :action => 'show', :id => @random %></h3>
             <%= link_to_cloud_json @random %>               
               <div id='randomCloud'>
@@ -18,6 +23,7 @@
                                                                                                                    visible : true });
                                }, true);       
               </script>
+              <% end %>
         </div>
         
         <div class="yui-g block">

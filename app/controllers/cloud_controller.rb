@@ -7,7 +7,7 @@ class CloudController < ApplicationController
   end
 
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
-  verify :method => :post, :only => [ :destroy, :create, :update ],
+  verify :method => :post, :only => [ :create ],
          :redirect_to => { :action => :list }
 
   def list
@@ -15,6 +15,10 @@ class CloudController < ApplicationController
   end
 
   def show
+    @cloud = Cloud.find(params[:id])    
+  end
+
+  def show_cloud
     _show
   end
   
@@ -31,7 +35,6 @@ class CloudController < ApplicationController
   end
   
   def _show
-    @cloud = Cloud.find(params[:id])
     @tag_frequencies = @cloud.tag_frequencys.find :all, :order => "frequency DESC"
     @tagged_items = @cloud.tagged_items.find :all
   end
@@ -88,22 +91,4 @@ class CloudController < ApplicationController
   end
 
   
-  def edit
-    @cloud = Cloud.find(params[:id])
-  end
-
-  def update
-    @cloud = Cloud.find(params[:id])
-    if @cloud.update_attributes(params[:cloud])
-      flash[:notice] = 'Cloud was successfully updated.'
-      redirect_to :action => 'show', :id => @cloud
-    else
-      render :action => 'edit'
-    end
-  end
-
-  def destroy
-    Cloud.find(params[:id]).destroy
-    redirect_to :action => 'list'
-  end
 end

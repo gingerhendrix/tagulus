@@ -2,7 +2,13 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 23) do
+ActiveRecord::Schema.define(:version => 25) do
+
+  create_table "charts", :force => true do |t|
+    t.column "cloud_id",   :integer
+    t.column "data",       :text
+    t.column "chart_type", :string
+  end
 
   create_table "clouds", :force => true do |t|
     t.column "name",   :string

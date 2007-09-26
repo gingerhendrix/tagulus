@@ -6,12 +6,15 @@
     /*min-height: 800px;*/
 }
 
-#chart{
-    width: 600px;
+#cloud{
     float: left;
-    -moz-border-radius: 15px;
+    margin-right: 2em;
+}
+#tagCloud{
     background-color: #ffffff;
-    padding: 15px;
+    padding: 1em;
+    -moz-border-radius: 15px;
+    min-height: 300px;
 }
 
 #controls{
@@ -20,14 +23,9 @@
     -moz-border-radius: 15px;
 }
 
-#tag_graph{
-    background-color: transparent;
-}
-
 #controls{
     width:360px;
     float: left;
-    margin-left: 50px;
     padding-bottom: 50px;
 }
 
