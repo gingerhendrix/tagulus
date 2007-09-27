@@ -7,19 +7,42 @@
     </div>
   
     <div id="bubble" class="block">
-        <div>
+        <div style="width: 600px; float: left;">
             <canvas id="tag_bubble" height="600" width="600"></canvas>
         </div>
         <%= link_to_cloud_json @cloud %>
+        
+        <script type="text/javascript" src="/javascripts/ui/Settings.js"></script>
+        <script type="text/javascript" src="/javascripts/utils/utils.js"></script>
+    
+        <script type="text/javascript" src="/javascripts/app/chart/data_settings.js"></script>
+        <script type="text/javascript" src="/javascripts/app/chart/bubble_settings.js"></script>
+   
+        
         <script type="text/javascript">
-        window.addEventListener("load", function(){
-            var freqs = cloud.tag_frequencies.slice(0, 30);
-            var data = freqs.map(function(tf){
-                return {radius : tf.frequency, label : tf.tag};
-            });
-            var bubbleChart = new BubbleChart(data, document.getElementById("tag_bubble"));
+            var bubbleChart;
+            window.addEventListener("load", function(){
+                bubbleChart = new BubbleChart(cloud, document.getElementById("tag_bubble"));
+                makeSettings(app.chart.bubble_settings(cloud, bubbleChart), document.getElementById("settings"));
          }, false);
         </script>       
-        
+
+
+     <div id="controls" class="yui-navset">
+        <ul class="yui-nav">
+            <li class="selected"><a href="#settings"><em>Settings</em></a></li>
+            <li><a href="#export"><em>Export</em></a></li>
+        </ul>
+        <div class="yui-content">
+            <div id="settings" class="panel visible">
+            </div>
+
+            <div id="export" class="panel">
+            </div>
+        </div>
     </div>
+    <br style="clear: both"/>
+
+</div>        
+    
 </div>

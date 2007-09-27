@@ -19,6 +19,7 @@ function makeSettings(settings, element){
           slider.min = (options.min instanceof Function) ? options.min() : options.min;
           slider.max = (options.max instanceof Function) ? options.max() : options.max;
           slider.width = 260;
+          slider.ticks = (slider.width)/(slider.max-slider.min); 
           slider.onchange = options.update;
           window.setTimeout(function(){ 
             slider.init(); 
@@ -59,8 +60,15 @@ function makeSettings(settings, element){
       },
       "checkbox" : function(name, options){
           var init = (options.initial instanceof Function) ? options.initial() : options.initial;
-          return [INPUT({type: "checkbox", onchange : function(){options.update(this.checked)}, checked : init }), SPAN({}, options.label)]
+          var checkbox = INPUT({type: "checkbox", onchange : function(){options.update(this.checked)}});
+          checkbox.checked = init;
+          return [checkbox, SPAN({}, options.label)]
         
+      },
+      "text" : function(name, options){
+          var init = (options.initial instanceof Function) ? options.initial() : options.initial;
+          var textbox = INPUT({type: "text", onchange : function(){options.update(this.value)}, value: init});
+          return [SPAN({}, options.label), textbox]
       }
     };
 
@@ -73,7 +81,7 @@ function makeSettings(settings, element){
       path = path ? (path + ":" + "setting_" + idName(setting.name)) : "setting_" + idName(setting.name);
       var controlBuilder = controls[setting.control];
       if(!controlBuilder){
-        control = "Control '" + settings.control + "' not implemented"
+        control = "Control '" + setting.control + "' not implemented"
       }else{
         control = controlBuilder(path, setting.controlOptions);          
       }

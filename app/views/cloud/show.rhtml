@@ -106,7 +106,16 @@
                     <image src="/images/icons/chart.png" title="Replace this image"/>
                     Line Chart
                </a>
-            </div>  
+            </div>
+            <div class="button"> 
+                <a href="<%= url_for :controller => :chart, 
+                                     :action => :create, 
+                                     :cloud_id => @cloud, 
+                                     :chart_type => :bubble %>">
+                    <image src="/images/icons/chart.png" title="Replace this image"/>
+                    Bubble Chart
+               </a>
+            </div>    
         </div>
       </div>
     

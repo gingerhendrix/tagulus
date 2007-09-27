@@ -2,6 +2,7 @@ function Slider(prefix){
     this.min = 0;
     this.max = 100;
     this.width = 200;
+    this.ticks = false;
     this.onchange = function(){};
     var newVal;
     var oldVal;
@@ -35,7 +36,11 @@ function Slider(prefix){
     this.init = function(){
        document.getElementById(prefix + "_min").innerHTML = this.min;
        document.getElementById(prefix + "_max").innerHTML = this.max;
-       slider = YAHOO.widget.Slider.getHorizSlider(prefix+"_sliderbg", prefix + "_sliderthumb", 0, this.width);
+       if(this.ticks){
+         slider = YAHOO.widget.Slider.getHorizSlider(prefix+"_sliderbg", prefix + "_sliderthumb", 0, this.width, this.ticks);
+       }else{
+         slider = YAHOO.widget.Slider.getHorizSlider(prefix+"_sliderbg", prefix + "_sliderthumb", 0, this.width);
+       }
        slider.animate = true;
        slider.subscribe("change", bind(displayNewValue, this));
        slider.subscribe("slideEnd", bind(updateTagCloud, this));
