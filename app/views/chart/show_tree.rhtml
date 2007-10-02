@@ -1,0 +1,60 @@
+ 
+<!-- YUI Treeview dependencies -->
+  <link type="text/css" rel="stylesheet" href="/javascripts/yui/treeview/assets/skins/sam/treeview.css">
+ 
+  <!-- Dependency source files --> 
+  <script src = "/javascripts/yui/yahoo/yahoo-min.js" ></script>
+  <script src = "/javascripts/yui/event/event-min.js" ></script>
+
+  <!-- TreeView source file --> 
+  <script src = "/javascripts/yui/treeview/treeview-min.js" ></script>
+
+  <script src="/javascripts/tagclusters/TagMap.js"></script>
+  <script src="/javascripts/tagclusters/TagIntersection.js"></script>
+  
+<div id="yui-main">
+
+    <div class="title">
+       <span class="cloud_bg"><h1><%= @cloud.name %></h1></span>
+    </div>
+ 
+    <div class="block">
+        <div id="tree">
+
+        </div>
+        <%= link_to_items_json @cloud %>
+        <script>
+            var tagmap = function(items){
+              var tagmap = new TagMap();
+              for(var i=0; i<items.length; i++){
+                tagmap.add(items[i].id, items[i].tags);
+              }
+              return tagmap;
+            }(cloud_items.items);
+        </script>
+        <script>
+        window.addEventListener("load", function(){  
+           var tree;
+           tree = new YAHOO.widget.TreeView("tree");
+           var root = tree.getRoot();
+           tree.setDynamicLoad(expandTree); 
+           var tmpObj = {label : "Tags", tagmap : tagmap, root: true};
+           var tmpNode = new YAHOO.widget.TextNode(tmpObj, root, false);
+           tree.draw();
+        }, true);
+        function expandTree(node, onCompleteCallback){
+            if(node.data.root){
+                var tagmap = node.data.tagmap;
+            }else{
+                var tagmap = tagIntersection(node.data.tagmap, node.data.label);
+            }
+            tagmap.tagNames.forEach(function(t){
+                    var tmpObj = {label : t, tagmap : tagmap}
+                    var tmpNode = new YAHOO.widget.TextNode(tmpObj, node, false);
+            });
+            onCompleteCallback();
+        }
+    </script>
+    </div>
+    
+</div>

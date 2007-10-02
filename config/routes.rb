@@ -23,19 +23,25 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "cloud/chart/create/:chart_type", :controller => "chart", :action => "create"
   map.connect "cloud/chart/:id", :controller => "chart", :action => "show"
   
+  map.connect "cloud/:cloud_id/data/:action", :controller => "data"
+  
+  map.connect "cloud/:cloud_id/tags/:tag", :controller => "tags", :action => "show"
+  
   map.connect "cloud/new/:cloud_type", :controller => "cloud", :action => "new"
   map.connect "cloud/create", :controller => "cloud", :action => "create"
   map.connect "cloud/:id", :controller => "cloud", :action => "show"
   map.connect "cloud/:id/:action", :controller => "cloud"
 
+  
+  
 
   # Allow downloading Web Service WSDL as a file with an extension
   # instead of a file named 'wsdl'
   map.connect ':controller/service.wsdl', :action => 'wsdl'
 
   # Install the default route as the lowest priority.
-  map.connect ':controller/:action/:id.:format'
-  map.connect ':controller/:action/:id'
+  #map.connect ':controller/:action/:id.:format'
+  #map.connect ':controller/:action/:id'
   
   
   

@@ -15,28 +15,8 @@ class CloudController < ApplicationController
   end
 
   def show
-    @cloud = Cloud.find(params[:id])    
-  end
-
-  def show_cloud
-    _show
-  end
-  
-  def show_chart
-    _show    
-  end
-  
-  def show_data
-    _show
-  end
-  
-  def show_bubble
-    _show
-  end
-  
-  def _show
-    @tag_frequencies = @cloud.tag_frequencys.find :all, :order => "frequency DESC"
-    @tagged_items = @cloud.tagged_items.find :all
+    @cloud = Cloud.find(params[:id])
+    #@tag_frequencies = @cloud.tag_frequencys.find :all, :order => "frequency DESC"
   end
   
   def items_json
@@ -54,15 +34,20 @@ class CloudController < ApplicationController
     end 
     json = {:name => cloud.name, :items => json_items}
     #TODO: prepend with "var cloud = " or similar via a JSONP argument
-    render :text => JSON.generate(json)  
+    if(callback = params[:callback])
+      render :text =>  callback + "(" + JSON.pretty_generate(json) + ");"
+    else
+      render :text => JSON.generate(json)
+    end
+    
   end
   
   def json
     cloud = Cloud.find(params[:id])
-    tag_frequencies = cloud.tag_frequencys.find :all, :order => "frequency DESC"
+    tags = cloud.tags.find :all, :order => "tag_frequencies.frequency DESC", :include => :tag_frequency
     json_frequencies = []
-    tag_frequencies.each do |tf|
-      json_frequencies.push({:tag => tf.tag, :frequency => tf.frequency})
+    tags.each do |t|
+      json_frequencies.push({:tag => t.tag, :frequency => t.tag_frequency.frequency})
     end 
     json_cloud = {:name => cloud.name, :tag_frequencies => json_frequencies}
     #TODO: prepend with "var cloud = " or similar via a JSONP argument

@@ -1,3 +1,3 @@
 class TagFrequency < ActiveRecord::Base
-  belongs_to :cloud
+  belongs_to :tag
 end

@@ -1,0 +1,62 @@
+<div id="yui-main">
+
+    <div class="title">
+     <h1><%= @cloud.name %></h1>
+    </div>
+    
+    <div class="yui-content block">
+     <h2>Tag - <%= @tag.tag %></h2>
+     
+     
+     <h3>Items</h3>
+     <%= @tag.tag_frequency.frequency %> items
+     <br/>
+     <br/>
+     <ul>
+     <% @tag.taggings.find(:all, :limit => "5").map do |tagging| %>
+        <li><%= tagging.tagged_item.data[:description] %></li>
+     <% end %>
+        <li>More..</li>
+     </ul>
+     
+     <br/>
+     <br/>
+     <h3>Similar Tags</h3>
+     <%= @similar.length %> similar tags
+      <ul>
+     <% @similar[0..5].map do |similar| %>
+        <li><%= similar.tag %> - <%= 100*Float(similar.similarity) %>% similar</li>
+     <% end %>
+        <li>More..</li>
+     </ul>
+     <br/>
+     <br/>
+     <h3>Tag Hierarchy</h3>
+     <h4>Parents</h4>
+        <% parents = @similar.select do |similar| 
+             Float(similar.similarity) > 0.9   
+        end 
+        %>
+        <% if(parents.length > 0) %>
+            <% parents.map do |tag| %>
+                <%= tag.tag %>
+            <% end %>
+        <% else %>
+            No parent tags found
+        <% end %>
+     <h4>Children</h4>
+     <% children = @similar.select do |similar|
+            Float(similar.reverse_similarity) > 0.9   
+        end 
+      %>
+        <% if(children.length > 0) %>
+            <% children.map do |tag| %>
+                <%= tag.tag %>
+            <% end %>
+        <% else %>
+            No child tags found
+        <% end %>
+      
+    </div> 
+    
+</div>

@@ -1,5 +1,5 @@
 class Cloud < ActiveRecord::Base
-  has_many :tag_frequencys
+  has_many :tags
   has_many :tagged_items
   has_many :charts
   
@@ -12,7 +12,7 @@ class Cloud < ActiveRecord::Base
   end
   
   def tags_per_item
-    return ((self.tag_frequencys.count*1.0)/self.tagged_items.count) unless (self.tagged_items.count == 0)
+    return ((self.tags.count*1.0)/self.tagged_items.count) unless (self.tagged_items.count == 0)
     return 0
   end
   

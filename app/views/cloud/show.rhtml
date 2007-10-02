@@ -21,7 +21,7 @@
             <h2>Tags</h2>
         </div>
        <ul>
-          <li><%= @cloud.tag_frequencys.count %> distinct tags</li>
+          <li><%= @cloud.tags.count %> distinct tags</li>
         </ul>
     </div>
 
@@ -54,13 +54,13 @@
         <div class="actionGroup">
             <h3>Browse</h3>
             <div class="button">
-                <a href="<%= url_for :action => :show_tags, :id => @cloud  %>">
+                <a href="<%= url_for :controller => :data, :action => :show_tags, :cloud_id => @cloud  %>">
                     <image src="/images/icons/data.png" title="Replace this image"/>
                     View Tags
                 </a>    
             </div>
             <div class="button">
-                <a href="<%= url_for :action => :show_tags, :id => @cloud %>">
+                <a href="<%= url_for :controller => :data, :action => :show_items, :cloud_id => @cloud %>">
                     <image src="/images/icons/data.png" title="Replace this image"/>
                     View Items
                 </a>
@@ -115,7 +115,17 @@
                     <image src="/images/icons/chart.png" title="Replace this image"/>
                     Bubble Chart
                </a>
-            </div>    
+            </div>
+            
+            <div class="button"> 
+                <a href="<%= url_for :controller => :chart, 
+                                     :action => :create, 
+                                     :cloud_id => @cloud, 
+                                     :chart_type => :tree %>">
+                    <image src="/images/icons/chart.png" title="Replace this image"/>
+                    Tree View
+               </a>
+            </div>        
         </div>
       </div>
     

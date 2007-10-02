@@ -19,4 +19,17 @@ module ApplicationHelper
    def render_javascript(file)
      "<script>" + (render :file => file) + "</script>"
    end
+   
+     
+  def link_to_cloud_json(cloud)
+     jsonUrl = url_for :controller => 'cloud', :action => 'json', :id => cloud.id, :callback => "cloudLoaded"
+     script = "<script>var cloud; function cloudLoaded(c){ cloud = c; };</script><script src=\"#{jsonUrl}\"></script>"
+     return script
+  end
+  
+  def link_to_items_json(cloud)
+     jsonUrl = url_for :controller => 'cloud', :action => 'items_json', :id => cloud.id, :callback => "cloudLoaded"
+     script = "<script>var cloud_items; function cloudLoaded(c){ cloud_items = c; };</script><script src=\"#{jsonUrl}\"></script>"
+     return script
+  end
 end

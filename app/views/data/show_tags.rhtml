@@ -1,0 +1,96 @@
+
+<div id="yui-main">
+
+    <div class="title">
+      <h1>Tags for <%= @cloud.name %></h1>
+    </div>
+    
+    <div id="show_tags" class="block yui-skin-sam">
+        <div class="yui-content">
+          <div id="tags">
+            <h2>Tags</h2>
+            <div id="tag_table">Not Loaded</div>
+            <style>
+            
+            #tag_table{
+                height: 30em;            
+            }
+            
+            table.yui-dt-scrollabe {
+                table-layout: fixed;
+            }
+            
+            /* customized css for scrolling */
+            .yui-dt-scrollable  {
+                *width:450px; /* SET OVERALL WIDTH HERE for ie (make sure columns add up to this total) */
+                height:25em; /* SET HEIGHT HERE for ie */
+            }
+            .yui-dt-scrollbody {
+                height:25em; /* SET HEIGHT HERE for non-ie */
+                *height:auto; /* for ie */
+            }
+            .yui-dt-scrollable  thead {
+                background:#ffffff;  /* ie needs a background color */
+                color:#fff;
+            }
+            
+            /* SET WIDTHS FOR EACH TH TO HELP ALIGN COLUMNS */
+            /* IF ALL COLS CAN BE SAME WIDTH USE THIS:
+            .yui-dt-scrollable th, .yui-dt-scrollbody td {
+                width:20em;
+            }*/
+            /* OTHERWISE SET EACH COL WIDTH EXPLICITLY:*/
+            .yui-dt-col-tag {
+                width:300px;
+            }
+            
+               
+            .yui-dt-col-frequency {
+                width:100px;
+                min-width: 100px;
+                max-width: 100px;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+            
+            </style>
+            <script type="text/javascript">
+              YAHOO.util.Event.addListener(window, "load", function() {
+                    var columns = [
+                        {key:"tag", sortable:true, resizeable: false, formatter : function(el, oRecord, oColumn, oData){
+                            el.innerHTML = "<a href='/cloud/<%=@cloud.id%>/tags/"+oData+"'>"+oData+"</a>";
+                        }},
+                        {key:"frequency", formatter:YAHOO.widget.DataTable.formatNumber, sortable:true, resizeable: false},
+                    ];
+                
+                    var dataSource = new YAHOO.util.DataSource("/cloud/<%= @cloud.id %>/json?");
+                    dataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+                    dataSource.responseSchema = {
+                        resultsList: "tag_frequencies",
+                        fields: ["tag","frequency"]
+                    };
+                        
+/*                    var tableConfig = {
+                      paginated:true, 
+                        paginator:{ 
+                            containers: null, 
+                            currentPage: 1, 
+                            dropdownOptions: [10,50,100],
+                            pageLinks: 8, 
+                            rowsPerPage: 50
+                        }
+
+                   };
+*/
+                    var tableConfig = {
+                        scrollable: true,
+                    }
+                                            
+                   var tagsTable = new YAHOO.widget.DataTable("tag_table",
+                            columns, dataSource, tableConfig);
+               });
+                 </script>
+              </div>
+         </div>
+       </div>
+    </div>
