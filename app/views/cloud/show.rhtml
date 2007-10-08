@@ -36,6 +36,8 @@
     
     </div>
     
+   
+    
     <div id="openViews">
         <h3>Saved Views</h3>
         <ul>
@@ -51,6 +53,11 @@
     </div>
     
     <div id="actions">
+    
+     <div id="systemLens" class="actionGroup">
+        <h3>Lens</h3>
+        <%= link_to "Dir.ect.or", :controller => :lens, :action => :director, :cloud_id => @cloud.id %>
+    </div>
         <div class="actionGroup">
             <h3>Browse</h3>
             <div class="button">

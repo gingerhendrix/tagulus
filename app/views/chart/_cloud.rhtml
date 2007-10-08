@@ -2,13 +2,13 @@
       <div id='tagCloud'>
       </div>
       <script>
-        var tc = new TagCloud(cloud.tag_frequencies, document.getElementById('tagCloud'), {limit: 0, sort : "alpha"}, {width: 600, 
+        var tc = new TagCloud(cloud.tag_frequencies, document.getElementById('tagCloud'), {data : {limit: 50}, sort : "alpha", display: {width: 300, 
                                                                                                    font_distribution: "linear",
                                                                                                    font_max: 24,
                                                                                                    font_min: 6,
                                                                                                    font_unit: "px",
                                                                                                    colors : [[57,55,65],[57,55,65]],
-                                                                                                   visible : false });
-        window.addEventListener("load", function(){ window.setTimeout(function(){tc.show();}, 1000); }, true);
+                                                                                                   visible : false }});
+        window.addEventListener("load", function(){ window.setTimeout(function(){tc1.show();}, 1000); }, true);
         //need to trigger after all the controls have initialised                                                                                                    
       </script>

@@ -4,7 +4,7 @@ class DeliciousUserCloud < Cloud
   attr_accessor :password
   
   def update_frequencies
-    r = Rubilicious.new(self.username, self.password , {'base_uri' => "http://localhost/eclipse/DeliciousMock"})
+    r = Rubilicious.new self.username, self.password #, 'base_uri' => "http://localhost/eclipse/DeliciousMock"
     posts = r.all
     posts.each do |p|
       item = TaggedItem.create :cloud => self, :data => {:href => p['href'],

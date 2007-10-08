@@ -16,9 +16,9 @@ function TagCloudBehaviour(tagcloud, element, options){
         console.log("<Remove: length-"+behaviours.length);
     }
     
-    this.onclick = function(tag){
+    this.onclick = function(tag, element){
         behaviours.forEach(function(b){
-            b.onclick(tag);
+            b.onclick(tag, element);
         })
     }
 }

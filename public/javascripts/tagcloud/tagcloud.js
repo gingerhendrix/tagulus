@@ -5,7 +5,7 @@
   * 0.3 - 08/06/07 -  
   */
   
-function TagCloud(source, element, options, displayOptions){
+function TagCloud(source, element, options){
     var default_options = {
         classes : 6,
         sort : "random",
@@ -14,23 +14,27 @@ function TagCloud(source, element, options, displayOptions){
         data : {
           limit : false  
         },
+        display : {
+          width: 600  
+        },
         weight : 'linear',
-        style : {width : 600},
         visible: true
     }
     this.element = element;
     
+    this.setData = function(data){
+      source = data;
+      this.update();
+    }
+    
     function init(){
-        this.tags = [];
-        this.tagMap = {};
         this.displayTags = [];
         this.groups = [];
         this.tagGroups = {};
         this.tagElements = {};
-    
-        this.wordCount = 0;
-        this.options = merge(default_options, options);
-        this.display = new TagCloudDisplay(this, element, displayOptions);
+
+        this.options = updatetree({}, default_options, options);
+        this.display = new TagCloudDisplay(this, element, this.options.display);
         this.behaviour = new TagCloudBehaviour(this, element);
         makeTagMap();
         makeCloud();
@@ -39,6 +43,9 @@ function TagCloud(source, element, options, displayOptions){
     }
     
     function makeTagMap(){
+      this.tags = [];
+      this.tagMap = {};
+      this.wordCount = 0;
         for(var i=0; i<source.length; i++){
                this.tags.push(source[i].tag);
                //var freq = Math.log(Number(source[i].frequency));
@@ -134,14 +141,14 @@ function TagCloud(source, element, options, displayOptions){
             div.appendChild(span);
             this.tagElements[tag] = span;
             div.appendChild(document.createTextNode(" "));
-            span.addEventListener("click", partial(this.behaviour.onclick, tag), true);
+            span.addEventListener("click", partial(this.behaviour.onclick, tag, span), true);
         }
         return div;
     }
     
     this.update = function(){
-        console.log("Update " + this.options.visible);
         if(this.options.visible){
+            makeTagMap();
             makeCloud();
             this.element.innerHTML =  "";
             this.element.appendChild(emitDOM());
