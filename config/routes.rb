@@ -17,11 +17,11 @@ ActionController::Routing::Routes.draw do |map|
   
   #We don't need the cloud_id in the url (since we look it up from Chart)
   #but it's nice to have it in anyway
-  map.connect "cloud/:cloud_id/chart/create/:chart_type", :controller => "chart", :action => "create"
-  map.connect "cloud/:cloud_id/chart/:id", :controller => "chart", :action => "show"
+  map.connect "cloud/:cloud_id/widget/create/:chart_type", :controller => "widget", :action => "create"
+  map.connect "cloud/:cloud_id/widget/:id", :controller => "widget", :action => "show"
   #But we'll also leave in the cloud_id free versions at lower priority
-  map.connect "cloud/chart/create/:chart_type", :controller => "chart", :action => "create"
-  map.connect "cloud/chart/:id", :controller => "chart", :action => "show"
+  map.connect "cloud/widget/create/:chart_type", :controller => "widget", :action => "create"
+  map.connect "cloud/widget/:id", :controller => "widget", :action => "show"
   
   map.connect "cloud/:cloud_id/data/:action", :controller => "data"
   

@@ -1,0 +1,98 @@
+    <script type="text/javascript" src="/javascripts/utils/utils.js"></script>
+    
+    <script type="text/javascript" src="/javascripts/app/datasource/clouddatasource.js"></script>
+    
+    <script type="text/javascript" src="/javascripts/app/ui/controls.js"></script>
+    <script type="text/javascript" src="/javascripts/ui/Settings.js"></script>
+    <script type="text/javascript" src="/javascripts/ui/Collapsable.js"></script>
+    
+    
+    <script type="text/javascript" src="/javascripts/app/widget/settings/data_settings.js"></script>
+    <script type="text/javascript" src="/javascripts/app/widget/settings/tag_cloud_settings.js"></script>
+   
+
+<div id="yui-main">
+
+
+    <div class="title">
+       <span class="cloud_bg"><h1><%= @cloud.name %></h1></span>
+    </div>
+ 
+    <div id="cloud">
+      <div id='tagCloud'>
+      </div>
+    </div>
+     
+    <div id="controls" class="yui-navset">
+        <ul class="yui-nav">
+            <li class="selected"><a href="#settings"><em>Settings</em></a></li>
+            <li><a href="#export"><em>Export</em></a></li>
+        </ul>
+        <div class="yui-content">
+            <div id="settings" class="panel visible">
+             </div>
+            <div id="export" class="panel">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var dataSource = new app.datasource.CloudDataSource(
+                                       <%= @cloud.id %>, 
+                                       { limit : 50,
+                                         sort : "alpha",
+                                         classifiers : [
+                                            {name : "Frequency",
+                                             classifier : app.datasource.WeightedClassifier,
+                                             classes : 6,
+                                             classification_term : "frequency"
+                                             }
+                                          ],
+                                          filters : [
+                                            {name : "Limit",
+                                             filter : app.datasource.LimitingFilter,
+                                             limit : 50
+                                            }
+                                          ]
+                                       });
+    
+    var tc = new TagCloud(dataSource, 
+                          document.getElementById('tagCloud'), 
+                          {
+                            data : {limit: 50}, 
+                            sort : "alpha", 
+                            display: 
+                                {
+                                    width: 500, 
+                                    font_size : {
+                                        classifier : "Frequency",
+                                        distribution : "linear",
+                                        max : 24,
+                                        min : 6,
+                                        unit : "px"
+                                    },
+                                    color : {
+                                        colors : [[57,55,65],[57,55,65]],
+                                    },
+                                    visible : false 
+                                 }
+                           });
+
+    var myTabs = new YAHOO.widget.TabView("controls");
+    
+    window.addEventListener("load",
+        function(){ 
+                makeSettings(
+                MochiKit.Base.flattenArguments(app.chart.data_settings(dataSource) /*, app.chart.tag_cloud_settings(tc)*/), 
+                document.getElementById("settings"));
+              
+                new Collapsable(document.getElementById("settings"), {initiallyHidden: false});
+                var subList = cssQuery("#settings dl");
+                subList.forEach(function(element){
+                     new Collapsable(element, {initiallyHidden: true});
+                });   
+                
+                tc.show()
+        }, true);
+</script>

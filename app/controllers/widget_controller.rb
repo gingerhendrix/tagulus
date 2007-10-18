@@ -1,4 +1,4 @@
-class ChartController < ApplicationController
+class WidgetController < ApplicationController
   layout "cloud"
   helper CloudHelper
   

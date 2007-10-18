@@ -1,7 +1,7 @@
 
 .panel{
     padding: 10px;
-    margin: 20px;
+    margin: 2em;
     min-height: 120px;
     width: 200px;
     float: left; 
@@ -34,13 +34,19 @@
 }
 
 #actions .actionGroup {
-   margin-left: 2em;
+   clear : both;
+   margin-left: 6em;
+   margin-bottom: 2em;
+}
+
+#actions .actionGroup h2{
+    margin-left: -2em;
 }
 
 #actions .button{
     float: left;
     text-align : center;
-    margin-left: 2em;
+    margin-right: 2em;
 }
 
 #actions .button img{
@@ -51,20 +57,27 @@
     clear: both;
 }
 
-#openViews{
-    clear: both;
-    margin-left: 2em;
+#savedWidgets{
+    margin-bottom: 4em;
 }
 
-#openViews ul{
-    margin-left: 2em;
+#savedWidgets h3{
+    float: left;
+    font-size: 93%;
 }
 
+#savedWidgets ul{
+    margin-left: 2em;
+    float: left;
+}
 
-#openViews li{
-   list-style: disc;
+#savedWidgets li{
+   list-style: none;
    float: left;
    margin-left: 1em;
    margin-right: 1em;
-   
+}
+
+#newWidgets {
+    clear: both;
 }

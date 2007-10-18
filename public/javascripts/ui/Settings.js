@@ -13,86 +13,32 @@ function makeSettings(settings, element){
       var defaultSetting = {
         name: ""
       };
-      
-      var controls = {"slider" : function(name, options){
-          var slider = new Slider(name);
-          slider.min = (options.min instanceof Function) ? options.min() : options.min;
-          slider.max = (options.max instanceof Function) ? options.max() : options.max;
-          slider.width = 260;
-          slider.ticks = (slider.width)/(slider.max-slider.min); 
-          slider.onchange = options.update;
-          window.setTimeout(function(){ 
-            slider.init(); 
-            slider.setValue((options.initial instanceof Function) ? options.initial() : options.initial); 
-          }, 10);
-          return slider.getElement();
-          
-      },
-      "radioChoice" : function(name, options){
-        var init = (options.initial instanceof Function) ? options.initial() : options.initial;
-          return options.options.map(function(opt){
-            console.log("init " + init  );
-            var inputEl = INPUT({type: "radio", 
-                          name: name, 
-                          value: opt.value, 
-                          onchange : function(){options.update(this.value);}
-                          }, ""); 
-            if(opt.value == init){
-              inputEl.checked = true;
-            }                          
-            return [inputEl, SPAN({}, opt.name)];
-          });
-      },
-      "selectChoice" : function(name, options){
-            var init = (options.initial instanceof Function) ? options.initial() : options.initial;
-            return SELECT({  onchange : function(){options.update(this.value);} }, options.options.map(
-                function(opt){
-                  var inputEl = OPTION({ 
-                                name: name, 
-                                value: opt.value, 
-                                }, opt.name); 
-                  if(opt.value == init){
-                    inputEl.selected = true;
-                  } 
-                  return inputEl;                         
-                }
-            ));
-      },
-      "checkbox" : function(name, options){
-          var init = (options.initial instanceof Function) ? options.initial() : options.initial;
-          var checkbox = INPUT({type: "checkbox", onchange : function(){options.update(this.checked)}});
-          checkbox.checked = init;
-          return [checkbox, SPAN({}, options.label)]
-        
-      },
-      "text" : function(name, options){
-          var init = (options.initial instanceof Function) ? options.initial() : options.initial;
-          var textbox = INPUT({type: "text", onchange : function(){options.update(this.value)}, value: init});
-          return [SPAN({}, options.label), textbox]
-      }
-    };
 
     function idName(name){
       return name.replace(/[^A-Za-z0-9:-_]/g, "_").toLowerCase();
     }      
       
     function makeSetting(setting, path){
+      setting = (setting instanceof Function) ? setting() : setting; 
       setting = merge(defaultSetting, setting)
       path = path ? (path + ":" + "setting_" + idName(setting.name)) : "setting_" + idName(setting.name);
-      var controlBuilder = controls[setting.control];
-      if(!controlBuilder){
-        control = "Control '" + setting.control + "' not implemented"
+      if(!setting.control){
+        control = "control not found"
       }else{
-        control = controlBuilder(path, setting.controlOptions);          
+        control = new setting.control(path, setting.controlOptions);          
       }
-      console.log("Make setting " + control);
-      return [DT({}, setting.name), DD({}, control)];
+      return [DT({}, setting.name), DD({}, control.element)];
     }
+    
     function makeGroup(group, path){
+      group = (group instanceof Function) ? group() : group; 
       path = path ? (path + ":" + idName(group.name)) : idName(group.name);
       group = merge(defaultGroup, group)
+      
+      var settings = (group.settings instanceof Function) ? group.settings() : group.settings;
+      var groups = (group.groups instanceof Function) ? group.groups() : group.groups;
       return [DT({}, group.name), DD({}, 
-        DL({}, group.settings.map(function(setting){ return makeSetting(setting, path)}).concat(group.groups.map(function(group){ return makeGroup(group, path)}))))];
+        DL({}, settings.map(function(setting){ return makeSetting(setting, path)}).concat(groups.map(function(group){ return makeGroup(group, path)}))))];
     }
     
     var settingsEl = DL({}, settings.map(function(setting){

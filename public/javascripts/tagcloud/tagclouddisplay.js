@@ -5,18 +5,28 @@ function TagCloudDisplay(tagcloud, element, options){
     var default_options = {
         width : 600,
         font_family: "verdana, arial, helvetica, sans-serif",
-        font_distribution: "linear",
-        font_max: 24,
-        font_min: 8,
-        font_unit: "px",
-        opacity_min : 10,
-        opacity_max : 100,
-        color: [0,255,100],
-        color_distribution : "linear",
-        colors : [[255,0,0],[0,0,255]]
+        font_size: {
+           classifier : false,
+           distribution: "linear",
+           max: 24,
+           min: 8,
+          unit: "px",   
+        },
+        opacity: {
+           classifier : false,
+           distribution: "linear",
+           max: 100,
+           min: 10,
+           unit: "pc",
+        },
+        color: {
+          classifier : false,
+          distribution : "linear",
+          colors : [[255,0,0],[0,0,255]] 
+        } 
     };
     this.element = element;
-    this.options = merge(default_options, options);
+    this.options = updatetree({}, default_options, options);
     
     this.init = function(){
         this.setWidth(this.options.width);
@@ -26,16 +36,16 @@ function TagCloudDisplay(tagcloud, element, options){
     
     this.recalculate = function(force){
         if(force || this.tagcloud.options.visible){
-            if(this.options.font_distribution == "linear"){
-                this.fontDistribution = partial(linearDistribution, this.options.font_min, this.options.font_max);
+            if(this.options.font_size.distribution == "linear"){
+                this.fontDistribution = partial(linearDistribution, this.options.font_size.min, this.options.font_size.max);
             }else{
-                 this.fontDistribution = partial(constantDistribution, this.options.font_min);
+                this.fontDistribution = partial(constantDistribution, this.options.font_size.max);
             }
-            this.opacityDistribution = partial(linearDistribution, this.options.opacity_min, this.options.opacity_max);
+            this.opacityDistribution = partial(linearDistribution, this.options.opacity.min, this.options.opacity.max);
             this.colorDistribution = function(d){
                 return map(function(arg){
                     return linearDistribution(arg[0], arg[1], arg[2]);
-                }, izip(this.options.colors[0], this.options.colors[1], [d,d,d]));
+                }, izip(this.options.color.colors[0], this.options.color.colors[1], [d,d,d]));
             }
         }
         signal(this, "recalculate");
@@ -45,41 +55,45 @@ function TagCloudDisplay(tagcloud, element, options){
     
     this.redisplay = function(){
         this.recalculate();
+        
         if(this.tagcloud.options.visible){
             this.setWidth(this.options.width);
             console.log("Tagcloud redisplaying")
-            for(var i=0; i<this.tagcloud.options.classes; i++){
-                var d = (this.tagcloud.options.classes-i)/this.tagcloud.options.classes;
-                //console.log("Class " + (i+1) );
-                var fontSize = this.fontDistribution(d);
-                var opacity = this.opacityDistribution(d);
-                var color = this.colorDistribution(d);
-                color = color.map(Math.floor);
-                //console.log("Color " + color);
-                //console.log("Groups" + this.tagcloud.groups);                                
-                //console.log("TagElements " + this.tagcloud.tagElements);
-                var tags = this.tagcloud.groups[i+1];
-                console.log("Tags: " + tags);
-                if (!tags){
-                    tags = [];
-                }
-                //console.log("Elements " + elements.length);
-                tags.forEach(bind(function(tag){
-                  //  console.log("Tag " + tag);
-                    elements = this.tagcloud.tagElements;
-                    //console.log("TagElements " + elements);
-                    var el = elements[tag];
-                    //console.log("Element " + el);
-                    if(el){
-                        el.style.fontSize = "" + fontSize + "" + this.options.font_unit;
-                        el.style.opacity = "" + opacity/100 + "";
-                        //console.log("rgb(" + color[0] + ", " + color[1] + "," +  color[2] +")");
-                        el.style.color = "rgb(" + color[0] + ", " + color[1] + "," +  color[2] +")";
-                    }
-                }, this));
+            
+            var tags = this.tagcloud.tags;
+            for(var i=0; i<tags.length; i++){
+               var tagName = tags[i]
+               var tag = this.tagcloud.source.getTag(tagName);
+               
+               var classes = ["font_size", "opacity", "color"].map(bind(function(attribute){
+                 if(this.options[attribute].classifier){
+                   var classifier = this.tagcloud.source.getClassifier([this.options[attribute].classifier]);
+                   var clazz = classifier.getClass(tagName);
+                   var numClazzes = classifier.options.classes - 1.0;
+                   var d = (clazz*1.0)/numClazzes;
+                 }else{
+                   var d = 1.0;
+                 }
+                 return d;
+               }, this));
+               
+               
+               var fontSize = this.fontDistribution(classes[0]);
+               var opacity = this.opacityDistribution(classes[1]);
+               var color = this.colorDistribution(classes[2]);
+               
+               var el = this.tagcloud.elements[tagName];
+               if(!el){
+                 Utils.log.error("Tag Element not found for " + tagName);
+                 throw new Error("Tag Element not found for " + tagName);
+               }
+               el.style.fontSize = "" + fontSize + "" + this.options.font_size.unit;
+               el.style.opacity = "" + opacity/100 + "";
+               el.style.color = "rgb(" + color[0] + ", " + color[1] + "," +  color[2] +")";
             }
-        }
+       } 
     }
+
     function linearDistribution(min, max, progress){
         return ((max-min)*progress)+min;
     }

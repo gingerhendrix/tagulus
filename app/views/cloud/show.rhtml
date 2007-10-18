@@ -37,46 +37,31 @@
     </div>
     
    
-    
-    <div id="openViews">
-        <h3>Saved Views</h3>
-        <ul>
-            <% @cloud.charts.find(:all).each do |chart| %>
-              <li>
-                <%= link_to "Untitled " + (chart.chart_type ? chart.chart_type.titleize : "Chart"), 
-                            :controller => :chart,
-                            :action => :show,
-                            :id => chart.id %>
-             </li>
-            <% end %>
-        </ul>
-    </div>
-    
     <div id="actions">
-    
-     <div id="systemLens" class="actionGroup">
-        <h3>Lens</h3>
-        <%= link_to "Dir.ect.or", :controller => :lens, :action => :director, :cloud_id => @cloud.id %>
-    </div>
         <div class="actionGroup">
-            <h3>Browse</h3>
-            <div class="button">
-                <a href="<%= url_for :controller => :data, :action => :show_tags, :cloud_id => @cloud  %>">
-                    <image src="/images/icons/data.png" title="Replace this image"/>
-                    View Tags
-                </a>    
-            </div>
-            <div class="button">
-                <a href="<%= url_for :controller => :data, :action => :show_items, :cloud_id => @cloud %>">
-                    <image src="/images/icons/data.png" title="Replace this image"/>
-                    View Items
-                </a>
-            </div>
+            <h2>Explore</h2>
+            <%= link_to "Cloud Director", :controller => :lens, :action => :director, :cloud_id => @cloud.id %>    
          </div>
          <div class="actionGroup">
-            <h3>Chart</h3>
+            <h2>Create a widget</h2>
+            <div id="savedWidgets">
+                <h3>Saved Widgets</h3>
+                <ul>
+                    <% @cloud.charts.find(:all).each do |chart| %>
+                    <li>
+                        <%= link_to "Untitled " + (chart.chart_type ? chart.chart_type.titleize : "Chart"), 
+                                :controller => :widget,
+                                :action => :show,
+                                :id => chart.id %>
+                    </li>
+                    <% end %>
+                </ul>
+            </div>
+            </br style="clear: both"/>
+            <div id="newWidgets">
+            
             <div class="button">
-                <a href="<%= url_for :controller => :chart, 
+                <a href="<%= url_for :controller => :widget, 
                                      :action => :create, 
                                      :cloud_id => @cloud, 
                                      :chart_type => :tag_cloud 
@@ -87,7 +72,7 @@
             </div>
                     
             <div class="button">
-                <a href="<%= url_for :controller => :chart, 
+                <a href="<%= url_for :controller => :widget, 
                                      :action => :create, 
                                      :cloud_id => @cloud, 
                                      :chart_type => :pie 
@@ -97,7 +82,7 @@
                </a>
             </div>
             <div class="button">
-                <a href="<%= url_for :controller => :chart, 
+                <a href="<%= url_for :controller => :widget, 
                                      :action => :create, 
                                      :cloud_id => @cloud, 
                                      :chart_type => :bar %>">
@@ -106,7 +91,7 @@
                </a>
             </div>
             <div class="button"> 
-                <a href="<%= url_for :controller => :chart, 
+                <a href="<%= url_for :controller => :widget, 
                                      :action => :create, 
                                      :cloud_id => @cloud, 
                                      :chart_type => :line %>">
@@ -115,7 +100,7 @@
                </a>
             </div>
             <div class="button"> 
-                <a href="<%= url_for :controller => :chart, 
+                <a href="<%= url_for :controller => :widget, 
                                      :action => :create, 
                                      :cloud_id => @cloud, 
                                      :chart_type => :bubble %>">
@@ -125,14 +110,20 @@
             </div>
             
             <div class="button"> 
-                <a href="<%= url_for :controller => :chart, 
+                <a href="<%= url_for :controller => :widget, 
                                      :action => :create, 
                                      :cloud_id => @cloud, 
                                      :chart_type => :tree %>">
                     <image src="/images/icons/chart.png" title="Replace this image"/>
                     Tree View
                </a>
-            </div>        
+            </div>   
+            <br style="clear: both"/>     
+            </div>
+        </div>
+        <div class="actionGroup">
+            <h2>Create a Lens</h2>
+            Coming soon...
         </div>
       </div>
     

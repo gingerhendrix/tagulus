@@ -1,8 +1,7 @@
 Utils.namespace("app.chart.tag_cloud_settings");
 
-app.chart.tag_cloud_settings =  function(data, cloud){
+app.chart.tag_cloud_settings =  function(cloud){
   return [
-    app.chart.data_settings(data, cloud, function(){cloud.update(); }),
     { name : "Sort",
       settings: [
         { name: "Sort Function",
