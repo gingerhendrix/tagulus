@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title>Tagulus Director</title>
+
+  
+  <% if ENV['RAILS_ENV'] == 'production' %>
+    <script src="http://gandrew.com/mint/?js"></script>
+  <% else %>
+    <!-- mint ignored - development mode -->
+  <% end %>   
+
+    <%= stylesheet_link_merged :base %>
+  <%= automatic_stylesheets %>
+
+</head>
+<body>
+ <div id="doc2" class="yui-t7">
+   <div id="hd"><h1><a href="/director"><img src="/images/director/masthead.gif" width="500" height="100" alt="Tagulus Director"/></a></h1></div>
+   <div id="bd">
+	 <div class="flash"><%= flash[:notice] %></div>
+
+    <%= yield  %>
+    
+   </div>
+
+	<div id="ft">A <a href="/">Tagulus</a> Application.  Copyright (c) 2007 <a href="http://gandrew.com">Gareth Andrew</a></div>
+</div>
+
+
+</body>
+</html>

@@ -52,16 +52,12 @@ function TagCloud(source, element, options){
     
     var emitDOM = function(){
         var div = document.createElement("div");
-        this.tags = this.source.getTags();
+        this.tags = this.source.getTagNames();
         for(var i=0; i<this.tags.length; i++){
             var tagName = this.tags[i];
-            var tag = source.getTag(tag);
+            var tag = source.getTag(this.tags[i]);
             var span = document.createElement("span");
-          
             
-            //var group = this.tagGroups[tag];
-            //span.setAttribute("class", "tag tag"+group);
-
             span.style.whiteSpace = "nowrap"
             span.innerHTML = tagName;
             

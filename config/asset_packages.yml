@@ -31,7 +31,7 @@ javascripts:
 stylesheets: 
 - base: 
   - reset-fonts-grids
-  - layout
+  - base
 - yui:
   - yui/tabview/assets/tabview
   - yui/tabview/assets/border_tabs

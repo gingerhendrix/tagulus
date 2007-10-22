@@ -32,7 +32,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "cloud/:id", :controller => "cloud", :action => "show"
   map.connect "cloud/:id/:action", :controller => "cloud"
 
-  map.connect "director/:cloud_id", :controller => "lens", :action => "director"
+  map.connect "director", :controller => "director", :action => "new"
+  map.connect "director/create", :controller => "director", :action => "create"
+  map.connect "director/:cloud_id", :controller => "director", :action => "show"
   
 
   # Allow downloading Web Service WSDL as a file with an extension
@@ -45,5 +47,5 @@ ActionController::Routing::Routes.draw do |map|
   
   
   
-  map.connect '', :controller => "cloud", :action => "index"
+  map.connect '', :controller => "index", :action => "index"
 end

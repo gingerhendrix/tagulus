@@ -12,6 +12,10 @@ Utils.namespace = function(name){
   }
 }
 
+Utils.clone = function(objOrArray){
+  return eval(objOrArray.toSource());
+}
+
 Utils.namespace("Utils.http");
 
 Utils.http.get = function(uri, callback, errback){
@@ -61,8 +65,9 @@ new function(){
     for(var i=0; i<observers.length; i++){
       var ob = observers[i];
       if(ob.source === src && ob.signal == signal){
-        Utils.log.info("Dispatching to " + i);
-        ob.listener.apply(ob.src);
+        window.setTimeout(partial(function(ob){
+          ob.listener.apply(ob.src);
+        }, ob) , 1);
       }
     }    
   }

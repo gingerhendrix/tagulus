@@ -1,0 +1,29 @@
+body {
+    font-family: tahoma, serif;
+    font-size:   100%;
+    line-height: 138%;
+}
+
+#bd{
+	padding: 1em;
+}
+
+#bd h1, #bd h2, #bd h3{
+    color: #002280;
+    font-family: verdana, arial, helvetica, sans-serif;
+}
+
+#bd h2{
+    font-size: 1.6em;
+    margin-bottom: 0.5em;
+}
+
+#bd h3{
+    font-size: 1.2em;
+    margin-bottom: 0.5em;
+}
+
+
+#bd p{
+    margin-bottom: 1em;
+}

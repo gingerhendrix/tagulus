@@ -1,97 +1,116 @@
 Utils.namespace("app.datasource");
 /**
- * Class encapsulating cloud data.  Widgets and lenses are dependant on this class for their data.
- * CloudDataSources can be manipulated via
- *   * Filters - E.g. limiting filters, minimum spanning sets, intersection etc.
- *   * Classifiers - These chunk the data into classes e.g. weight classifier, date classifier, cluster classifier
- *   * Transformations - these provide transformations of the data set e.g. sorting
- *   * Views - These add extra properties to the model eg. logarithms, etc
+ * Class encapsulating access to remote cloud data. This data can then be accesed through DataViews, there may be many
+ * dataviews per datasource.
  * 
  * @param {Object} cloud_id
  */
 app.datasource.CloudDataSource = function(cloud_id, options){
    var default_options = {
-     classifiers : [],
-     filters : []
+   
    }
    
-   var tagNames = [];
-   var tags = {}
+   var tags = [];
+   var items = [];
    
-   var filteredTagNames = [];
+   this.getTags = function(){
+      return tags;     
+   }
    
-   var filters = {};
-   var filterNames = [];
+   this.getItems = function(){
+     return items;
+   }
    
-   var classifiers = {};
-   var classifierNames = [];
-   
-   var views = {};
-   var transformations = {};
-   
-   this.options = updatetree({}, default_options, options);
-   
-   this.init = function(){
-     Utils.log.info("CloudDataSource.init");
-     //Get weighted list json (for now)
-     //In future refactor to get weightedlist/items as necessary
-     var dataSource = this;
-     
+   function getTags(){
+     var datasource = this;
      Utils.http.get("/cloud/"+cloud_id+"/json", function(req){
+        tags = [];
+        
         var json_text = req.responseText;
         var data = eval("("+json_text+")");
         var tfs = data.tag_frequencies
         for(var i=0; i<tfs.length; i++){
           var tf = tfs[i];
           var tagName = tf.tag;
-          tagNames.push(tagName);
-          tags[tagName] = { label : tagName, frequency : tf.frequency}
+          var tag = { label : tagName, frequency : tf.frequency}
+          tags.push(tag); 
         }
-        dataSource.update();
-     });  
-     
+        Utils.signals.signal(datasource, "update")
+     });
+   }
+   getTags = bind(getTags, this);
+   
+   function getItems(){
+     var datasource = this;
+     Utils.http.get("/cloud/"+cloud_id+"/items_json", function(req){
+        items = [];
+        var json_text = req.responseText;
+        var data = eval("("+json_text+")");
+        var is = data.items
+        for(var i=0; i<is.length; i++){
+          var item = is[i];
+          items.push(item); 
+        }
+        Utils.signals.signal(datasource, "update")
+     });
+   }
+   getItems = bind(getItems, this);
+   
+   this.init = function(){
+     //Should control with options
+     getTags();
+     getItems();
+   }
+   
+   this.init();
+}
+
+
+/**
+ *  DataViews provide access to cloud data, and an api for data manipulation
+ *   * Transformaers - E.g. filters, minimum spanning sets, intersection, sorting, logarithms etc.
+ *   * Classifiers - These chunk the data into classes e.g. weight classifier, date classifier, cluster classifier
+ *   
+ * @param {Object} datasource
+ * @param {Object} options
+ */
+app.datasource.DataView = function(){
+
+
+   this.init = function(){
+     Utils.log.info(this + " DataView.init");
+     this.filters = {};
+     this.filterNames = [];
+   
+     this.classifiers = {};
+     this.classifierNames = [];
+   
      var fs = this.options.filters;
      for(var i=0; i<fs.length; i++){
        filter = new fs[i].filter(this, fs[i]);
-       filterNames.push(fs[i].name);
-       filters[fs[i].name] = filter;
+       this.filterNames.push(fs[i].name);
+       this.filters[fs[i].name] = filter;
      }
      
      var cs = this.options.classifiers;
      for(var i=0; i<cs.length; i++){
        classifier = new cs[i].classifier(this, cs[i])
-       classifierNames.push(cs[i].name);
-       classifiers[cs[i].name] = classifier;
+       this.classifierNames.push(cs[i].name);
+       this.classifiers[cs[i].name] = classifier;
      }
    }
-   
-   this.getProperties = function(){
-     return ["frequency"]
-   }
-   
-   this.update = function(){
-     filteredTagNames = tagNames;
-     for(var i=0; i<filterNames.length; i++){
-       var filter = filters[filterNames[i]]
-       filteredTagNames = filter.filter(filteredTagNames);
-     }
-     for(var i=0; i<classifierNames.length; i++){
-       classifiers[classifierNames[i]].calculate();
-     }
-     Utils.signals.signal(this, "update")
-   }
-   
+
    this.getFilters =function(){
-     return filterNames;
+     return this.filterNames;
    } 
    
    this.getFilter = function(name){
-       return filters[name];
+       return this.filters[name];
    }
    
    this.getClassifier = function(name){
-     if(classifiers[name]){
-       return classifiers[name]
+     if(this.classifiers[name]){
+       return this.classifiers[name]
      }else{
        Utils.log.error("Classifier not found " + name)
        throw new Error("Classifier not found " + name);
@@ -99,27 +118,14 @@ app.datasource.CloudDataSource = function(cloud_id, options){
    }
    
    this.getClassifiers = function(){
-     return classifierNames;
-   }
-   /**
-    * Returns a list of all tags, after filters have been applied
-    */
-   this.getTags = function(){
-     return filteredTagNames;
+     return this.classifierNames;
    }
    
-   /**
-    * Return information about a tag, 
-    * including frequency and classifications
-    * 
-    * @param {Object} tag
-    */
-   this.getTag = function(tag){
-      return tags[tag];
+   this.toString = function(){
+     return "[DataView object]";
    }
-   
-   this.init();
 }
+
 
 /**
  * Abstract interface definition for classifiers
@@ -158,9 +164,9 @@ app.datasource.WeightedClassifier = function(dataSource, options){
    * 
    * @param {Object} tag
    */
-  this.getClass = function(tag){
+  this.getClass = function(tagName){
     if(min !== false && max !== false){
-      var tag = dataSource.getTag(tag);
+      var tag = dataSource.getTag(tagName);
       var weight = tag[this.options.classification_term]*1.0;
       var classes = this.options.classes * 1.0;
       var group =  Math.ceil(((classes-1.0)*(weight-min))/(max-min));
@@ -172,29 +178,30 @@ app.datasource.WeightedClassifier = function(dataSource, options){
   
   this.calculate = function(){
     var tags = dataSource.getTags();
+    Utils.log.info("> WeightedClassifier.calculate " + dataSource + " : " + tags.length);
     min = false;
     max = false;
 
     for(var i=0; i<tags.length; i++){
         var tag = tags[i];
-        var freq = dataSource.getTag(tag)[this.options.classification_term] ;
+        var freq = tag[this.options.classification_term] ;
        // Utils.log.info(this.options.classification_term  + " : " + freq);
         min = (!min || freq < min) ? freq : min;
         max = (!max || freq > max) ? freq : max;
     }
-    Utils.log.info("WeightedClassifier.calculate : " + min + ", " + max)
+    Utils.log.info("< WeightedClassifier.calculate : " + min + ", " + max)
   }
   
   this.init();
 }
 
-app.datasource.filter = function(dataSource, options){
+app.datasource.filter = function(dataView, options){
   this.filter = function(tags){
     return tags;
   }
 }
 
-app.datasource.LimitingFilter = function(dataSource, options){
+app.datasource.LimitingFilter = function(dataView, options){
   var default_options = {
       limit : 50,
    }

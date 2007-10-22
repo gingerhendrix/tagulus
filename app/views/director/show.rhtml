@@ -1,0 +1,177 @@
+    
+    
+    <script type="text/javascript" src="/javascripts/utils/utils.js"></script>
+ 
+    <script type="text/javascript" src="/javascripts/app/datasource/clouddatasource.js"></script>
+    <script type="text/javascript" src="/javascripts/app/datasource/taglistview.js"></script>
+    <script type="text/javascript" src="/javascripts/app/datasource/tagmapview.js"></script>
+ 
+    <script type="text/javascript" src="/javascripts/tagcloud/tagcloud.js"></script>
+    <script type="text/javascript" src="/javascripts/tagcloud/tagclouddisplay.js"></script>
+    <script type="text/javascript" src="/javascripts/tagcloud/tagcloudbehaviour.js"></script>
+    
+    <script type="text/javascript" src="/javascripts/app/ui/widgets/itemtable.js"></script>
+    
+    <!-- YUI -->
+    <script type="text/javascript" src="/javascripts/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="/javascripts/yui/element/element-beta-min.js"></script>
+    <script type="text/javascript" src="/javascripts/yui/datasource/datasource-beta-min.js"></script>
+
+    <script type="text/javascript" src="/javascripts/yui/connection/connection-min.js"></script>
+    <script type="text/javascript" src="/javascripts/yui/dragdrop/dragdrop-min.js"></script>
+    
+    <link type="text/css" rel="stylesheet" href="/javascripts/yui/datatable/assets/skins/sam/datatable.css"> 
+    <script type="text/javascript" src="/javascripts/yui//datatable/datatable-beta-min.js"></script>
+    
+    
+    <script src="/javascripts/TagClusters/TagMap.js"></script>
+    <script src="/javascripts/MochiKit/MochiKit.js"></script>
+
+<style>
+div.tagCloud {
+    width: 320px;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #999999;
+    float: left;
+    height: 200px;
+}
+#items {
+    clear: both;
+}
+
+td.yui-dt-col-description, td.yui-dt-col-date {
+    font-size: 93%;
+}
+
+td.yui-dt-col-tags {
+    font-size: 85%
+}
+
+</style>
+
+<div id="yui-main">
+
+    <div class="title">
+       <h1>Tagulus Director</h1>
+    </div>
+      
+    <div class="block yui-skin-sam">
+           <div id='tagCloud1' class="tagCloud">
+            </div>
+            
+            <div id='tagCloud2' class="tagCloud">
+            </div>
+            
+            <div id='tagCloud3' class="tagCloud">
+            </div>
+
+            <div id="items">
+            </div>
+        
+    </div>
+</div>
+
+ 
+<script type="text/javascript" >
+    var dataSource = new app.datasource.CloudDataSource(
+                                      <%= @cloud.id %>, {});
+
+    var dataView = new app.datasource.TagMapView(dataSource, {});
+    
+    var tagMapOptions = {
+        filters : [
+            { name : "Intersection",
+              filter : app.datasource.IntersectionFilter,
+              tag : false
+            }
+        ] 
+    }
+    
+    var tagListOptions = { classifiers : [ 
+                               { name : "Frequency",
+                                 classifier : app.datasource.WeightedClassifier,
+                                 classes : 6,
+                                 classification_term : "frequency"
+                                },
+                              ],
+                            filters : [
+                                { name : "Limit",
+                                  filter : app.datasource.LimitingFilter,
+                                  limit : 50
+                                }
+                            ]
+                          }
+
+    var tcOptions = { display: {
+                            width: 300, 
+                            font_size : {
+                                classifier : "Frequency",
+                                distribution : "linear",
+                                max : 24,
+                                min : 6,
+                                unit : "px"
+                            },
+                            color : {
+                                colors : [[57,55,65],[57,55,65]],
+                            },
+                            visible : false 
+                         }
+                    };
+    
+    var tagMapViews = [] 
+    
+    var tagClouds = [0,1,2].map(function(n){
+        if(n==0){
+            tagMapViews[n] = new app.datasource.TagMapView(dataSource, {});
+        }else{
+            tagMapViews[n]= new app.datasource.TagMapView(tagMapViews[n-1], tagMapOptions);
+        } 
+        var tagListView = new app.datasource.TagListView(tagMapViews[n], tagListOptions);
+        return new TagCloud(tagListView, document.getElementById('tagCloud'+(n+1)), tcOptions);
+    });
+
+    var itemsTagMap = new app.datasource.TagMapView(tagMapViews[tagMapViews.length-1], tagMapOptions)
+    tagMapViews.push(itemsTagMap);
+    
+    var itemsTable = new ItemTable(itemsTagMap, document.getElementById("items"), {});
+
+    function SelectionBehaviour(){
+        var selectedElement;
+        this.onclick = function(tag, element){
+            if(selectedElement){
+              selectedElement.style.backgroundColor = "inherit";
+            }
+            if(selectedElement != element){
+                selectedElement = element;
+                selectedElement.style.backgroundColor = "#3E66B8";
+            }else{
+               selectedElement = false;
+            }
+        }
+    }
+    
+    for(var i=0; i<tagClouds.length; i++){
+       new function(tagCloud, i){
+        tagCloud.behaviour.add(new SelectionBehaviour());
+        tagCloud.behaviour.add({
+            onclick : function(tag, element){
+               //Update next tagCloud
+               filter = tagMapViews[i+1].getFilter("Intersection");
+               if(filter.options.tag == tag.label){
+                 filter.options.tag = false;
+               }else{
+                 filter.options.tag = tag.label;
+               }
+               
+               for(var j=i+2; j<tagMapViews.length; j++){
+                tagMapViews[j].getFilter("Intersection").options.tag = false;
+               }
+               
+               tagMapViews[i+1].update();
+
+            }
+         });
+       }(tagClouds[i], i);
+    }
+  </script>

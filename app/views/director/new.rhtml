@@ -1,0 +1,22 @@
+<div id="yui-main">
+
+<h3>Import Your Bookmarks</h3>
+
+<p>To get started we need your del.icio.us username and password. 
+Your password will not be stored it is only used to import your bookmarks.</p>
+ 
+<% form_tag :action => 'create' do %>
+  <input type="hidden" name="cloud_type" value="delicious_user_cloud"></input></p>
+
+    <p><label for="cloud_username">username</label>
+    <%= text_field 'cloud', 'username'  %></p>
+    
+    <p><label for="cloud_password">password</label>
+    <%= text_field 'cloud', 'password'  %></p>
+
+  
+  <%= submit_tag "Import" %>
+<% end %>
+
+
+</div>

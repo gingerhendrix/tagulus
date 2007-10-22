@@ -3,9 +3,6 @@ body{
     background-color: #3f67b9;
     background-attachment: scroll;   
     color: #083594;
-    font-family: "Courier New", courier;
-    font-size:   100%;
-    line-height: 138%;
 }
 
 
@@ -15,10 +12,6 @@ body{
     min-height: 900px;    
 }
 
-#bd{
-	padding: 1em;
-	
-}
 
 #yui-main div.block {
     background-color: #ffffff;
@@ -66,14 +59,6 @@ div.title {
     margin-bottom: 0.5em;
 }
 
-#bd a{
-   color: #17387d;
-   text-decoration: none;
-}
-
-#bd a:hover{
-  text-decoration: underline;
-}
 
 #bd p{
     margin-bottom: 1em;
@@ -101,10 +86,7 @@ div.title {
     margin-top: 10px;
     margin-bottom: 10px;
     
-    border: 2px solid #4a69a8;
-    
     -moz-border-radius: 15px;
-    
 }
 
 

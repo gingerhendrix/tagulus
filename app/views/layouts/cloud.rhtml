@@ -6,11 +6,13 @@
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <title>Tagulus: <%= controller.action_name %></title>
   
+<!--
   <%= javascript_include_merged :cssquery %>
   <%= javascript_include_merged :mochikit %>
   <%= javascript_include_merged :yui %>
   <%= javascript_include_merged :ui %>
   <%= javascript_include_merged :tagcloud %>
+-->
   
   <% if ENV['RAILS_ENV'] == 'production' %>
     <script src="http://gandrew.com/mint/?js"></script>
@@ -19,7 +21,7 @@
   <% end %>   
 
   <%= stylesheet_link_merged :base %>
-  <%= stylesheet_link_merged :yui %>
+<!--  <%= stylesheet_link_merged :yui %> -->
   
   <%= automatic_stylesheets %>
 
